@@ -153,9 +153,23 @@ public class InjectorsDashboardController {
         return table[table.length-1];
     }
 
+    private InjectorEntity getInitRootFromWidgetName(String widgetName) {
+        InjectorEntity ret = null;
+        String[] table = widgetName.split(" / ");
+        ret = InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().getInjectorEntityFromValue(table[0]);
+        return ret;
+    }
+
+    private InjectorEntity getInjectorEntityFromWidgetName(String widgetName) {
+        InjectorEntity ret = null;
+        InjectorEntity rootInjector = getInitRootFromWidgetName(widgetName);
+        ret = rootInjector.findInjectorEntityFromValue(getInjectorValueFromWidgetName(widgetName));
+        return ret;
+    }
+
     public String getWidgetValue(String widgetName) {
         String ret = "";
-        InjectorEntity entity = InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().getInjectorEntityFromValue(getInjectorValueFromWidgetName(widgetName));
+        InjectorEntity entity = getInjectorEntityFromWidgetName(widgetName);
         if (entity!=null)
             ret = entity.getValue();
         log.debug("Get Value from widget {} : {}...", new Object[]{widgetName,ret});
@@ -164,7 +178,7 @@ public class InjectorsDashboardController {
 
     public String getWidgetDescription(String widgetName) {
         String ret = "";
-        InjectorEntity entity = InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().getInjectorEntityFromValue(getInjectorValueFromWidgetName(widgetName));
+        InjectorEntity entity = getInjectorEntityFromWidgetName(widgetName);
         if (entity!=null)
             ret = entity.getDescription();
         log.debug("Get description from widget {} : {}...", new Object[]{widgetName,ret});
@@ -173,7 +187,7 @@ public class InjectorsDashboardController {
 
     public String getWidgetIcon(String widgetName) {
         String ret = "";
-        InjectorEntity entity = InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().getInjectorEntityFromValue(getInjectorValueFromWidgetName(widgetName));
+        InjectorEntity entity = getInjectorEntityFromWidgetName(widgetName);
         if (entity!=null)
             ret = entity.getIcon() + " icon-4x";
         log.debug("Get icon from widget {} : {}...", new Object[]{widgetName, ret});
@@ -183,7 +197,7 @@ public class InjectorsDashboardController {
     public String getWidgetAddress(String widgetName) {
         String ret = "";
         FacesContext context = FacesContext.getCurrentInstance();
-        InjectorEntity entity = InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().getInjectorEntityFromValue(getInjectorValueFromWidgetName(widgetName));
+        InjectorEntity entity = getInjectorEntityFromWidgetName(widgetName);
         if (entity!=null)
             ret = context.getExternalContext().getRequestScheme() + "://" +
                           context.getExternalContext().getRequestServerName() + ":" +

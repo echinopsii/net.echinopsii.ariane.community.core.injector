@@ -32,7 +32,7 @@ public class InjectorFaceletsResourceResolverServicesConsumer {
     private static final Logger log = LoggerFactory.getLogger(InjectorFaceletsResourceResolverServicesConsumer.class);
     private static InjectorFaceletsResourceResolverServicesConsumer INSTANCE;
 
-    @Requires(filter="(targetCCcomponent=injector)")
+    @Requires(filter="(targetCCcomponent=Injector)")
     private FaceletsResourceResolverService[] faceletsResolverList;
 
     public FaceletsResourceResolverService[] getFaceletsResourceResolverServices() {
