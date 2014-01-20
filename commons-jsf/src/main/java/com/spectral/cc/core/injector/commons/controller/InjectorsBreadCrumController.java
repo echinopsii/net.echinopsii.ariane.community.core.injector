@@ -72,7 +72,12 @@ public class InjectorsBreadCrumController {
         FacesContext context = FacesContext.getCurrentInstance();
         String requestServletPath = context.getExternalContext().getRequestServletPath();
         String values[] = requestServletPath.split("/");
-        String id = values[values.length-1].split("\\.")[0]+"DirID" ;
+        String idpre = ((values[values.length-2].equals("directory")) ? "DirInjID" : (values[values.length-2].equals("mapping")) ? "MapInjID" : null);
+        if (idpre == null) {
+            log.error("Injector JSF page is not in a valid path : {} {}", requestServletPath, values[values.length-2]);
+            return model;
+        }
+        String id = values[values.length-1].split("\\.")[0] + idpre;
         log.debug("requestServletPath : {} ; value : {}", new Object[]{requestServletPath,id});
         log.debug("Get Menu Model...");
         ArrayList<InjectorEntity> orderedBreadScrumMenuFromRootToLeaf = new ArrayList<InjectorEntity>();

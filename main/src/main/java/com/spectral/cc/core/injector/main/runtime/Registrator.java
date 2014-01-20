@@ -86,13 +86,13 @@ public class Registrator implements Runnable {
             directoryRootInjectorEntity.addChildInjector(commonsInjectorEntity);
 
             commonsInjectorEntity.
-                    addChildInjector(new InjectorEntity().setId("organisationDirID").setValue("Organisation").setParentInjector(commonsInjectorEntity).setIcon("icon-building").
+                    addChildInjector(new InjectorEntity().setId("organisationDirInjID").setValue("Organisation").setParentInjector(commonsInjectorEntity).setIcon("icon-building").
                                                                                                                                                                                          setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/main.jsf").
                                                                                                                                                                                                                                                                                                         setDescription("Inject data from your local organisation DB to CC organisation directory")).
-                    addChildInjector(new InjectorEntity().setId("networkDirID").setValue("Network").setParentInjector(commonsInjectorEntity).setIcon("icon-road").
+                    addChildInjector(new InjectorEntity().setId("networkDirInjID").setValue("Network").setParentInjector(commonsInjectorEntity).setIcon("icon-road").
                                                             setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/main.jsf").
                                                             setDescription("Inject data from your network CMDB to CC network directory")).
-                    addChildInjector(new InjectorEntity().setId("systemDirID").setValue("System").setParentInjector(commonsInjectorEntity).setIcon("icon-cogs").
+                    addChildInjector(new InjectorEntity().setId("systemDirInjID").setValue("System").setParentInjector(commonsInjectorEntity).setIcon("icon-cogs").
                                                             setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/main.jsf").
                                                             setDescription("Inject data from your system CMDB to CC system directory"));//.
             log.debug("{} has registered its commons injector items", new Object[]{INJECTOR_REGISTRATOR_TASK_NAME});
