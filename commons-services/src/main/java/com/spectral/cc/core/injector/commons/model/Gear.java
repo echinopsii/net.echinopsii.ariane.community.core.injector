@@ -24,7 +24,6 @@ public interface Gear extends Runnable{
 
     public long   getGearId();
     public void   setGearId(long id);
-    public Gear   setGearIdR(long id);
 
     public String getGearName();
     public String getGearDescription();
@@ -32,6 +31,4 @@ public interface Gear extends Runnable{
     public void    start();
     public void    stop();
     public boolean isRunning();
-
-    public boolean equals(Gear gear);
 }
