@@ -43,7 +43,7 @@ public class Registrator implements Runnable {
         while((InjectorPluginFacesMBeanRegistryConsumer.getInstance().getInjectorPluginFacesMBeanRegistry()==null) ||
                       (InjectorPluginFacesMBeanRegistryConsumer.getInstance().getInjectorPluginFacesMBeanRegistry().getRegisteredServletContext()==null))
             try {
-                log.warn("Injector plugin faces managed bean registry is missing or is still not initialized to load {}. Sleep some times...", INJECTOR_REGISTRATOR_TASK_NAME);
+                log.info("Injector plugin faces managed bean registry is missing or is still not initialized to load {}. Sleep some times...", INJECTOR_REGISTRATOR_TASK_NAME);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -53,7 +53,7 @@ public class Registrator implements Runnable {
         //TODO : check a better way to start war after OSGI layer
         while(MainMenuRegistryConsumer.getInstance().getMainMenuEntityRegistry()==null)
             try {
-                log.warn("Portal main menu registry is missing to load {}. Sleep some times...", INJECTOR_REGISTRATOR_TASK_NAME);
+                log.info("Portal main menu registry is missing to load {}. Sleep some times...", INJECTOR_REGISTRATOR_TASK_NAME);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -70,7 +70,7 @@ public class Registrator implements Runnable {
         //TODO : check a better way to start war after OSGI layer
         while(InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry()==null)
             try {
-                log.warn("Injector roots tree registry is missing to load {}. Sleep some times...", INJECTOR_REGISTRATOR_TASK_NAME);
+                log.info("Injector roots tree registry is missing to load {}. Sleep some times...", INJECTOR_REGISTRATOR_TASK_NAME);
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
