@@ -22,7 +22,7 @@ package com.spectral.cc.core.injector.main.runtime;
 
 import com.spectral.cc.core.injector.commons.consumer.InjectorPluginFacesMBeanRegistryConsumer;
 import com.spectral.cc.core.injector.commons.consumer.InjectorRootsTreeRegistryServiceConsumer;
-import com.spectral.cc.core.injector.commons.model.InjectorEntity;
+import com.spectral.cc.core.injector.commons.model.InjectorMenuEntity;
 import com.spectral.cc.core.portal.commons.consumer.MainMenuRegistryConsumer;
 import com.spectral.cc.core.portal.commons.model.MainMenuEntity;
 import com.spectral.cc.core.portal.commons.model.MenuEntityType;
@@ -68,7 +68,7 @@ public class Registrator implements Runnable {
         }
 
         //TODO : check a better way to start war after OSGI layer
-        while(InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry()==null)
+        while(InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry()==null)
             try {
                 log.info("Injector roots tree registry is missing to load {}. Sleep some times...", INJECTOR_REGISTRATOR_TASK_NAME);
                 Thread.sleep(1000);
@@ -76,23 +76,23 @@ public class Registrator implements Runnable {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         try {
-            InjectorEntity directoryRootInjectorEntity = new InjectorEntity().setId("dirDir").setValue("Directories").setType(MenuEntityType.TYPE_MENU_SUBMENU);
-            OsgiActivator.injectorTreeEntityList.add(directoryRootInjectorEntity);
-            InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().registerRootInjectorEntity(directoryRootInjectorEntity);
+            InjectorMenuEntity directoryRootInjectorMenuEntity = new InjectorMenuEntity().setId("dirDir").setValue("Directories").setType(MenuEntityType.TYPE_MENU_SUBMENU);
+            OsgiActivator.injectorTreeEntityList.add(directoryRootInjectorMenuEntity);
+            InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry().registerRootInjectorEntity(directoryRootInjectorMenuEntity);
 
-            InjectorEntity commonsInjectorEntity = new InjectorEntity().setId("commonsdbDir").setValue("Common").
+            InjectorMenuEntity commonsInjectorMenuEntity = new InjectorMenuEntity().setId("commonsdbDir").setValue("Common").
                                                             setType(MenuEntityType.TYPE_MENU_SUBMENU).
-                                                            setParentInjector(directoryRootInjectorEntity);
-            directoryRootInjectorEntity.addChildInjector(commonsInjectorEntity);
+                                                            setParentInjector(directoryRootInjectorMenuEntity);
+            directoryRootInjectorMenuEntity.addChildInjector(commonsInjectorMenuEntity);
 
-            commonsInjectorEntity.
-                    addChildInjector(new InjectorEntity().setId("organisationDirInjID").setValue("Organisation").setParentInjector(commonsInjectorEntity).setIcon("icon-building").
+            commonsInjectorMenuEntity.
+                    addChildInjector(new InjectorMenuEntity().setId("organisationDirInjID").setValue("Organisation").setParentInjector(commonsInjectorMenuEntity).setIcon("icon-building").
                                                                                                                                                                                          setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/main.jsf").
                                                                                                                                                                                                                                                                                                         setDescription("Inject data from your local organisation DB to CC organisation directory")).
-                    addChildInjector(new InjectorEntity().setId("networkDirInjID").setValue("Network").setParentInjector(commonsInjectorEntity).setIcon("icon-road").
+                    addChildInjector(new InjectorMenuEntity().setId("networkDirInjID").setValue("Network").setParentInjector(commonsInjectorMenuEntity).setIcon("icon-road").
                                                             setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/main.jsf").
                                                             setDescription("Inject data from your network CMDB to CC network directory")).
-                    addChildInjector(new InjectorEntity().setId("systemDirInjID").setValue("System").setParentInjector(commonsInjectorEntity).setIcon("icon-cogs").
+                    addChildInjector(new InjectorMenuEntity().setId("systemDirInjID").setValue("System").setParentInjector(commonsInjectorMenuEntity).setIcon("icon-cogs").
                                                             setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/main.jsf").
                                                             setDescription("Inject data from your system CMDB to CC system directory"));//.
             log.debug("{} has registered its commons injector items", new Object[]{INJECTOR_REGISTRATOR_TASK_NAME});

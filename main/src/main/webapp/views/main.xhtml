@@ -5,20 +5,20 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="/templates/mainLayout.xhtml">
     <ui:define name="moduleContent">
-        <!--TODO : parameters columns on user preference -->
+        <!--TODO : parameters columns on userProfile preference -->
         <div align="center" style="vertical-align: middle">
-            <ui:repeat value="#{injectorsDashboardController.dashboardColumn}" var="column">
+            <ui:repeat value="#{injectorDashboardController.dashboardColumn}" var="column">
                 <br/><br/><br/>
-                <p:carousel id="basicCarousel" value="#{injectorsDashboardController.getColumnWidgets(column)}" var="widget" itemStyle="width:350px" numVisible="4">
+                <p:carousel id="basicCarousel" value="#{injectorDashboardController.getColumnWidgets(column)}" var="widget" itemStyle="width:350px" numVisible="4">
                     <f:facet name="header">
-                        <h:outputText value="#{injectorsDashboardController.getColumnName(column)}" />
+                        <h:outputText value="#{injectorDashboardController.getColumnName(column)}" />
                     </f:facet>
-                    <h:outputLink value="#{injectorsDashboardController.getWidgetAddress(widget)}">
+                    <h:outputLink value="#{injectorDashboardController.getWidgetAddress(widget)}">
                         <h:panelGrid columns="2" cellpadding="1" style="width:80%; vertical-align: middle; text-align: center;">
-                            <i class="#{injectorsDashboardController.getWidgetIcon(widget)}"/>
+                            <i class="#{injectorDashboardController.getWidgetIcon(widget)}"/>
                             <h:panelGroup>
-                                <h:outputText value="#{injectorsDashboardController.getWidgetValue(widget)}" style="vertical-align: middle; font-weight: bold"/><br/>
-                                <h:outputText value="#{injectorsDashboardController.getWidgetDescription(widget)}" style="vertical-align: middle"/>
+                                <h:outputText value="#{injectorDashboardController.getWidgetValue(widget)}" style="vertical-align: middle; font-weight: bold"/><br/>
+                                <h:outputText value="#{injectorDashboardController.getWidgetDescription(widget)}" style="vertical-align: middle"/>
                             </h:panelGroup>
                         </h:panelGrid>
                     </h:outputLink>

@@ -19,7 +19,7 @@
 package com.spectral.cc.core.injector.commons.controller;
 
 import com.spectral.cc.core.injector.commons.consumer.InjectorRootsTreeRegistryServiceConsumer;
-import com.spectral.cc.core.injector.commons.model.InjectorEntity;
+import com.spectral.cc.core.injector.commons.model.InjectorMenuEntity;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.model.DefaultMenuModel;
 import org.primefaces.model.MenuModel;
@@ -29,13 +29,13 @@ import org.slf4j.LoggerFactory;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 
-public class InjectorsBreadCrumController {
-    private static final Logger log = LoggerFactory.getLogger(InjectorsBreadCrumController.class);
+public class InjectorBreadCrumController {
+    private static final Logger log = LoggerFactory.getLogger(InjectorBreadCrumController.class);
     private static String MAIN_MENU_DIRECTORY_CONTEXT = "/CCinjector/";
 
     private MenuModel model     = new DefaultMenuModel();
 
-    private MenuItem createMenuItemFromEntity(InjectorEntity entity) {
+    private MenuItem createMenuItemFromEntity(InjectorMenuEntity entity) {
         FacesContext context = FacesContext.getCurrentInstance();
         MenuItem item = new MenuItem();
         item.setId(entity.getId());
@@ -80,19 +80,19 @@ public class InjectorsBreadCrumController {
         String id = values[values.length-1].split("\\.")[0] + idpre;
         log.debug("requestServletPath : {} ; value : {}", new Object[]{requestServletPath,id});
         log.debug("Get Menu Model...");
-        ArrayList<InjectorEntity> orderedBreadScrumMenuFromRootToLeaf = new ArrayList<InjectorEntity>();
+        ArrayList<InjectorMenuEntity> orderedBreadScrumMenuFromRootToLeaf = new ArrayList<InjectorMenuEntity>();
         if (InjectorRootsTreeRegistryServiceConsumer.getInstance()!=null) {
-            InjectorEntity leaf   = InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().getInjectorEntityFromID(id);
+            InjectorMenuEntity leaf   = InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry().getInjectorEntityFromID(id);
             if (leaf!=null) {
                 orderedBreadScrumMenuFromRootToLeaf.add(0,leaf);
-                InjectorEntity parent = leaf.getParentInjector();
+                InjectorMenuEntity parent = leaf.getParentInjector();
                 while (parent!=null) {
                     orderedBreadScrumMenuFromRootToLeaf.add(0,parent);
                     parent = parent.getParentInjector();
                 }
 
                 model.addMenuItem(createRootMenuItem());
-                for (InjectorEntity dir: orderedBreadScrumMenuFromRootToLeaf)
+                for (InjectorMenuEntity dir: orderedBreadScrumMenuFromRootToLeaf)
                     model.addMenuItem(createMenuItemFromEntity(dir));
             }
         }

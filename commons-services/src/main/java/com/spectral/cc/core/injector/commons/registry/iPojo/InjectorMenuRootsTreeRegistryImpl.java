@@ -18,8 +18,8 @@
  */
 package com.spectral.cc.core.injector.commons.registry.iPojo;
 
-import com.spectral.cc.core.injector.commons.model.InjectorEntity;
-import com.spectral.cc.core.injector.commons.registry.InjectorRootsTreeRegistry;
+import com.spectral.cc.core.injector.commons.model.InjectorMenuEntity;
+import com.spectral.cc.core.injector.commons.registry.InjectorMenuRootsTreeRegistry;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +29,12 @@ import java.util.TreeSet;
 @Component
 @Provides
 @Instantiate
-public class InjectorRootsTreeRegistryImpl implements InjectorRootsTreeRegistry {
+public class InjectorMenuRootsTreeRegistryImpl implements InjectorMenuRootsTreeRegistry {
 
     private static final String ROOT_INJECTOR_REGISTRY_SERVICE_NAME = "Injector Roots Tree Registry Service";
-    private static final Logger log = LoggerFactory.getLogger(InjectorRootsTreeRegistryImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(InjectorMenuRootsTreeRegistryImpl.class);
 
-    private TreeSet<InjectorEntity> registry = new TreeSet<InjectorEntity>();
+    private TreeSet<InjectorMenuEntity> registry = new TreeSet<InjectorMenuEntity>();
 
     @Validate
     public void validate() throws Exception {
@@ -49,26 +49,26 @@ public class InjectorRootsTreeRegistryImpl implements InjectorRootsTreeRegistry 
     }
 
     @Override
-    public InjectorEntity registerRootInjectorEntity(InjectorEntity injectorEntity) throws Exception {
-        registry.add(injectorEntity);
-        return injectorEntity;
+    public InjectorMenuEntity registerRootInjectorEntity(InjectorMenuEntity injectorMenuEntity) throws Exception {
+        registry.add(injectorMenuEntity);
+        return injectorMenuEntity;
     }
 
     @Override
-    public InjectorEntity unregisterRootInjectorEntity(InjectorEntity injectorEntity) throws Exception {
-        registry.remove(injectorEntity);
-        return injectorEntity;
+    public InjectorMenuEntity unregisterRootInjectorEntity(InjectorMenuEntity injectorMenuEntity) throws Exception {
+        registry.remove(injectorMenuEntity);
+        return injectorMenuEntity;
     }
 
     @Override
-    public TreeSet<InjectorEntity> getRootInjectorEntities() {
+    public TreeSet<InjectorMenuEntity> getRootInjectorEntities() {
         return registry;
     }
 
     @Override
-    public InjectorEntity getInjectorEntityFromValue(String value) {
-        InjectorEntity ret = null;
-        for (InjectorEntity entity : registry) {
+    public InjectorMenuEntity getInjectorEntityFromValue(String value) {
+        InjectorMenuEntity ret = null;
+        for (InjectorMenuEntity entity : registry) {
             ret = entity.findInjectorEntityFromValue(value);
             if (ret!=null)
                 break;
@@ -77,9 +77,9 @@ public class InjectorRootsTreeRegistryImpl implements InjectorRootsTreeRegistry 
     }
 
     @Override
-    public InjectorEntity getInjectorEntityFromID(String id) {
-        InjectorEntity ret = null;
-        for (InjectorEntity entity : registry) {
+    public InjectorMenuEntity getInjectorEntityFromID(String id) {
+        InjectorMenuEntity ret = null;
+        for (InjectorMenuEntity entity : registry) {
             ret = entity.findInjectorEntityFromID(id);
             if (ret!=null)
                 break;

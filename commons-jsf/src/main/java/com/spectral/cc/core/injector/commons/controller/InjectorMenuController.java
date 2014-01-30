@@ -20,7 +20,7 @@
 package com.spectral.cc.core.injector.commons.controller;
 
 import com.spectral.cc.core.injector.commons.consumer.InjectorRootsTreeRegistryServiceConsumer;
-import com.spectral.cc.core.injector.commons.model.InjectorEntity;
+import com.spectral.cc.core.injector.commons.model.InjectorMenuEntity;
 import com.spectral.cc.core.portal.commons.model.MenuEntityType;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.component.separator.Separator;
@@ -32,12 +32,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.faces.context.FacesContext;
 
-public class InjectorsMenuController {
-    private static final Logger log = LoggerFactory.getLogger(InjectorsMenuController.class);
+public class InjectorMenuController {
+    private static final Logger log = LoggerFactory.getLogger(InjectorMenuController.class);
 
     private MenuModel model     = new DefaultMenuModel();
 
-    private MenuItem createMenuItemFromEntity(InjectorEntity entity) {
+    private MenuItem createMenuItemFromEntity(InjectorMenuEntity entity) {
         FacesContext context = FacesContext.getCurrentInstance();
         MenuItem item = new MenuItem();
         item.setId(entity.getId());
@@ -52,13 +52,13 @@ public class InjectorsMenuController {
         return item;
     }
 
-    private Submenu createSubMenuFromEntity(InjectorEntity entity) {
+    private Submenu createSubMenuFromEntity(InjectorMenuEntity entity) {
         Submenu submenu = new Submenu();
         submenu.setId(entity.getId());
         submenu.setStyleClass("menuItem");
         submenu.setLabel(entity.getValue());
         submenu.setIcon(entity.getIcon() + " icon-large");
-        for (InjectorEntity subEntity : entity.getChildsInjector()) {
+        for (InjectorMenuEntity subEntity : entity.getChildsInjector()) {
             switch(subEntity.getType()) {
                 case MenuEntityType.TYPE_MENU_SUBMENU:
                     Submenu subSubMenu = createSubMenuFromEntity(subEntity);
@@ -83,7 +83,7 @@ public class InjectorsMenuController {
     public MenuModel getModel() {
         log.debug("Get Menu Model...");
         if (InjectorRootsTreeRegistryServiceConsumer.getInstance()!=null) {
-            for (InjectorEntity entity : InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().getRootInjectorEntities()) {
+            for (InjectorMenuEntity entity : InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry().getRootInjectorEntities()) {
                 switch (entity.getType()) {
                     case MenuEntityType.TYPE_MENU_ITEM:
                         MenuItem item = createMenuItemFromEntity(entity);

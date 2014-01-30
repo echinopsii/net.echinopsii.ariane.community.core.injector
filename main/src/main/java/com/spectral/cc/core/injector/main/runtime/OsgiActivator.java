@@ -21,7 +21,7 @@
 package com.spectral.cc.core.injector.main.runtime;
 
 import com.spectral.cc.core.injector.commons.consumer.InjectorRootsTreeRegistryServiceConsumer;
-import com.spectral.cc.core.injector.commons.model.InjectorEntity;
+import com.spectral.cc.core.injector.commons.model.InjectorMenuEntity;
 import com.spectral.cc.core.portal.commons.consumer.MainMenuRegistryConsumer;
 import com.spectral.cc.core.portal.commons.model.MainMenuEntity;
 import org.osgi.framework.BundleActivator;
@@ -37,7 +37,7 @@ public class OsgiActivator implements BundleActivator {
     private static final Logger log = LoggerFactory.getLogger(OsgiActivator.class);
 
     protected static ArrayList<MainMenuEntity>  injectorMainMenuEntityList = new ArrayList<MainMenuEntity>() ;
-    protected static ArrayList<InjectorEntity> injectorTreeEntityList     = new ArrayList<InjectorEntity>();
+    protected static ArrayList<InjectorMenuEntity> injectorTreeEntityList     = new ArrayList<InjectorMenuEntity>();
 
     @Override
     public void start(BundleContext context) {
@@ -55,9 +55,9 @@ public class OsgiActivator implements BundleActivator {
         }
         injectorMainMenuEntityList.clear();
 
-        if (InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry()!=null) {
-            for(InjectorEntity entity : injectorTreeEntityList) {
-                InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorRootsTreeRegistry().unregisterRootInjectorEntity(entity);
+        if (InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry()!=null) {
+            for(InjectorMenuEntity entity : injectorTreeEntityList) {
+                InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry().unregisterRootInjectorEntity(entity);
             }
         }
         injectorTreeEntityList.clear();

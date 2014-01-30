@@ -18,15 +18,15 @@
  */
 package com.spectral.cc.core.injector.commons.registry;
 
-import com.spectral.cc.core.injector.commons.model.InjectorEntity;
+import com.spectral.cc.core.injector.commons.model.InjectorMenuEntity;
 
 import java.util.TreeSet;
 
-public interface InjectorRootsTreeRegistry {
-    public InjectorEntity registerRootInjectorEntity(InjectorEntity injectorEntity) throws Exception;
-    public InjectorEntity unregisterRootInjectorEntity(InjectorEntity injectorEntity) throws Exception;
+public interface InjectorMenuRootsTreeRegistry {
+    public InjectorMenuEntity registerRootInjectorEntity(InjectorMenuEntity injectorMenuEntity) throws Exception;
+    public InjectorMenuEntity unregisterRootInjectorEntity(InjectorMenuEntity injectorMenuEntity) throws Exception;
 
-    public TreeSet<InjectorEntity> getRootInjectorEntities();
-    public InjectorEntity getInjectorEntityFromValue(String value);
-    public InjectorEntity getInjectorEntityFromID(String id);
+    public TreeSet<InjectorMenuEntity> getRootInjectorEntities();
+    public InjectorMenuEntity getInjectorEntityFromValue(String value);
+    public InjectorMenuEntity getInjectorEntityFromID(String id);
 }

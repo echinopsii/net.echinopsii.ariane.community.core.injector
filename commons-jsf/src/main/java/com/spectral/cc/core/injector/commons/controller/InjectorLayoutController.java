@@ -24,8 +24,8 @@ import org.primefaces.event.ToggleEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InjectorsLayoutController {
-    private static final Logger log = LoggerFactory.getLogger(InjectorsLayoutController.class);
+public class InjectorLayoutController {
+    private static final Logger log = LoggerFactory.getLogger(InjectorLayoutController.class);
 
     private boolean   collapsed = false;
     public boolean isCollapsed() {

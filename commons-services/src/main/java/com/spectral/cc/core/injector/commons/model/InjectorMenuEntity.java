@@ -24,8 +24,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.TreeSet;
 
-public class InjectorEntity implements Comparable<InjectorEntity> {
-    private static final Logger log = LoggerFactory.getLogger(InjectorEntity.class);
+public class InjectorMenuEntity implements Comparable<InjectorMenuEntity> {
+    private static final Logger log = LoggerFactory.getLogger(InjectorMenuEntity.class);
 
     private String id             = null;
     private String value          = null;
@@ -34,19 +34,19 @@ public class InjectorEntity implements Comparable<InjectorEntity> {
     private String description    = "";
     private String icon           = "";
 
-    private InjectorEntity          parent = null;
-    private TreeSet<InjectorEntity> childs = new TreeSet<InjectorEntity>();
+    private InjectorMenuEntity parent = null;
+    private TreeSet<InjectorMenuEntity> childs = new TreeSet<InjectorMenuEntity>();
 
     public String getId() {
         return id;
     }
 
-    public InjectorEntity setId(String id) {
+    public InjectorMenuEntity setId(String id) {
         this.id = id;
         return this;
     }
 
-    public InjectorEntity setValue(String value) {
+    public InjectorMenuEntity setValue(String value) {
         this.value = value;
         return this;
     }
@@ -59,7 +59,7 @@ public class InjectorEntity implements Comparable<InjectorEntity> {
         return type;
     }
 
-    public InjectorEntity setType(int type) {
+    public InjectorMenuEntity setType(int type) {
         this.type = type;
         return this;
     }
@@ -68,7 +68,7 @@ public class InjectorEntity implements Comparable<InjectorEntity> {
         return contextAddress;
     }
 
-    public InjectorEntity setContextAddress(String contextAddress) {
+    public InjectorMenuEntity setContextAddress(String contextAddress) {
         this.contextAddress = contextAddress;
         return this;
     }
@@ -77,7 +77,7 @@ public class InjectorEntity implements Comparable<InjectorEntity> {
         return description;
     }
 
-    public InjectorEntity setDescription(String description) {
+    public InjectorMenuEntity setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -86,35 +86,35 @@ public class InjectorEntity implements Comparable<InjectorEntity> {
         return icon;
     }
 
-    public InjectorEntity setIcon(String icon) {
+    public InjectorMenuEntity setIcon(String icon) {
         this.icon = icon;
         return this;
     }
 
-    public InjectorEntity setParentInjector(InjectorEntity parent) {
+    public InjectorMenuEntity setParentInjector(InjectorMenuEntity parent) {
         this.parent = parent;
         return this;
     }
 
-    public InjectorEntity getParentInjector() {
+    public InjectorMenuEntity getParentInjector() {
         return parent;
     }
 
-    public InjectorEntity addChildInjector(InjectorEntity child) {
+    public InjectorMenuEntity addChildInjector(InjectorMenuEntity child) {
         this.childs.add(child);
         return this;
     }
 
-    public TreeSet<InjectorEntity> getChildsInjector() {
+    public TreeSet<InjectorMenuEntity> getChildsInjector() {
         return this.childs;
     }
 
-    public InjectorEntity findInjectorEntityFromValue(String value_) {
-        InjectorEntity ret = null;
+    public InjectorMenuEntity findInjectorEntityFromValue(String value_) {
+        InjectorMenuEntity ret = null;
         if (this.value.equals(value_)) {
             ret = this;
         } else {
-            for (InjectorEntity entity : childs) {
+            for (InjectorMenuEntity entity : childs) {
                 ret = entity.findInjectorEntityFromValue(value_);
                 if (ret!=null)
                     break;
@@ -123,12 +123,12 @@ public class InjectorEntity implements Comparable<InjectorEntity> {
         return ret;
     }
 
-    public InjectorEntity findInjectorEntityFromID(String id_) {
-        InjectorEntity ret = null;
+    public InjectorMenuEntity findInjectorEntityFromID(String id_) {
+        InjectorMenuEntity ret = null;
         if (this.id.equals(id_)) {
             ret = this;
         } else {
-            for (InjectorEntity entity : childs) {
+            for (InjectorMenuEntity entity : childs) {
                 ret = entity.findInjectorEntityFromID(id_);
                 if (ret!=null)
                     break;
@@ -146,7 +146,7 @@ public class InjectorEntity implements Comparable<InjectorEntity> {
             return false;
         }
 
-        InjectorEntity that = (InjectorEntity) o;
+        InjectorMenuEntity that = (InjectorMenuEntity) o;
 
         if (!id.equals(that.id)) {
             return false;
@@ -167,14 +167,14 @@ public class InjectorEntity implements Comparable<InjectorEntity> {
 
     @Override
     public String toString() {
-        return "InjectorEntity{" +
+        return "InjectorMenuEntity{" +
                        "id='" + id + '\'' +
                        ", value='" + value + '\'' +
                        '}';
     }
 
     @Override
-    public int compareTo(InjectorEntity that) {
+    public int compareTo(InjectorMenuEntity that) {
         return this.value.compareTo(that.getValue());
     }
 }

@@ -6,17 +6,17 @@
 
     <managed-bean>
         <managed-bean-name>injectorsLayoutController</managed-bean-name>
-        <managed-bean-class>com.spectral.cc.core.injector.commons.controller.InjectorsLayoutController</managed-bean-class>
+        <managed-bean-class>com.spectral.cc.core.injector.commons.controller.InjectorLayoutController</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <managed-bean>
         <managed-bean-name>injectorsMenuController</managed-bean-name>
-        <managed-bean-class>com.spectral.cc.core.injector.commons.controller.InjectorsMenuController</managed-bean-class>
+        <managed-bean-class>com.spectral.cc.core.injector.commons.controller.InjectorMenuController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
         <managed-bean-name>injectorsBreadCrumController</managed-bean-name>
-        <managed-bean-class>com.spectral.cc.core.injector.commons.controller.InjectorsBreadCrumController</managed-bean-class>
+        <managed-bean-class>com.spectral.cc.core.injector.commons.controller.InjectorBreadCrumController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 

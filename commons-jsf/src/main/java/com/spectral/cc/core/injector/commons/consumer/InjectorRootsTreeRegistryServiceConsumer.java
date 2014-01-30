@@ -19,7 +19,7 @@
 
 package com.spectral.cc.core.injector.commons.consumer;
 
-import com.spectral.cc.core.injector.commons.registry.InjectorRootsTreeRegistry;
+import com.spectral.cc.core.injector.commons.registry.InjectorMenuRootsTreeRegistry;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,22 +31,22 @@ public class InjectorRootsTreeRegistryServiceConsumer {
     private static InjectorRootsTreeRegistryServiceConsumer INSTANCE;
 
     @Requires
-    private InjectorRootsTreeRegistry injectorRootsTreeRegistry = null;
+    private InjectorMenuRootsTreeRegistry injectorMenuRootsTreeRegistry = null;
 
     @Bind
-    public void bindInjectorRootsTreeRegistry(InjectorRootsTreeRegistry r) {
+    public void bindInjectorRootsTreeRegistry(InjectorMenuRootsTreeRegistry r) {
         log.info("Consumer bound to injector roots tree registry...");
-        injectorRootsTreeRegistry = r;
+        injectorMenuRootsTreeRegistry = r;
     }
 
     @Unbind
     public void unbindInjectorRootsTreeRegistry() {
         log.info("Consumer unbound from injector roots tree registry...");
-        injectorRootsTreeRegistry = null;
+        injectorMenuRootsTreeRegistry = null;
     }
 
-    public InjectorRootsTreeRegistry getInjectorRootsTreeRegistry() {
-        return injectorRootsTreeRegistry;
+    public InjectorMenuRootsTreeRegistry getInjectorMenuRootsTreeRegistry() {
+        return injectorMenuRootsTreeRegistry;
     }
 
     public static InjectorRootsTreeRegistryServiceConsumer getInstance() {
