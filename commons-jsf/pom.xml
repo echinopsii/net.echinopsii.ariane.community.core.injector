@@ -77,8 +77,6 @@
                             com.spectral.cc.core.portal.commons.model;version=${version.com.spectral.cc.core.portal},
                             com.spectral.cc.core.portal.commons.facesplugin;version=${version.com.spectral.cc.core.portal},
                             com.spectral.cc.core.portal.commons.registry;version=${version.com.spectral.cc.core.portal},
-                            com.spectral.cc.core.injector.commons.model;version=${project.version},
-                            com.spectral.cc.core.injector.commons.registry;version=${project.version},
                             javax.annotation;version="${version.javax.annotations.jsr250-api}",
                             javax.el;version="${version.javax.el}",
                             javax.servlet;version="[${version.osgimin.javax.servlet-api},${version.osgimax.javax.servlet-api})",

@@ -19,39 +19,39 @@
 
 package com.spectral.cc.core.injector.commons.consumer;
 
-import com.spectral.cc.core.injector.commons.registry.InjectorMenuRootsTreeRegistry;
+import com.spectral.cc.core.portal.commons.registry.TreeMenuRootsRegistry;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Component(publicFactory = false, factoryMethod = "getInstance")
 @Instantiate
-public class InjectorRootsTreeRegistryServiceConsumer {
-    private static final Logger log = LoggerFactory.getLogger(InjectorRootsTreeRegistryServiceConsumer.class);
-    private static InjectorRootsTreeRegistryServiceConsumer INSTANCE;
+public class InjectorTreeMenuRootsRegistryServiceConsumer {
+    private static final Logger log = LoggerFactory.getLogger(InjectorTreeMenuRootsRegistryServiceConsumer.class);
+    private static InjectorTreeMenuRootsRegistryServiceConsumer INSTANCE;
 
-    @Requires
-    private InjectorMenuRootsTreeRegistry injectorMenuRootsTreeRegistry = null;
+    @Requires(from="InjectorTreeMenuRootsRegistryImpl")
+    private TreeMenuRootsRegistry treeMenuRootsRegistry = null;
 
     @Bind
-    public void bindInjectorRootsTreeRegistry(InjectorMenuRootsTreeRegistry r) {
-        log.info("Consumer bound to injector roots tree registry...");
-        injectorMenuRootsTreeRegistry = r;
+    public void bindTreeMenuRootsRegistry(TreeMenuRootsRegistry r) {
+        log.info("Consumer bound to injector tree menu roots registry...");
+        treeMenuRootsRegistry = r;
     }
 
     @Unbind
-    public void unbindInjectorRootsTreeRegistry() {
-        log.info("Consumer unbound from injector roots tree registry...");
-        injectorMenuRootsTreeRegistry = null;
+    public void unbindTreeMenuRootsRegistry() {
+        log.info("Consumer unbound from injector tree menu roots registry...");
+        treeMenuRootsRegistry = null;
     }
 
-    public InjectorMenuRootsTreeRegistry getInjectorMenuRootsTreeRegistry() {
-        return injectorMenuRootsTreeRegistry;
+    public TreeMenuRootsRegistry getTreeMenuRootsRegistry() {
+        return treeMenuRootsRegistry;
     }
 
-    public static InjectorRootsTreeRegistryServiceConsumer getInstance() {
+    public static InjectorTreeMenuRootsRegistryServiceConsumer getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new InjectorRootsTreeRegistryServiceConsumer();
+            INSTANCE = new InjectorTreeMenuRootsRegistryServiceConsumer();
         }
         return INSTANCE;
     }

@@ -20,10 +20,10 @@
 
 package com.spectral.cc.core.injector.main.runtime;
 
-import com.spectral.cc.core.injector.commons.consumer.InjectorRootsTreeRegistryServiceConsumer;
-import com.spectral.cc.core.injector.commons.model.InjectorMenuEntity;
+import com.spectral.cc.core.injector.commons.consumer.InjectorTreeMenuRootsRegistryServiceConsumer;
 import com.spectral.cc.core.portal.commons.consumer.MainMenuRegistryConsumer;
 import com.spectral.cc.core.portal.commons.model.MainMenuEntity;
+import com.spectral.cc.core.portal.commons.model.TreeMenuEntity;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class OsgiActivator implements BundleActivator {
     private static final Logger log = LoggerFactory.getLogger(OsgiActivator.class);
 
     protected static ArrayList<MainMenuEntity>  injectorMainMenuEntityList = new ArrayList<MainMenuEntity>() ;
-    protected static ArrayList<InjectorMenuEntity> injectorTreeEntityList     = new ArrayList<InjectorMenuEntity>();
+    protected static ArrayList<TreeMenuEntity> injectorTreeEntityList     = new ArrayList<TreeMenuEntity>();
 
     @Override
     public void start(BundleContext context) {
@@ -55,9 +55,9 @@ public class OsgiActivator implements BundleActivator {
         }
         injectorMainMenuEntityList.clear();
 
-        if (InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry()!=null) {
-            for(InjectorMenuEntity entity : injectorTreeEntityList) {
-                InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry().unregisterRootInjectorEntity(entity);
+        if (InjectorTreeMenuRootsRegistryServiceConsumer.getInstance().getTreeMenuRootsRegistry()!=null) {
+            for(TreeMenuEntity entity : injectorTreeEntityList) {
+                InjectorTreeMenuRootsRegistryServiceConsumer.getInstance().getTreeMenuRootsRegistry().unregisterTreeMenuRootEntity(entity);
             }
         }
         injectorTreeEntityList.clear();

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.spectral.cc.core.injector.commons.controller;
+package com.spectral.cc.core.injector.commons.tools;
 
 import javax.persistence.Id;
 import java.beans.PropertyDescriptor;

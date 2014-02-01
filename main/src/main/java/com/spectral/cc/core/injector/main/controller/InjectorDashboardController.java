@@ -19,9 +19,9 @@
 
 package com.spectral.cc.core.injector.main.controller;
 
-import com.spectral.cc.core.injector.commons.consumer.InjectorRootsTreeRegistryServiceConsumer;
-import com.spectral.cc.core.injector.commons.model.InjectorMenuEntity;
+import com.spectral.cc.core.injector.commons.consumer.InjectorTreeMenuRootsRegistryServiceConsumer;
 import com.spectral.cc.core.portal.commons.model.MenuEntityType;
+import com.spectral.cc.core.portal.commons.model.TreeMenuEntity;
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
@@ -46,9 +46,9 @@ public class InjectorDashboardController {
     private DashboardModel                   model         = new DefaultDashboardModel();
     private Dashboard                        dashboard;
 
-    private void rootCreateRootSubmenuWidget(InjectorMenuEntity curEntity, String curTitle, DefaultDashboardColumn lastColumn) {
+    private void rootCreateRootSubmenuWidget(TreeMenuEntity curEntity, String curTitle, DefaultDashboardColumn lastColumn) {
         DefaultDashboardColumn curColumn = lastColumn;
-        for (InjectorMenuEntity child : curEntity.getChildsInjector()) {
+        for (TreeMenuEntity child : curEntity.getChildTreeMenuEntities()) {
             String nextTitle = curTitle+" / "+child.getValue();
             switch (child.getType()) {
                 case MenuEntityType.TYPE_MENU_ITEM:
@@ -99,10 +99,10 @@ public class InjectorDashboardController {
 
     public InjectorDashboardController() {
         log.debug("Init Dashboard Model...");
-        if (InjectorRootsTreeRegistryServiceConsumer.getInstance()!=null) {
+        if (InjectorTreeMenuRootsRegistryServiceConsumer.getInstance()!=null) {
             DefaultDashboardColumn lonlyItemColumn = new DefaultDashboardColumn();
             model.addColumn(lonlyItemColumn);
-            for (InjectorMenuEntity entity : InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry().getRootInjectorEntities()) {
+            for (TreeMenuEntity entity : InjectorTreeMenuRootsRegistryServiceConsumer.getInstance().getTreeMenuRootsRegistry().getTreeMenuRootsEntities()) {
                 switch (entity.getType()) {
                     case MenuEntityType.TYPE_MENU_ITEM:
                         lonlyItemColumn.addWidget(entity.getValue());
@@ -153,23 +153,23 @@ public class InjectorDashboardController {
         return table[table.length-1];
     }
 
-    private InjectorMenuEntity getInitRootFromWidgetName(String widgetName) {
-        InjectorMenuEntity ret = null;
+    private TreeMenuEntity getInitRootFromWidgetName(String widgetName) {
+        TreeMenuEntity ret = null;
         String[] table = widgetName.split(" / ");
-        ret = InjectorRootsTreeRegistryServiceConsumer.getInstance().getInjectorMenuRootsTreeRegistry().getInjectorEntityFromValue(table[0]);
+        ret = InjectorTreeMenuRootsRegistryServiceConsumer.getInstance().getTreeMenuRootsRegistry().getTreeMenuEntityFromValue(table[0]);
         return ret;
     }
 
-    private InjectorMenuEntity getInjectorEntityFromWidgetName(String widgetName) {
-        InjectorMenuEntity ret = null;
-        InjectorMenuEntity rootInjector = getInitRootFromWidgetName(widgetName);
-        ret = rootInjector.findInjectorEntityFromValue(getInjectorValueFromWidgetName(widgetName));
+    private TreeMenuEntity getInjectorEntityFromWidgetName(String widgetName) {
+        TreeMenuEntity ret = null;
+        TreeMenuEntity rootInjector = getInitRootFromWidgetName(widgetName);
+        ret = rootInjector.findTreeMenuEntityFromValue(getInjectorValueFromWidgetName(widgetName));
         return ret;
     }
 
     public String getWidgetValue(String widgetName) {
         String ret = "";
-        InjectorMenuEntity entity = getInjectorEntityFromWidgetName(widgetName);
+        TreeMenuEntity entity = getInjectorEntityFromWidgetName(widgetName);
         if (entity!=null)
             ret = entity.getValue();
         log.debug("Get Value from widget {} : {}...", new Object[]{widgetName,ret});
@@ -178,7 +178,7 @@ public class InjectorDashboardController {
 
     public String getWidgetDescription(String widgetName) {
         String ret = "";
-        InjectorMenuEntity entity = getInjectorEntityFromWidgetName(widgetName);
+        TreeMenuEntity entity = getInjectorEntityFromWidgetName(widgetName);
         if (entity!=null)
             ret = entity.getDescription();
         log.debug("Get description from widget {} : {}...", new Object[]{widgetName,ret});
@@ -187,7 +187,7 @@ public class InjectorDashboardController {
 
     public String getWidgetIcon(String widgetName) {
         String ret = "";
-        InjectorMenuEntity entity = getInjectorEntityFromWidgetName(widgetName);
+        TreeMenuEntity entity = getInjectorEntityFromWidgetName(widgetName);
         if (entity!=null)
             ret = entity.getIcon() + " icon-4x";
         log.debug("Get icon from widget {} : {}...", new Object[]{widgetName, ret});
@@ -197,7 +197,7 @@ public class InjectorDashboardController {
     public String getWidgetAddress(String widgetName) {
         String ret = "";
         FacesContext context = FacesContext.getCurrentInstance();
-        InjectorMenuEntity entity = getInjectorEntityFromWidgetName(widgetName);
+        TreeMenuEntity entity = getInjectorEntityFromWidgetName(widgetName);
         if (entity!=null)
             ret = context.getExternalContext().getRequestScheme() + "://" +
                           context.getExternalContext().getRequestServerName() + ":" +

@@ -13,6 +13,13 @@
     <artifactId>com.spectral.cc.core.injector.commons-services</artifactId>
     <name>Control and Conquer Core Injector Commons Services</name>
     <packaging>bundle</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>com.spectral.cc.core.portal</groupId>
+            <artifactId>com.spectral.cc.core.portal.commons-services</artifactId>
+            <version>${version.com.spectral.cc.core.portal}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -48,12 +55,12 @@
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Import-Package>
-                            org.osgi.framework;version="[${version.osgimin.org.osgi.framework},${version.osgimax.org.osgi.framework})",
+                            com.spectral.cc.core.portal.commons.model;version=${version.com.spectral.cc.core.portal},
+                            com.spectral.cc.core.portal.commons.registry;version=${version.com.spectral.cc.core.portal},
                             *
                         </Import-Package>
                         <Export-Package>
-                            com.spectral.cc.core.injector.commons.model;version=${project.version},
-                            com.spectral.cc.core.injector.commons.registry;version=${project.version}
+                            com.spectral.cc.core.injector.commons.model;version=${project.version}
                         </Export-Package>
                     </instructions>
                 </configuration>
