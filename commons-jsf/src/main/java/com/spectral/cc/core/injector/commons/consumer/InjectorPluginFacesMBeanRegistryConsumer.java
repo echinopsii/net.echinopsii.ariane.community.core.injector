@@ -24,6 +24,10 @@ import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * iPojo singleton which consume the plugin faces mbean registry implemented by InjectorPluginFacesMBearRegistryImpl.<br/>
+ * Instantiated during directory commons-jsf bundle startup. FactoryMethod : getInstance
+ */
 @Component(publicFactory = false, factoryMethod = "getInstance")
 @Instantiate
 public class InjectorPluginFacesMBeanRegistryConsumer {
@@ -45,10 +49,20 @@ public class InjectorPluginFacesMBeanRegistryConsumer {
         pluginFacesMBeanInjectorRegistry = null;
     }
 
+    /**
+     * Get injector plugin faces managed bean registry
+     *
+     * @return the binded injector plugin faces managed bean registry. null if unbinded.
+     */
     public PluginFacesMBeanRegistry getInjectorPluginFacesMBeanRegistry() {
         return pluginFacesMBeanInjectorRegistry;
     }
 
+    /**
+     * Factory method for this singleton...
+     *
+     * @return instantiated directory plugin faces mbean registry consumer
+     */
     public static InjectorPluginFacesMBeanRegistryConsumer getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new InjectorPluginFacesMBeanRegistryConsumer();

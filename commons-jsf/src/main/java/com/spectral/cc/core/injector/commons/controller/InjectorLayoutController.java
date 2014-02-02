@@ -24,6 +24,10 @@ import org.primefaces.event.ToggleEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * controller for menu layout toogling <br/>
+ * this is a session managed bean
+ */
 public class InjectorLayoutController {
     private static final Logger log = LoggerFactory.getLogger(InjectorLayoutController.class);
 

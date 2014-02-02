@@ -20,15 +20,53 @@
 
 package com.spectral.cc.core.injector.commons.model;
 
+/**
+ * Gear interface provide some commons method to implemnents injector addons gears
+ */
 public interface Gear extends Runnable{
 
+    /**
+     * Get the gear id (must be unique in the addon gear registry context).
+     *
+     * @return the gear id
+     */
     public long   getGearId();
+
+    /**
+     * Set the gear id (must be unique in the addon gear registry context).
+     * @param id
+     */
     public void   setGearId(long id);
 
+    /**
+     * Get the gear name
+     *
+     * @return the gear name
+     */
     public String getGearName();
+
+    /**
+     * Get the gear description
+     *
+     * @return the gear description
+     */
     public String getGearDescription();
 
+    /**
+     * Start the gear thread
+     */
     public void    start();
+
+    /**
+     * Stop the gear thread
+     */
     public void    stop();
+
+
+    /**
+     * Return the gear status
+     *
+     * @return true if gear thead is running, false if not
+     */
     public boolean isRunning();
 }

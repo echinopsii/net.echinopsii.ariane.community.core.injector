@@ -37,6 +37,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Injector dashboard controller transform injector roots registry into primefaces DashboardModel to populate the injector main view.
+ */
 @ManagedBean
 @RequestScoped
 public class InjectorDashboardController {

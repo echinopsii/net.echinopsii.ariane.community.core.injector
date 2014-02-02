@@ -23,6 +23,21 @@ import com.spectral.cc.core.injector.commons.consumer.InjectorPluginFacesMBeanRe
 import javax.servlet.*;
 import java.io.IOException;
 
+/**
+ * This servlet filter is an helper to add new Managed Bean coming from CC plugin to the injecto servlet context thanks the injector plugin faces mbean registry consumer.<br/>
+ * It must be configured properly in the web.xml file :<br/><br/>
+ * <pre>
+ *         <!-- Injector Plugin Faces Managed Bean Registry Filter -->
+ *         <filter>
+ *              <filter-name>InjectorPluginFacesMBeanRegistryFilter</filter-name>
+ *              <filter-class>com.spectral.cc.core.injector.commons.tools.DirectoryPluginFacesMBeanFilter</filter-class>
+ *         </filter>
+ *         <filter-mapping>
+ *              <filter-name>InjectorPluginFacesMBeanRegistryFilter</filter-name>
+ *              <url-pattern>*.jsf</url-pattern>
+ *         </filter-mapping>
+ * </pre>
+ */
 public class InjectorPluginFacesMBeanFilter implements Filter {
 
     /**
@@ -35,6 +50,17 @@ public class InjectorPluginFacesMBeanFilter implements Filter {
         this.filterConfig = null;
     }
 
+    /**
+     * Ask the injector plugin faces managed bean registry to add registered faces managed bean to the injector servlet context,
+     * and then pass control to the next filter
+     *
+     * @param request
+     * @param response
+     * @param chain
+     *
+     * @throws IOException
+     * @throws ServletException
+     */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
     throws IOException, ServletException {
         InjectorPluginFacesMBeanRegistryConsumer.getInstance().getInjectorPluginFacesMBeanRegistry().addPluginFacesMBeanConfigsToServletContext();
@@ -43,6 +69,13 @@ public class InjectorPluginFacesMBeanFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * Register the injector servlet context into the injector plugin faces managed bean registry
+     *
+     * @param filterConfig
+     *
+     * @throws ServletException
+     */
     public void init(FilterConfig filterConfig) throws ServletException {
         this.filterConfig = filterConfig;
         while(InjectorPluginFacesMBeanRegistryConsumer.getInstance().getInjectorPluginFacesMBeanRegistry()==null)

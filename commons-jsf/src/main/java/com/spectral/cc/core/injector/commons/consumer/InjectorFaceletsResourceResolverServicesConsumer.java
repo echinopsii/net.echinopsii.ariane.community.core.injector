@@ -26,6 +26,10 @@ import org.apache.felix.ipojo.annotations.Requires;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * iPojo singleton which consume the facelets resource resolver service with filter targetCCcomponent=Injector.<br/>
+ * Instantiated during injector commons-jsf bundle startup. FactoryMethod : getInstance
+ */
 @Component(publicFactory = false, factoryMethod = "getInstance")
 @Instantiate
 public class InjectorFaceletsResourceResolverServicesConsumer {
@@ -35,11 +39,21 @@ public class InjectorFaceletsResourceResolverServicesConsumer {
     @Requires(filter="(targetCCcomponent=Injector)")
     private FaceletsResourceResolverService[] faceletsResolverList;
 
+    /**
+     * Get all facelets resource resolver service binded to this consumer...
+     *
+     * @return all facelets resource resolver service binded on this consumer. If null no registry has been binded ...
+     */
     public FaceletsResourceResolverService[] getFaceletsResourceResolverServices() {
         log.debug("{} FaceletsResourceResolverService are bound to this consumer...", (faceletsResolverList!=null) ? faceletsResolverList.length : "0");
         return faceletsResolverList;
     }
 
+    /**
+     * Factory method for this singleton.
+     *
+     * @return instantiated directory facelets resource resolver consumer
+     */
     public static InjectorFaceletsResourceResolverServicesConsumer getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new InjectorFaceletsResourceResolverServicesConsumer();

@@ -32,6 +32,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.faces.context.FacesContext;
 
+/**
+ * Injector menu controller transform injector roots registry into primefaces menu model to be used in injector layout panel menu component.<br/>
+ * This is a request managed bean
+ */
 public class InjectorMenuController {
     private static final Logger log = LoggerFactory.getLogger(InjectorMenuController.class);
 

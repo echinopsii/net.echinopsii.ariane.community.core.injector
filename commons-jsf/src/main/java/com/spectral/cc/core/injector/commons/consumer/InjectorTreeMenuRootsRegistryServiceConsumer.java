@@ -24,6 +24,10 @@ import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * iPojo singleton which consume the injector roots tree registry service<br/>
+ * Instantiated during injector commons-jsf bundle startup. FactoryMethod : getInstance
+ */
 @Component(publicFactory = false, factoryMethod = "getInstance")
 @Instantiate
 public class InjectorTreeMenuRootsRegistryServiceConsumer {
@@ -45,10 +49,21 @@ public class InjectorTreeMenuRootsRegistryServiceConsumer {
         treeMenuRootsRegistry = null;
     }
 
+
+    /**
+     * Get binded injector roots tree registry service consumer
+     *
+     * @return injector roots tree registry service consumer binded on this consumer. If null no registry has been binded ...
+     */
     public TreeMenuRootsRegistry getTreeMenuRootsRegistry() {
         return treeMenuRootsRegistry;
     }
 
+    /**
+     * Factory method for this singleton
+     *
+     * @return instantiated injector roots tree registry service consumer
+     */
     public static InjectorTreeMenuRootsRegistryServiceConsumer getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new InjectorTreeMenuRootsRegistryServiceConsumer();

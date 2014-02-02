@@ -30,6 +30,10 @@ import org.slf4j.LoggerFactory;
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
 
+/**
+ * Injector bread crum controller transform injector roots registry into primefaces menu model to be used in injector layout bread crum component.<br/>
+ * This is a request managed bean
+ */
 public class InjectorBreadCrumController {
     private static final Logger log = LoggerFactory.getLogger(InjectorBreadCrumController.class);
     private static String MAIN_MENU_INJECTOR_CONTEXT = InjectorPluginFacesMBeanRegistryConsumer.getInstance().getInjectorPluginFacesMBeanRegistry().getRegisteredServletContext().getContextPath();

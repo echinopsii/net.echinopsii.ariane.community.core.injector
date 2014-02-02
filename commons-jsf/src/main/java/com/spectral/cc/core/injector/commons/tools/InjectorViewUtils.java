@@ -30,7 +30,6 @@ import java.util.List;
 /**
  * Utilities for working with Java Server Faces views.
  */
-
 public final class InjectorViewUtils {
 
     public static <T> List<T> asList(Collection<T> collection){
