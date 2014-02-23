@@ -70,7 +70,7 @@ public class FaceletsResourceResolver extends ResourceResolver {
             InjectorFaceletsResourceResolverServicesConsumer.getInstance()!=null &&
             InjectorFaceletsResourceResolverServicesConsumer.getInstance().getFaceletsResourceResolverServices()!=null) {
             for (FaceletsResourceResolverService fResolver : InjectorFaceletsResourceResolverServicesConsumer.getInstance().getFaceletsResourceResolverServices()) {
-                log.debug("Resolve {} from face resolver from package {}...", new Object[]{path, fResolver.getClass().getPackage()});
+                log.info("Resolve {} from face resolver from package {}...", new Object[]{path, fResolver.getClass().getPackage()});
                 url = fResolver.resolveURL(path);
                 if (url!=null)
                     break;

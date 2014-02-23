@@ -9,7 +9,7 @@
         <div align="center" style="vertical-align: middle">
             <ui:repeat value="#{injectorDashboardController.dashboardColumn}" var="column">
                 <br/><br/><br/>
-                <p:carousel id="basicCarousel" value="#{injectorDashboardController.getColumnWidgets(column)}" var="widget" itemStyle="width:350px" numVisible="4">
+                <p:carousel id="basicCarousel" value="#{injectorDashboardController.getColumnWidgets(column)}" var="widget" itemStyle="width:350px" numVisible="3">
                     <f:facet name="header">
                         <h:outputText value="#{injectorDashboardController.getColumnName(column)}" />
                     </f:facet>
