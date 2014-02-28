@@ -1,0 +1,23 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/mainLayout.xhtml">
+    <ui:define name="moduleContent">
+        <p:layout id="injectorsLayout" widgetVar="injectorsLW">
+            <p:ajax event="toggle" listener="#{injectorLayoutController.onToggle}" />
+            <p:layoutUnit id="injectorsMenu" position="west" size="320" header="Injectors menu" resizable="true"
+                          collapsible="true" effect="fade" collapsed="#{injectorLayoutController.collapsed}">
+                <h:form id="injMenuForm">
+                    <p:panelMenu model="#{injectorMenuController.model}" style="border:0;margin:0;padding:0"/>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center" resizable="false">
+                <p:breadCrumb model="#{injectorBreadCrumController.model}" style="border:0;margin:0;padding:0"/>
+                <br/><br/>
+                <ui:insert name="injectorContent"></ui:insert>
+            </p:layoutUnit>
+        </p:layout>
+    </ui:define>
+</ui:composition>
+</html>
