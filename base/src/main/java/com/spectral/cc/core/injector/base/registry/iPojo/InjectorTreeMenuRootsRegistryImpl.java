@@ -18,6 +18,7 @@
  */
 package com.spectral.cc.core.injector.base.registry.iPojo;
 
+import com.spectral.cc.core.portal.base.model.MainMenuEntity;
 import com.spectral.cc.core.portal.base.model.TreeMenuEntity;
 import com.spectral.cc.core.portal.base.registry.TreeMenuRootsRegistry;
 import org.apache.felix.ipojo.annotations.*;
@@ -42,6 +43,7 @@ public class InjectorTreeMenuRootsRegistryImpl implements TreeMenuRootsRegistry 
     private static final Logger log = LoggerFactory.getLogger(InjectorTreeMenuRootsRegistryImpl.class);
 
     private TreeSet<TreeMenuEntity> registry = new TreeSet<TreeMenuEntity>();
+    private MainMenuEntity linkedMainMenuEntity = null;
 
     @Validate
     public void validate() throws Exception {
@@ -102,5 +104,15 @@ public class InjectorTreeMenuRootsRegistryImpl implements TreeMenuRootsRegistry 
                 break;
         }
         return ret;
+    }
+
+    @Override
+    public MainMenuEntity getLinkedMainMenuEntity() {
+        return linkedMainMenuEntity;
+    }
+
+    @Override
+    public void setLinkedMainMenuEntity(MainMenuEntity mainMenuEntity) {
+        linkedMainMenuEntity = mainMenuEntity;
     }
 }
