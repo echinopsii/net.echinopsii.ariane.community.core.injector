@@ -100,34 +100,56 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
 
         try {
             MainMenuEntity mainMenuEntity = new MainMenuEntity("injectorsMItem", "Injectors", MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf", MenuEntityType.TYPE_MENU_ITEM, MAIN_MENU_DIR_RANK, "icon-filter icon-large");
+            mainMenuEntity.getDisplayRoles().add("ccntwadmin");
+            mainMenuEntity.getDisplayRoles().add("ccsysadmin");
+            mainMenuEntity.getDisplayRoles().add("ccorgadmin");
+            mainMenuEntity.getDisplayRoles().add("ccntwreviewer");
+            mainMenuEntity.getDisplayRoles().add("ccsysreviewer");
+            mainMenuEntity.getDisplayRoles().add("ccorgreviewer");
+            mainMenuEntity.getDisplayPermissions().add("ccInjDirComNtw:display");
+            mainMenuEntity.getDisplayPermissions().add("ccInjDirComSys:display");
+            mainMenuEntity.getDisplayPermissions().add("ccInjDirComOrg:display");
+
             injectorMainMenuEntityList.add(mainMenuEntity);
             mainMenuEntityRegistry.registerMainMenuEntity(mainMenuEntity);
+            treeMenuRootsRegistry.setLinkedMainMenuEntity(mainMenuEntity);
             log.debug("{} has registered its main menu items", new Object[]{INJECTOR_COMPONENT});
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
         try {
-            TreeMenuEntity directoryRootInjectorMenuEntity = new TreeMenuEntity().setId("dirTree").setValue("Directories").setType(MenuEntityType.TYPE_MENU_SUBMENU);
+            TreeMenuEntity directoryRootInjectorMenuEntity = new TreeMenuEntity().setId("dirTree").setValue("Directories").setType(MenuEntityType.TYPE_MENU_SUBMENU).
+                                                                                  addDisplayRole("ccntwadmin").addDisplayRole("ccsysadmin").addDisplayRole("ccorgadmin").
+                                                                                  addDisplayRole("ccntwreviewer").addDisplayRole("ccsysreviewer").addDisplayRole("ccorgreviewer").
+                                                                                  addDisplayPermission("ccInjDirComNtw:display").addDisplayPermission("ccInjDirComSys:display").
+                                                                                  addDisplayPermission("ccInjDirComOrg:display");
             injectorTreeEntityList.add(directoryRootInjectorMenuEntity);
             treeMenuRootsRegistry.registerTreeMenuRootEntity(directoryRootInjectorMenuEntity);
 
-            TreeMenuEntity commonsInjectorMenuEntity = new TreeMenuEntity().setId("commonsdbTree").setValue("Common").
-                                                                            setType(MenuEntityType.TYPE_MENU_SUBMENU).
-                                                                            setParentTreeMenuEntity(directoryRootInjectorMenuEntity);
+
+            TreeMenuEntity commonsInjectorMenuEntity = new TreeMenuEntity().setId("commonsdbTree").setValue("Common").setType(MenuEntityType.TYPE_MENU_SUBMENU).
+                                                                            setParentTreeMenuEntity(directoryRootInjectorMenuEntity).
+                                                                            addDisplayRole("ccntwadmin").addDisplayRole("ccsysadmin").addDisplayRole("ccorgadmin").
+                                                                            addDisplayRole("ccntwreviewer").addDisplayRole("ccsysreviewer").addDisplayRole("ccorgreviewer").
+                                                                            addDisplayPermission("ccInjDirComNtw:display").addDisplayPermission("ccInjDirComSys:display").
+                                                                            addDisplayPermission("ccInjDirComOrg:display");
             directoryRootInjectorMenuEntity.addChildTreeMenuEntity(commonsInjectorMenuEntity);
 
+
             commonsInjectorMenuEntity.addChildTreeMenuEntity(new TreeMenuEntity().setId("organisationDirTreeID").setValue("Organisation").setParentTreeMenuEntity(commonsInjectorMenuEntity).
-                                                                                  setIcon("icon-building").
+                                                                                  setIcon("icon-building").setDescription("Inject data from your local organisation DB to CC organisation directory").
                                                                                   setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf").
-                                                                                  setDescription("Inject data from your local organisation DB to CC organisation directory")).
+                                                                                  addDisplayRole("ccorgadmin").addDisplayRole("ccorgreviewer").addDisplayPermission("ccInjDirComOrg:display")).
                                       addChildTreeMenuEntity(new TreeMenuEntity().setId("networkDirTreeID").setValue("Network").setParentTreeMenuEntity(commonsInjectorMenuEntity).
-                                                                                  setIcon("icon-road").
+                                                                                  setIcon("icon-road").setDescription("Inject data from your network CMDB to CC network directory").
                                                                                   setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf").
-                                                                                  setDescription("Inject data from your network CMDB to CC network directory")).
-                                      addChildTreeMenuEntity(new TreeMenuEntity().setId("systemDirTreeID").setValue("System").setParentTreeMenuEntity(commonsInjectorMenuEntity).setIcon("icon-cogs").
+                                                                                  addDisplayRole("ccntwadmin").addDisplayRole("ccntwreviewer").addDisplayPermission("ccInjDirComNtw:display")).
+                                      addChildTreeMenuEntity(new TreeMenuEntity().setId("systemDirTreeID").setValue("System").setParentTreeMenuEntity(commonsInjectorMenuEntity).
+                                                                                  setIcon("icon-cogs").setDescription("Inject data from your system CMDB to CC system directory").
                                                                                   setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf").
-                                                                                  setDescription("Inject data from your system CMDB to CC system directory"));//.
+                                                                                  addDisplayRole("ccsysadmin").addDisplayRole("ccsysreviewer").addDisplayPermission("ccInjDirComSys:display"));//.
+
             log.debug("{} has registered its commons injector items", new Object[]{INJECTOR_COMPONENT});
 
         } catch (Exception e) {
