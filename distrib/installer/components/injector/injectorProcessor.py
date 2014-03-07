@@ -22,7 +22,7 @@ from components.directory.dbIDMMySQLPopulator import dbIDMMySQLPopulator
 __author__ = 'mffrench'
 
 
-class directoryProcessor:
+class injectorProcessor:
 
     def __init__(self, homeDirPath, idmDBConfig, silent):
         print("\n%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--\n")
