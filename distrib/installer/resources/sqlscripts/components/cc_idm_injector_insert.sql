@@ -82,42 +82,19 @@ SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjD
 
 INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
 SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComNtw:display' AND r.roleName='ccntwadmin';
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComSys:display' AND r.roleName='ccntwadmin';
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComOrg:display' AND r.roleName='ccntwadmin';
 
+INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
 SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComNtw:display' AND r.roleName='ccntwreviewer';
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComSys:display' AND r.roleName='ccntwreviewer';
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComOrg:display' AND r.roleName='ccntwreviewer';
 
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComNtw:display' AND r.roleName='ccsysadmin';
 INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
 SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComSys:display' AND r.roleName='ccsysadmin';
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComOrg:display' AND r.roleName='ccsysadmin';
 
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComNtw:display' AND r.roleName='ccsysreviewer';
 INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
 SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComSys:display' AND r.roleName='ccsysreviewer';
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComOrg:display' AND r.roleName='ccsysreviewer';
 
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComNtw:display' AND r.roleName='ccorgadmin';
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComSys:display' AND r.roleName='ccorgadmin';
 INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
 SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComOrg:display' AND r.roleName='ccorgadmin';
 
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComNtw:display' AND r.roleName='ccorgreviewer';
-INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
-SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComSys:display' AND r.roleName='ccorgreviewer';
 INSERT IGNORE INTO `role_permission` (role_id, permissions_id)
 SELECT r.id, p.id FROM permission AS p, role AS r WHERE p.permissionName='ccInjDirComOrg:display' AND r.roleName='ccorgreviewer';
 UNLOCK TABLES;

@@ -15,9 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os
-from components.directory.cuDirectoryJPAProviderManagedService import directoryJPAProviderManagedServiceSyringe
-from components.directory.dbDirectoryMySQLInitiator import dbDirectoryMySQLInitiator
-from components.directory.dbIDMMySQLPopulator import dbIDMMySQLPopulator
+from components.injector.dbIDMMySQLPopulator import dbIDMMySQLPopulator
 
 __author__ = 'mffrench'
 
