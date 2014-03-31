@@ -6,7 +6,7 @@
     <groupId>com.spectral.cc.core</groupId>
     <artifactId>com.spectral.cc.core.injector</artifactId>
     <version>0.3.0.SNAPSHOT</version>
-    <name>Control and Conquer Injector Parent</name>
+    <name>CC Core Injector Parent</name>
     <packaging>pom</packaging>
 
     <modules>
