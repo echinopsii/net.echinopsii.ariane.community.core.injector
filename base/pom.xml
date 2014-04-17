@@ -56,7 +56,7 @@
                         <Embed-Transitive>true</Embed-Transitive>
                         <Import-Package>
                             com.spectral.cc.core.portal.base.model;version=${version.com.spectral.cc.core.portal},
-                            com.spectral.cc.core.portal.base.registry;version=${version.com.spectral.cc.core.portal},
+                            com.spectral.cc.core.portal.base.plugin;version=${version.com.spectral.cc.core.portal},
                             *
                         </Import-Package>
                         <Export-Package>

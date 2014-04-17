@@ -19,13 +19,13 @@
 
 package com.spectral.cc.core.injector.wat;
 
-import com.spectral.cc.core.portal.wat.facesplugin.FaceletsResourceResolverService;
+import com.spectral.cc.core.portal.base.plugin.FaceletsResourceResolverService;
 import com.spectral.cc.core.portal.base.model.MainMenuEntity;
 import com.spectral.cc.core.portal.base.model.MenuEntityType;
 import com.spectral.cc.core.portal.base.model.TreeMenuEntity;
-import com.spectral.cc.core.portal.base.registry.FacesMBeanRegistry;
-import com.spectral.cc.core.portal.base.registry.MainMenuEntityRegistry;
-import com.spectral.cc.core.portal.base.registry.TreeMenuRootsRegistry;
+import com.spectral.cc.core.portal.base.plugin.FacesMBeanRegistry;
+import com.spectral.cc.core.portal.base.plugin.MainMenuEntityRegistry;
+import com.spectral.cc.core.portal.base.plugin.TreeMenuRootsRegistry;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
