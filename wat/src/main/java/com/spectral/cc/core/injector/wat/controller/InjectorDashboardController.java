@@ -1,5 +1,5 @@
 /**
- * Injector JSF bundle
+ * Injector wat
  * Injectors Dashboard Controller
  * Copyright (C) 2013 Mathilde Ffrench
  *

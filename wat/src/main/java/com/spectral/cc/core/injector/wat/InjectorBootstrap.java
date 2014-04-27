@@ -1,5 +1,5 @@
 /**
- * Injector Commons JSF bundle
+ * Injector wat
  * Injector Component Bootstrap
  * Copyright (C) 2013 Mathilde Ffrench
  *

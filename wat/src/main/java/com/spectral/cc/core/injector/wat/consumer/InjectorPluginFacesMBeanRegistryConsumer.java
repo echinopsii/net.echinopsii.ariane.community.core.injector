@@ -1,5 +1,5 @@
 /**
- * Injector Commons JSF bundle
+ * Injector wat
  * Injector plugin faces managed bean registry consumer singleton
  * Copyright (C) 2014 Mathilde Ffrench
  *

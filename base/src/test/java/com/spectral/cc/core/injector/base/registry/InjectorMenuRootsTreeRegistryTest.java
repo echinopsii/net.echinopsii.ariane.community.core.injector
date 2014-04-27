@@ -1,5 +1,5 @@
 /**
- * Injector Commons Services bundle
+ * Injector base
  * Injector Menu Roots Tree Registry iPojo impl test
  * Copyright (C) 2014 Mathilde Ffrench
  *

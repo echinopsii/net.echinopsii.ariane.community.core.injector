@@ -1,6 +1,6 @@
 /**
- * Tibco RV Injector
- * Gear interface
+ * Injector base
+ * Injector Gear interface
  *
  * Copyright (C) 2014 Mathilde Ffrench
  *
@@ -21,7 +21,7 @@
 package com.spectral.cc.core.injector.base.model;
 
 /**
- * Gear interface provide some commons method to implemnents injector addons gears
+ * Gear interface provide some commons method to implemnents injector addons gears (to be binded to akka actors)
  */
 public interface Gear extends Runnable{
 

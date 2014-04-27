@@ -1,5 +1,5 @@
 /**
- * Injector Commons JSF bundle
+ * Injector wat
  * Root Injector Registry consumer singleton
  * Copyright (C) 2013 Mathilde Ffrench
  *

@@ -1,5 +1,5 @@
 /**
- * Injector Commons Services bundle
+ * Injector base
  * Injector Registry iPojo Impl
  * Copyright (C) 2013 Mathilde Ffrench
  *

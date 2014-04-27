@@ -1,5 +1,5 @@
 /**
- * Injector Commons JSF bundle
+ * Injector wat
  * Injectors Layout Controller
  * Copyright (C) 2013 Mathilde Ffrench
  *
