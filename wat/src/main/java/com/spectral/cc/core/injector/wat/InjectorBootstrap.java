@@ -118,6 +118,7 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
+        /*
         try {
             TreeMenuEntity directoryRootInjectorMenuEntity = new TreeMenuEntity().setId("dirTree").setValue("Directories").setType(MenuEntityType.TYPE_MENU_SUBMENU).
                                                                                   addDisplayRole("ccntwadmin").addDisplayRole("ccsysadmin").addDisplayRole("ccorgadmin").
@@ -155,6 +156,7 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        */
         log.info("{} is started", new Object[]{INJECTOR_COMPONENT});
     }
 
