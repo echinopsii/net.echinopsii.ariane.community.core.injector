@@ -3,21 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.spectral.cc.core</groupId>
-        <artifactId>com.spectral.cc.core.injector</artifactId>
-        <version>0.4.0.RELEASE</version>
+        <groupId>net.echinopsii.ariane.core</groupId>
+        <artifactId>net.echinopsii.ariane.core.injector</artifactId>
+        <version>0.5.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
-    <groupId>com.spectral.cc.core.injector</groupId>
-    <artifactId>com.spectral.cc.core.injector.base</artifactId>
-    <name>CC Core Injector Base</name>
+    <groupId>net.echinopsii.ariane.core.injector</groupId>
+    <artifactId>net.echinopsii.ariane.core.injector.base</artifactId>
+    <name>Ariane Core Injector Base</name>
     <packaging>bundle</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.spectral.cc.core.portal</groupId>
-            <artifactId>com.spectral.cc.core.portal.base</artifactId>
-            <version>${version.com.spectral.cc.core.portal}</version>
+            <groupId>net.echinopsii.ariane.core.portal</groupId>
+            <artifactId>net.echinopsii.ariane.core.portal.base</artifactId>
+            <version>${version.net.echinopsii.ariane.core.portal}</version>
         </dependency>
     </dependencies>
 
@@ -55,12 +55,12 @@
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Import-Package>
-                            com.spectral.cc.core.portal.base.model;version=${version.com.spectral.cc.core.portal},
-                            com.spectral.cc.core.portal.base.plugin;version=${version.com.spectral.cc.core.portal},
+                            net.echinopsii.ariane.core.portal.base.model;version=${version.net.echinopsii.ariane.core.portal},
+                            net.echinopsii.ariane.core.portal.base.plugin;version=${version.net.echinopsii.ariane.core.portal},
                             *
                         </Import-Package>
                         <Export-Package>
-                            com.spectral.cc.core.injector.base.model;version=${project.version}
+                            net.echinopsii.ariane.core.injector.base.model;version=${project.version}
                         </Export-Package>
                     </instructions>
                 </configuration>
