@@ -27,7 +27,7 @@ class injectorProcessor:
         print("%-- Injector configuration : \n")
         self.silent = silent
         self.homeDirPath = homeDirPath
-        kernelRepositoryDirPath = self.homeDirPath + "/repository/cc-distrib/"
+        kernelRepositoryDirPath = self.homeDirPath + "/repository/ariane-core/"
         if not os.path.exists(kernelRepositoryDirPath):
             os.makedirs(kernelRepositoryDirPath, 0o755)
         self.injectorIDMSQLPopulator = dbIDMMySQLPopulator(idmDBConfig)
