@@ -1,4 +1,4 @@
-# CC installer directory processor
+# installer injector processor
 #
 # Copyright (C) 2014 Mathilde Ffrench
 #
@@ -24,7 +24,7 @@ class injectorProcessor:
 
     def __init__(self, homeDirPath, idmDBConfig, silent):
         print("\n%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--\n")
-        print("%-- CC injector configuration : \n")
+        print("%-- Injector configuration : \n")
         self.silent = silent
         self.homeDirPath = homeDirPath
         kernelRepositoryDirPath = self.homeDirPath + "/repository/cc-distrib/"
