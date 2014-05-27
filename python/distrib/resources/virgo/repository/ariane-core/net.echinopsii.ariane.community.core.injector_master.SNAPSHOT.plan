@@ -4,6 +4,6 @@
 				xsi:schemaLocation="
 				        http://www.eclipse.org/virgo/schema/plan 
 				        http://www.eclipse.org/virgo/schema/plan/eclipse-virgo-plan.xsd">
-        <artifact type="bundle" name="net.echinopsii.ariane.core.injector.base" version="[0.5.0,0.6.0)"/>
-        <artifact type="bundle" name="net.echinopsii.ariane.core.injector.wat" version="[0.5.0,0.6.0)"/>
+        <artifact type="bundle" name="net.echinopsii.ariane.community.core.injector.base" version="[0.5.0,0.6.0)"/>
+        <artifact type="bundle" name="net.echinopsii.ariane.community.core.injector.wat" version="[0.5.0,0.6.0)"/>
 </plan>

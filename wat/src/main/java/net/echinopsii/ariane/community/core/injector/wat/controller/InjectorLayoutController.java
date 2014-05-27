@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.core.injector.wat.controller;
+package net.echinopsii.ariane.community.core.injector.wat.controller;
 
 import org.primefaces.component.layout.LayoutUnit;
 import org.primefaces.event.ToggleEvent;

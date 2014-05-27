@@ -3,20 +3,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>net.echinopsii.ariane.core</groupId>
-        <artifactId>net.echinopsii.ariane.core.injector</artifactId>
+        <groupId>net.echinopsii.ariane.community.core</groupId>
+        <artifactId>net.echinopsii.ariane.community.core.injector</artifactId>
         <version>0.5.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
-    <groupId>net.echinopsii.ariane.core.injector</groupId>
-    <artifactId>net.echinopsii.ariane.core.injector.base</artifactId>
-    <name>Ariane Core Injector Base</name>
+    <groupId>net.echinopsii.ariane.community.core.injector</groupId>
+    <artifactId>net.echinopsii.ariane.community.core.injector.base</artifactId>
+    <name>Ariane Community Core Injector Base</name>
     <packaging>bundle</packaging>
     <dependencies>
         <dependency>
-            <groupId>net.echinopsii.ariane.core.portal</groupId>
-            <artifactId>net.echinopsii.ariane.core.portal.base</artifactId>
+            <groupId>net.echinopsii.ariane.community.core.portal</groupId>
+            <artifactId>net.echinopsii.ariane.community.core.portal.base</artifactId>
             <version>${version.net.echinopsii.ariane.core.portal}</version>
         </dependency>
     </dependencies>
@@ -55,12 +55,12 @@
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Import-Package>
-                            net.echinopsii.ariane.core.portal.base.model;version=${version.net.echinopsii.ariane.core.portal},
-                            net.echinopsii.ariane.core.portal.base.plugin;version=${version.net.echinopsii.ariane.core.portal},
+                            net.echinopsii.ariane.community.core.portal.base.model;version=${version.net.echinopsii.ariane.core.portal},
+                            net.echinopsii.ariane.community.core.portal.base.plugin;version=${version.net.echinopsii.ariane.core.portal},
                             *
                         </Import-Package>
                         <Export-Package>
-                            net.echinopsii.ariane.core.injector.base.model;version=${project.version}
+                            net.echinopsii.ariane.community.core.injector.base.model;version=${project.version}
                         </Export-Package>
                     </instructions>
                 </configuration>

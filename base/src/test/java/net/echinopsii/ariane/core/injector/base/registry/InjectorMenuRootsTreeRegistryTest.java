@@ -18,10 +18,10 @@
  */
 package net.echinopsii.ariane.core.injector.base.registry;
 
-import net.echinopsii.ariane.core.injector.base.iPojo.InjectorTreeMenuRootsRegistryImpl;
-import net.echinopsii.ariane.core.portal.base.model.MenuEntityType;
-import net.echinopsii.ariane.core.portal.base.model.TreeMenuEntity;
-import net.echinopsii.ariane.core.portal.base.plugin.TreeMenuRootsRegistry;
+import net.echinopsii.ariane.community.core.injector.base.iPojo.InjectorTreeMenuRootsRegistryImpl;
+import net.echinopsii.ariane.community.core.portal.base.model.MenuEntityType;
+import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
+import net.echinopsii.ariane.community.core.portal.base.plugin.TreeMenuRootsRegistry;
 import junit.framework.TestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.core.injector.wat.consumer;
+package net.echinopsii.ariane.community.core.injector.wat.consumer;
 
-import net.echinopsii.ariane.core.portal.base.plugin.FacesMBeanRegistry;
+import net.echinopsii.ariane.community.core.portal.base.plugin.FacesMBeanRegistry;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

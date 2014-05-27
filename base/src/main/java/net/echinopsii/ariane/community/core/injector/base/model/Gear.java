@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.core.injector.base.model;
+package net.echinopsii.ariane.community.core.injector.base.model;
 
 /**
  * Gear interface provide some commons method to implemnents injector addons gears (to be binded to akka actors)

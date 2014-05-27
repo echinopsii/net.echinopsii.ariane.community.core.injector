@@ -17,15 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.core.injector.wat;
+package net.echinopsii.ariane.community.core.injector.wat;
 
-import net.echinopsii.ariane.core.portal.base.plugin.FaceletsResourceResolverService;
-import net.echinopsii.ariane.core.portal.base.model.MainMenuEntity;
-import net.echinopsii.ariane.core.portal.base.model.MenuEntityType;
-import net.echinopsii.ariane.core.portal.base.model.TreeMenuEntity;
-import net.echinopsii.ariane.core.portal.base.plugin.FacesMBeanRegistry;
-import net.echinopsii.ariane.core.portal.base.plugin.MainMenuEntityRegistry;
-import net.echinopsii.ariane.core.portal.base.plugin.TreeMenuRootsRegistry;
+import net.echinopsii.ariane.community.core.portal.base.plugin.FaceletsResourceResolverService;
+import net.echinopsii.ariane.community.core.portal.base.model.MainMenuEntity;
+import net.echinopsii.ariane.community.core.portal.base.model.MenuEntityType;
+import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
+import net.echinopsii.ariane.community.core.portal.base.plugin.FacesMBeanRegistry;
+import net.echinopsii.ariane.community.core.portal.base.plugin.MainMenuEntityRegistry;
+import net.echinopsii.ariane.community.core.portal.base.plugin.TreeMenuRootsRegistry;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

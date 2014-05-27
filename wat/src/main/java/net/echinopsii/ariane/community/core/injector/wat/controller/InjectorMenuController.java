@@ -17,11 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.core.injector.wat.controller;
+package net.echinopsii.ariane.community.core.injector.wat.controller;
 
-import net.echinopsii.ariane.core.injector.wat.consumer.InjectorTreeMenuRootsRegistryServiceConsumer;
-import net.echinopsii.ariane.core.portal.base.model.MenuEntityType;
-import net.echinopsii.ariane.core.portal.base.model.TreeMenuEntity;
+import net.echinopsii.ariane.community.core.injector.wat.consumer.InjectorTreeMenuRootsRegistryServiceConsumer;
+import net.echinopsii.ariane.community.core.portal.base.model.MenuEntityType;
+import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.primefaces.component.menuitem.MenuItem;

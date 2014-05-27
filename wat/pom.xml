@@ -3,27 +3,27 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>net.echinopsii.ariane.core</groupId>
-        <artifactId>net.echinopsii.ariane.core.injector</artifactId>
+        <groupId>net.echinopsii.ariane.community.core</groupId>
+        <artifactId>net.echinopsii.ariane.community.core.injector</artifactId>
         <version>0.5.0-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
-    <groupId>net.echinopsii.ariane.core.injector</groupId>
-    <artifactId>net.echinopsii.ariane.core.injector.wat</artifactId>
-    <name>Ariane Core Injector WebApp Tooling</name>
+    <groupId>net.echinopsii.ariane.community.core.injector</groupId>
+    <artifactId>net.echinopsii.ariane.community.core.injector.wat</artifactId>
+    <name>Ariane Community Core Injector WebApp Tooling</name>
     <packaging>bundle</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>net.echinopsii.ariane.core.injector</groupId>
-            <artifactId>net.echinopsii.ariane.core.injector.base</artifactId>
+            <groupId>net.echinopsii.ariane.community.core.injector</groupId>
+            <artifactId>net.echinopsii.ariane.community.core.injector.base</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.echinopsii.ariane.core.portal</groupId>
-            <artifactId>net.echinopsii.ariane.core.portal.base</artifactId>
+            <groupId>net.echinopsii.ariane.community.core.portal</groupId>
+            <artifactId>net.echinopsii.ariane.community.core.portal.base</artifactId>
             <version>${version.net.echinopsii.ariane.core.portal}</version>
             <scope>provided</scope>
         </dependency>
@@ -63,13 +63,13 @@
                         <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Export-Package>
-                            net.echinopsii.ariane.core.injector.wat.consumer;version=${project.version},
-                            net.echinopsii.ariane.core.injector.wat.controller;version=${project.version},
-                            net.echinopsii.ariane.core.injector.wat.tools;version=${project.version}
+                            net.echinopsii.ariane.community.core.injector.wat.consumer;version=${project.version},
+                            net.echinopsii.ariane.community.core.injector.wat.controller;version=${project.version},
+                            net.echinopsii.ariane.community.core.injector.wat.tools;version=${project.version}
                         </Export-Package>
                         <Import-Package>
-                            net.echinopsii.ariane.core.portal.base.model;version=${version.net.echinopsii.ariane.core.portal},
-                            net.echinopsii.ariane.core.portal.base.plugin;version=${version.net.echinopsii.ariane.core.portal},
+                            net.echinopsii.ariane.community.core.portal.base.model;version=${version.net.echinopsii.ariane.core.portal},
+                            net.echinopsii.ariane.community.core.portal.base.plugin;version=${version.net.echinopsii.ariane.core.portal},
                             javax.annotation;version="${version.javax.annotations.jsr250-api}",
                             javax.el;version="${version.javax.el}",
                             javax.servlet;version="[${version.osgimin.javax.servlet-api},${version.osgimax.javax.servlet-api})",

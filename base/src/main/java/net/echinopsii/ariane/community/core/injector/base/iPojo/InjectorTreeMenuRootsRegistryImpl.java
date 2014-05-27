@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.echinopsii.ariane.core.injector.base.iPojo;
+package net.echinopsii.ariane.community.core.injector.base.iPojo;
 
-import net.echinopsii.ariane.core.portal.base.model.MainMenuEntity;
-import net.echinopsii.ariane.core.portal.base.model.TreeMenuEntity;
-import net.echinopsii.ariane.core.portal.base.plugin.TreeMenuRootsRegistry;
+import net.echinopsii.ariane.community.core.portal.base.model.MainMenuEntity;
+import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
+import net.echinopsii.ariane.community.core.portal.base.plugin.TreeMenuRootsRegistry;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
