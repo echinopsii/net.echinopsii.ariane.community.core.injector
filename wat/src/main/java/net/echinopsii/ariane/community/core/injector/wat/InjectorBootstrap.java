@@ -100,15 +100,15 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
 
         try {
             MainMenuEntity mainMenuEntity = new MainMenuEntity("injectorsMItem", "Injectors", MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf", MenuEntityType.TYPE_MENU_ITEM, MAIN_MENU_DIR_RANK, "icon-filter icon-large");
-            mainMenuEntity.getDisplayRoles().add("ccntwadmin");
-            mainMenuEntity.getDisplayRoles().add("ccsysadmin");
-            mainMenuEntity.getDisplayRoles().add("ccorgadmin");
-            mainMenuEntity.getDisplayRoles().add("ccntwreviewer");
-            mainMenuEntity.getDisplayRoles().add("ccsysreviewer");
-            mainMenuEntity.getDisplayRoles().add("ccorgreviewer");
-            mainMenuEntity.getDisplayPermissions().add("ccInjDirComNtw:display");
-            mainMenuEntity.getDisplayPermissions().add("ccInjDirComSys:display");
-            mainMenuEntity.getDisplayPermissions().add("ccInjDirComOrg:display");
+            mainMenuEntity.getDisplayRoles().add("ntwadmin");
+            mainMenuEntity.getDisplayRoles().add("sysadmin");
+            mainMenuEntity.getDisplayRoles().add("orgadmin");
+            mainMenuEntity.getDisplayRoles().add("ntwreviewer");
+            mainMenuEntity.getDisplayRoles().add("sysreviewer");
+            mainMenuEntity.getDisplayRoles().add("orgreviewer");
+            mainMenuEntity.getDisplayPermissions().add("injDirComNtw:display");
+            mainMenuEntity.getDisplayPermissions().add("injDirComSys:display");
+            mainMenuEntity.getDisplayPermissions().add("injDirComOrg:display");
 
             injectorMainMenuEntityList.add(mainMenuEntity);
             mainMenuEntityRegistry.registerMainMenuEntity(mainMenuEntity);
@@ -121,35 +121,35 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
         /*
         try {
             TreeMenuEntity directoryRootInjectorMenuEntity = new TreeMenuEntity().setId("dirTree").setValue("Directories").setType(MenuEntityType.TYPE_MENU_SUBMENU).
-                                                                                  addDisplayRole("ccntwadmin").addDisplayRole("ccsysadmin").addDisplayRole("ccorgadmin").
-                                                                                  addDisplayRole("ccntwreviewer").addDisplayRole("ccsysreviewer").addDisplayRole("ccorgreviewer").
-                                                                                  addDisplayPermission("ccInjDirComNtw:display").addDisplayPermission("ccInjDirComSys:display").
-                                                                                  addDisplayPermission("ccInjDirComOrg:display");
+                                                                                  addDisplayRole("ntwadmin").addDisplayRole("sysadmin").addDisplayRole("orgadmin").
+                                                                                  addDisplayRole("ntwreviewer").addDisplayRole("sysreviewer").addDisplayRole("orgreviewer").
+                                                                                  addDisplayPermission("injDirComNtw:display").addDisplayPermission("injDirComSys:display").
+                                                                                  addDisplayPermission("injDirComOrg:display");
             injectorTreeEntityList.add(directoryRootInjectorMenuEntity);
             treeMenuRootsRegistry.registerTreeMenuRootEntity(directoryRootInjectorMenuEntity);
 
 
             TreeMenuEntity commonsInjectorMenuEntity = new TreeMenuEntity().setId("commonsdbTree").setValue("Common").setType(MenuEntityType.TYPE_MENU_SUBMENU).
                                                                             setParentTreeMenuEntity(directoryRootInjectorMenuEntity).
-                                                                            addDisplayRole("ccntwadmin").addDisplayRole("ccsysadmin").addDisplayRole("ccorgadmin").
-                                                                            addDisplayRole("ccntwreviewer").addDisplayRole("ccsysreviewer").addDisplayRole("ccorgreviewer").
-                                                                            addDisplayPermission("ccInjDirComNtw:display").addDisplayPermission("ccInjDirComSys:display").
-                                                                            addDisplayPermission("ccInjDirComOrg:display");
+                                                                            addDisplayRole("ntwadmin").addDisplayRole("sysadmin").addDisplayRole("orgadmin").
+                                                                            addDisplayRole("ntwreviewer").addDisplayRole("sysreviewer").addDisplayRole("orgreviewer").
+                                                                            addDisplayPermission("injDirComNtw:display").addDisplayPermission("injDirComSys:display").
+                                                                            addDisplayPermission("injDirComOrg:display");
             directoryRootInjectorMenuEntity.addChildTreeMenuEntity(commonsInjectorMenuEntity);
 
 
             commonsInjectorMenuEntity.addChildTreeMenuEntity(new TreeMenuEntity().setId("organisationDirTreeID").setValue("Organisation").setParentTreeMenuEntity(commonsInjectorMenuEntity).
                                                                                   setIcon("icon-building").setDescription("Inject data from your local organisation DB to Ariane organisation directory").
                                                                                   setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf").
-                                                                                  addDisplayRole("ccorgadmin").addDisplayRole("ccorgreviewer").addDisplayPermission("ccInjDirComOrg:display")).
+                                                                                  addDisplayRole("orgadmin").addDisplayRole("orgreviewer").addDisplayPermission("injDirComOrg:display")).
                                       addChildTreeMenuEntity(new TreeMenuEntity().setId("networkDirTreeID").setValue("Network").setParentTreeMenuEntity(commonsInjectorMenuEntity).
                                                                                   setIcon("icon-road").setDescription("Inject data from your network CMDB to Ariane network directory").
                                                                                   setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf").
-                                                                                  addDisplayRole("ccntwadmin").addDisplayRole("ccntwreviewer").addDisplayPermission("ccInjDirComNtw:display")).
+                                                                                  addDisplayRole("ntwadmin").addDisplayRole("ntwreviewer").addDisplayPermission("injDirComNtw:display")).
                                       addChildTreeMenuEntity(new TreeMenuEntity().setId("systemDirTreeID").setValue("System").setParentTreeMenuEntity(commonsInjectorMenuEntity).
                                                                                   setIcon("icon-cogs").setDescription("Inject data from your system CMDB to Ariane system directory").
                                                                                   setType(MenuEntityType.TYPE_MENU_ITEM).setContextAddress(MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf").
-                                                                                  addDisplayRole("ccsysadmin").addDisplayRole("ccsysreviewer").addDisplayPermission("ccInjDirComSys:display"));//.
+                                                                                  addDisplayRole("sysadmin").addDisplayRole("sysreviewer").addDisplayPermission("injDirComSys:display"));//.
 
             log.debug("{} has registered its commons injector items", new Object[]{INJECTOR_COMPONENT});
 
