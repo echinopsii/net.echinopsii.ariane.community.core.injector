@@ -31,7 +31,7 @@ import java.util.TreeSet;
  * The injector tree menu roots registry store the injector tree menu root entities. <br/>
  * Used by injector dashboard controller, injector menu controller, injector bread crum controller and any Ariane plugin which needs to add other entry to the tree menu.
  *
- * This is the iPojo implementation of {@link TreeMenuRootsRegistry}. The component is instantiated at commons-services bundle startup.
+ * This is the iPojo implementation of {@link TreeMenuRootsRegistry}. The component is instantiated at wat bundle startup.
  * It provides the {@link TreeMenuRootsRegistry} service with instance.name=InjectorMenuRootsTreeRegistryImpl.
  */
 @Component

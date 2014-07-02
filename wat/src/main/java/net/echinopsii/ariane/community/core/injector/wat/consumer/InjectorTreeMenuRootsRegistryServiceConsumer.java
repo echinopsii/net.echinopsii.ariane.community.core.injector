@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * iPojo singleton which consume the injector roots tree registry service<br/>
- * Instantiated during injector commons-jsf bundle startup. FactoryMethod : getInstance
+ * Instantiated during injector wat bundle startup. FactoryMethod : getInstance
  */
 @Component(publicFactory = false, factoryMethod = "getInstance")
 @Instantiate

@@ -21,7 +21,7 @@
 package net.echinopsii.ariane.community.core.injector.base.model;
 
 /**
- * Gear interface provide some commons method to implemnents injector addons gears (to be binded to akka actors)
+ * Gear interface provide some commons method to implemnents injector plugins gears (to be binded to akka actors)
  */
 public interface Gear extends Runnable{
 

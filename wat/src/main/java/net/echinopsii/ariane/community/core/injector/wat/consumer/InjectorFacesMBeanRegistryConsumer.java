@@ -26,13 +26,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * iPojo singleton which consume the plugin faces mbean registry implemented by PortalPluginFacesMBearRegistryImpl.<br/>
- * Instantiated during directory commons-jsf bundle startup. FactoryMethod : getInstance
+ * Instantiated during directory wat bundle startup. FactoryMethod : getInstance
  */
 @Component(publicFactory = false, factoryMethod = "getInstance")
 @Instantiate
-public class InjectorPluginFacesMBeanRegistryConsumer {
-    private static final Logger log = LoggerFactory.getLogger(InjectorPluginFacesMBeanRegistryConsumer.class);
-    private static InjectorPluginFacesMBeanRegistryConsumer INSTANCE;
+public class InjectorFacesMBeanRegistryConsumer {
+    private static final Logger log = LoggerFactory.getLogger(InjectorFacesMBeanRegistryConsumer.class);
+    private static InjectorFacesMBeanRegistryConsumer INSTANCE;
 
     @Requires(from="ArianePortalFacesMBeanRegistry")
     private FacesMBeanRegistry portalFacesMBeanRegistry = null;
@@ -63,9 +63,9 @@ public class InjectorPluginFacesMBeanRegistryConsumer {
      *
      * @return instantiated directory plugin faces mbean registry consumer
      */
-    public static InjectorPluginFacesMBeanRegistryConsumer getInstance() {
+    public static InjectorFacesMBeanRegistryConsumer getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new InjectorPluginFacesMBeanRegistryConsumer();
+            INSTANCE = new InjectorFacesMBeanRegistryConsumer();
         }
         return INSTANCE;
     }

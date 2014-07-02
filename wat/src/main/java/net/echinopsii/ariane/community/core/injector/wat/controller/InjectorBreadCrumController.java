@@ -18,7 +18,7 @@
  */
 package net.echinopsii.ariane.community.core.injector.wat.controller;
 
-import net.echinopsii.ariane.community.core.injector.wat.consumer.InjectorPluginFacesMBeanRegistryConsumer;
+import net.echinopsii.ariane.community.core.injector.wat.consumer.InjectorFacesMBeanRegistryConsumer;
 import net.echinopsii.ariane.community.core.injector.wat.consumer.InjectorTreeMenuRootsRegistryServiceConsumer;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 import org.primefaces.component.menuitem.MenuItem;
@@ -36,7 +36,7 @@ import java.util.ArrayList;
  */
 public class InjectorBreadCrumController {
     private static final Logger log = LoggerFactory.getLogger(InjectorBreadCrumController.class);
-    private static String MAIN_MENU_INJECTOR_CONTEXT = InjectorPluginFacesMBeanRegistryConsumer.getInstance().getPortalPluginFacesMBeanRegistry().getRegisteredServletContext().getContextPath();
+    private static String MAIN_MENU_INJECTOR_CONTEXT = InjectorFacesMBeanRegistryConsumer.getInstance().getPortalPluginFacesMBeanRegistry().getRegisteredServletContext().getContextPath();
 
     private MenuModel model     = new DefaultMenuModel();
 
