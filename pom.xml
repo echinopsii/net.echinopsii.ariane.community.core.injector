@@ -261,6 +261,7 @@
             <scope>provided</scope>
             <version>${version.com.fasterxml.jackson}</version>
         </dependency>
+        <!--
         <dependency>
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-actor_2.10</artifactId>
@@ -271,7 +272,9 @@
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-osgi_2.10</artifactId>
             <version>${version.com.typesafe.akka}</version>
+            <scope>provided</scope>
         </dependency>
+        -->
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
