@@ -5,7 +5,7 @@
     <!-- General information -->
     <groupId>net.echinopsii.ariane.community.core</groupId>
     <artifactId>net.echinopsii.ariane.community.core.injector</artifactId>
-    <version>0.5.1-SNAPSHOT</version>
+    <version>0.5.1</version>
     <name>Ariane Community Core Injector Parent</name>
     <packaging>pom</packaging>
 
@@ -70,11 +70,14 @@
         <version.war.plugin>2.1.1</version.war.plugin>
         <version.ipojo.plugin>1.11.0</version.ipojo.plugin>
 
-        <!-- CC module dependencies -->
-        <version.net.echinopsii.ariane.core.portal>0.5.0</version.net.echinopsii.ariane.core.portal>
+        <!-- Ariane module dependencies -->
+        <version.net.echinopsii.ariane.core.portal>0.5.1</version.net.echinopsii.ariane.core.portal>
+        <version.net.echinopsii.ariane.core.portal.min>0.5.0</version.net.echinopsii.ariane.core.portal.min>
+        <version.net.echinopsii.ariane.core.portal.max>0.6.0</version.net.echinopsii.ariane.core.portal.max>
 
         <!-- Dependencies versions-->
         <version.com.fasterxml.jackson>2.1.2</version.com.fasterxml.jackson>
+        <version.com.typesafe.akka>2.3.4</version.com.typesafe.akka>
         <version.commons.fileupload>1.3</version.commons.fileupload>
         <version.commons.io>2.4</version.commons.io>
         <version.com.lowagie.itext>2.1.7</version.com.lowagie.itext>
@@ -257,6 +260,17 @@
             <artifactId>jackson-databind</artifactId>
             <scope>provided</scope>
             <version>${version.com.fasterxml.jackson}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor_2.10</artifactId>
+            <version>${version.com.typesafe.akka}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-osgi_2.10</artifactId>
+            <version>${version.com.typesafe.akka}</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
