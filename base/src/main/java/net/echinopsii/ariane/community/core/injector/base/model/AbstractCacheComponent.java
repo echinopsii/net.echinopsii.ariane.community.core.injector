@@ -90,8 +90,8 @@ public abstract class AbstractCacheComponent implements Cache<Component, String>
     public Collection<Component> values() {
         Collection<Component> ret = new CopyOnWriteArrayList<>();
         if (cache!=null) {
-            Set<Long> keys = cache.keySet();
-            for (Long key : keys) ret.add((Component)cache.get(key));
+            Set<String> keys = cache.keySet();
+            for (String key : keys) ret.add((Component)cache.get(key));
         }
         return ret;
     }
