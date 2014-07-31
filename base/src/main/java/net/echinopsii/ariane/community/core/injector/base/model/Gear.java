@@ -46,11 +46,25 @@ public interface Gear extends Runnable{
     public String getGearName();
 
     /**
+     * Set the gear name
+     *
+     * @param gearName to set
+     */
+    public void setGearName(String gearName);
+
+    /**
      * Get the gear description
      *
      * @return the gear description
      */
     public String getGearDescription();
+
+    /**
+     * Set the gear description
+     *
+     * @param gearDescription to set
+     */
+    public void setGearDescription(String gearDescription);
 
     /**
      * Start the gear thread
@@ -62,11 +76,25 @@ public interface Gear extends Runnable{
      */
     public void    stop();
 
-
     /**
      * Return the gear status
      *
      * @return true if gear thead is running, false if not
      */
     public boolean isRunning();
+
+    /**
+     * Set isRunning bool
+     *
+     * @param isRunning to set
+     */
+    public void setRunning(boolean isRunning);
+
+    /**
+     * Get the component URL if the gear is linked to a component to sniff
+     * else return null
+     *
+     * @return
+     */
+    public String getComponentURL();
 }
