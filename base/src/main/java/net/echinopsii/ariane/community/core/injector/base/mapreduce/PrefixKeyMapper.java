@@ -1,7 +1,7 @@
 /**
  * [DEFINE YOUR PROJECT NAME/MODULE HERE]
  * [DEFINE YOUR PROJECT DESCRIPTION HERE] 
- * Copyright (C) 7/31/14 echinopsii
+ * Copyright (C) 8/5/14 echinopsii
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -17,17 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.community.core.injector.base.model;
+package net.echinopsii.ariane.community.core.injector.base.mapreduce;
 
-import org.infinispan.Cache;
+import org.infinispan.distexec.mapreduce.Collector;
+import org.infinispan.distexec.mapreduce.Mapper;
 
-import java.io.File;
-import java.util.Properties;
+public class PrefixKeyMapper implements Mapper<String, Object, String, String> {
 
-public interface CacheManager {
-    public CacheManager start(File confFile);
-    public CacheManager stop();
-    public boolean      isStarted();
-    public Cache getCache(String id);
-    public Properties getCacheConfiguration(Cache cache);
+    private static final long serialVersionUID = -64880662106872372L;
+    private String prefix = null;
+
+    public PrefixKeyMapper(String prefix) {
+        super();
+        this.prefix = prefix;
+    }
+
+    @Override
+    public void map(String key, Object value, Collector<String, String> collector) {
+        if (key.startsWith(this.prefix))
+            collector.emit(key, key);
+    }
+
 }

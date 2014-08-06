@@ -1,7 +1,7 @@
 /**
  * [DEFINE YOUR PROJECT NAME/MODULE HERE]
  * [DEFINE YOUR PROJECT DESCRIPTION HERE] 
- * Copyright (C) 7/31/14 echinopsii
+ * Copyright (C) 8/5/14 echinopsii
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -17,17 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.community.core.injector.base.model;
+package net.echinopsii.ariane.community.core.injector.base.mapreduce;
 
-import org.infinispan.Cache;
+import org.infinispan.distexec.mapreduce.Reducer;
 
-import java.io.File;
-import java.util.Properties;
+import java.util.Iterator;
 
-public interface CacheManager {
-    public CacheManager start(File confFile);
-    public CacheManager stop();
-    public boolean      isStarted();
-    public Cache getCache(String id);
-    public Properties getCacheConfiguration(Cache cache);
+public class PrefixKeyReduce implements Reducer<String, String> {
+    @Override
+    public String reduce(String reducedKey, Iterator<String> iter) {
+        return reducedKey;
+    }
 }

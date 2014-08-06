@@ -27,7 +27,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public abstract class AbstractCacheGear implements Cache<Gear, Long> {
+public abstract class AbstractCacheGear implements Cache<Gear, String> {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractCacheGear.class);
 
@@ -119,7 +119,7 @@ public abstract class AbstractCacheGear implements Cache<Gear, Long> {
     }
 
     @Override
-    public Gear getEntityFromCache(Long id) {
+    public Gear getEntityFromCache(String id) {
         if (cache!=null) return (Gear) cache.get(id);
         else return null;
     }
@@ -127,7 +127,7 @@ public abstract class AbstractCacheGear implements Cache<Gear, Long> {
     public boolean containsComponentGear(String containerURL) {
         boolean ret = false;
         if (cache!=null) {
-            for (long key : (Set<Long>)cache.keySet()) {
+            for (String key : (Set<String>)cache.keySet()) {
                 Gear gear = (Gear)cache.get(key);
                 if (gear.getComponentURL()!=null) {
                     if (gear.getComponentURL().equals(containerURL)) {

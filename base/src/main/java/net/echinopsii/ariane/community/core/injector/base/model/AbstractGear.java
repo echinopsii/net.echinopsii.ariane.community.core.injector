@@ -22,7 +22,7 @@ package net.echinopsii.ariane.community.core.injector.base.model;
 import java.io.Serializable;
 
 public abstract class AbstractGear implements Gear, Serializable {
-    private           long    gearId     ;
+    private           String  gearId     ;
     private           String  gearName   ;
     private           String  gearDesc   ;
     private transient Thread  gearThread ;
@@ -84,12 +84,12 @@ public abstract class AbstractGear implements Gear, Serializable {
     }
 
     @Override
-    public long getGearId() {
+    public String getGearId() {
         return gearId;
     }
 
     @Override
-    public void setGearId(long id) {
+    public void setGearId(String id) {
         this.gearId = id;
     }
 }

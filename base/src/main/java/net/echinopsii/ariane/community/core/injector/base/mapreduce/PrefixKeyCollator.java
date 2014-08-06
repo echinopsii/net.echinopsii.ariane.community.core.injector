@@ -1,7 +1,7 @@
 /**
  * [DEFINE YOUR PROJECT NAME/MODULE HERE]
- * [DEFINE YOUR PROJECT DESCRIPTION HERE] 
- * Copyright (C) 7/31/14 echinopsii
+ * [DEFINE YOUR PROJECT DESCRIPTION HERE]
+ * Copyright (C) 8/5/14 echinopsii
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -17,17 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.community.core.injector.base.model;
+package net.echinopsii.ariane.community.core.injector.base.mapreduce;
 
-import org.infinispan.Cache;
+import org.infinispan.distexec.mapreduce.Collator;
 
-import java.io.File;
-import java.util.Properties;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
-public interface CacheManager {
-    public CacheManager start(File confFile);
-    public CacheManager stop();
-    public boolean      isStarted();
-    public Cache getCache(String id);
-    public Properties getCacheConfiguration(Cache cache);
+public class PrefixKeyCollator implements Collator<String, String, List<String>> {
+
+    @Override
+    public List<String> collate(Map<String, String> reducedResults) {
+        ArrayList<String> ret = new ArrayList<String>();
+        ret.addAll(reducedResults.keySet());
+        Collections.sort(ret);
+        return ret;
+    }
 }

@@ -34,7 +34,20 @@ import java.util.Properties;
 public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
     private static final Logger log = LoggerFactory.getLogger(CacheManagerEmbeddedInfinispanImpl.class);
 
-    private EmbeddedCacheManager manager;
+    private EmbeddedCacheManager manager = null;
+    private static CacheManagerEmbeddedInfinispanImpl INSTANCE = null;
+
+    /**
+     * Factory method for this singleton.
+     *
+     * @return instantiated infinispan embedded cache manager
+     */
+    public synchronized static CacheManagerEmbeddedInfinispanImpl getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new CacheManagerEmbeddedInfinispanImpl();
+        }
+        return INSTANCE;
+    }
 
     @Override
     public CacheManager start(File confFile) {
@@ -44,6 +57,7 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
             log.error("Error while initializing Infinispan Embedded Cache Manager !");
             e.printStackTrace();
         }
+
         return this;
     }
 
@@ -54,6 +68,11 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
             manager = null;
         }
         return this;
+    }
+
+    @Override
+    public boolean isStarted() {
+        return (manager!=null);
     }
 
     @Override

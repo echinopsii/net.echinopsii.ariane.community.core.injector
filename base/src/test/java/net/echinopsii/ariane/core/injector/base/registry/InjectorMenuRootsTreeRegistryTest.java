@@ -18,7 +18,7 @@
  */
 package net.echinopsii.ariane.core.injector.base.registry;
 
-import net.echinopsii.ariane.community.core.injector.base.iPojo.InjectorTreeMenuRootsRegistryImpl;
+import net.echinopsii.ariane.community.core.injector.base.registry.iPojo.InjectorTreeMenuRootsRegistryImpl;
 import net.echinopsii.ariane.community.core.portal.base.model.MenuEntityType;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 import net.echinopsii.ariane.community.core.portal.base.plugin.TreeMenuRootsRegistry;

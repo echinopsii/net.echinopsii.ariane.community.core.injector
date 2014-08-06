@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.echinopsii.ariane.community.core.injector.base.iPojo;
+package net.echinopsii.ariane.community.core.injector.base.registry.iPojo;
 
 import net.echinopsii.ariane.community.core.portal.base.model.MainMenuEntity;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;

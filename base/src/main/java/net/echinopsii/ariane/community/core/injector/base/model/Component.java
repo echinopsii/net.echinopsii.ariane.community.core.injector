@@ -28,13 +28,15 @@ public interface Component {
     public final static int ACTION_UPDATE = 2;
 
     public String  getComponentId();
+    public String  getComponentName();
+    public String  getComponentType();
 
     public int     getNextAction();
     public boolean isRefreshing();
     public Date    getLastRefresh();
 
-    public long    getAttachedGearId();
-    public void    setAttachedGearId(long attachedGearId);
+    public String  getAttachedGearId();
+    public void    setAttachedGearId(String attachedGearId);
 
     public void refresh(Gear gear);
 

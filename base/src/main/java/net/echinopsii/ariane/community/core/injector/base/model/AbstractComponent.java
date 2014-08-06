@@ -27,7 +27,7 @@ public abstract class AbstractComponent implements Component, Serializable {
     private int nextAction;
     private boolean isRefreshing = false;
     private Date lastRefresh = new Date();
-    private long attachedGearId ;
+    private String attachedGearId ;
 
     public int getNextAction() {
         return nextAction;
@@ -53,11 +53,11 @@ public abstract class AbstractComponent implements Component, Serializable {
         this.lastRefresh = lastRefresh;
     }
 
-    public long getAttachedGearId() {
+    public String getAttachedGearId() {
         return attachedGearId;
     }
 
-    public void setAttachedGearId(long attachedGearId) {
+    public void setAttachedGearId(String attachedGearId) {
         this.attachedGearId = attachedGearId;
     }
 }

@@ -1,7 +1,7 @@
 /**
  * [DEFINE YOUR PROJECT NAME/MODULE HERE]
  * [DEFINE YOUR PROJECT DESCRIPTION HERE] 
- * Copyright (C) 7/31/14 echinopsii
+ * Copyright (C) 8/1/14 echinopsii
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -17,17 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.community.core.injector.base.model;
+package net.echinopsii.ariane.community.core.injector.base.registry;
 
-import org.infinispan.Cache;
+import net.echinopsii.ariane.community.core.injector.base.model.Cache;
+import net.echinopsii.ariane.community.core.injector.base.model.Gear;
 
-import java.io.File;
-import java.util.Properties;
+import java.util.List;
 
-public interface CacheManager {
-    public CacheManager start(File confFile);
-    public CacheManager stop();
-    public boolean      isStarted();
-    public Cache getCache(String id);
-    public Properties getCacheConfiguration(Cache cache);
+public interface InjectorGearsRegistry extends Cache<Gear, String> {
+    public List<String> keySetFromPrefix(String prefix);
 }

@@ -26,17 +26,17 @@ package net.echinopsii.ariane.community.core.injector.base.model;
 public interface Gear extends Runnable{
 
     /**
-     * Get the gear id (must be unique in the addon gear registry context).
+     * Get the gear id (must be unique in the gear registry context).
      *
      * @return the gear id
      */
-    public long   getGearId();
+    public String   getGearId();
 
     /**
-     * Set the gear id (must be unique in the addon gear registry context).
+     * Set the gear id (must be unique in the gear registry context).
      * @param id
      */
-    public void   setGearId(long id);
+    public void   setGearId(String id);
 
     /**
      * Get the gear name
