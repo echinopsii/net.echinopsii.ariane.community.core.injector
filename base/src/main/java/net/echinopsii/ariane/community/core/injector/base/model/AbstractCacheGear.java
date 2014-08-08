@@ -90,8 +90,8 @@ public abstract class AbstractCacheGear implements Cache<Gear, String> {
     public Collection<Gear> values() {
         Collection<Gear> ret = new CopyOnWriteArrayList<>();
         if (cache!=null) {
-            Set<Long> keys = cache.keySet();
-            for (Long key : keys) ret.add((Gear)cache.get(key));
+            Set<String> keys = cache.keySet();
+            for (String key : keys) ret.add((Gear)cache.get(key));
         }
         return ret;
     }

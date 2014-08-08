@@ -60,7 +60,9 @@
                             *
                         </Import-Package>
                         <Export-Package>
-                            net.echinopsii.ariane.community.core.injector.base.model;version=${project.version}
+                            net.echinopsii.ariane.community.core.injector.base.mapreduce;version=${project.version},
+                            net.echinopsii.ariane.community.core.injector.base.model;version=${project.version},
+                            net.echinopsii.ariane.community.core.injector.base.registry;version=${project.version}
                         </Export-Package>
                     </instructions>
                 </configuration>
