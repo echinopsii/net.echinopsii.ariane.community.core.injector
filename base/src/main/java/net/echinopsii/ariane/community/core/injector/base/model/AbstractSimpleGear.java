@@ -19,9 +19,15 @@
 
 package net.echinopsii.ariane.community.core.injector.base.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 
-public abstract class AbstractGear implements Gear, Serializable {
+public abstract class AbstractSimpleGear implements Gear, Serializable {
+
+    private static final Logger log = LoggerFactory.getLogger(AbstractSimpleGear.class);
+
     private           String  gearId     ;
     private           String  gearName   ;
     private           String  gearDesc   ;
@@ -70,7 +76,7 @@ public abstract class AbstractGear implements Gear, Serializable {
             }
             gearThread = null;
         }
-        //log.info("{} is stopped", gearName);
+        log.info("{} is stopped", gearName);
     }
 
     @Override
