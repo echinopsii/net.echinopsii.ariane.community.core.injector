@@ -124,19 +124,5 @@ public abstract class AbstractCacheGear implements Cache<Gear, String> {
         else return null;
     }
 
-    public boolean containsComponentGear(String containerURL) {
-        boolean ret = false;
-        if (cache!=null) {
-            for (String key : (Set<String>)cache.keySet()) {
-                Gear gear = (Gear)cache.get(key);
-                if (gear.getComponentURL()!=null) {
-                    if (gear.getComponentURL().equals(containerURL)) {
-                        ret = true;
-                        break;
-                    }
-                }
-            }
-        }
-        return ret;
-    }
+
 }

@@ -13,7 +13,7 @@
             <singleFile fetchPersistentState="true"
                         ignoreModifications="false"
                         purgeOnStartup="false" 
-			location="##injectorSharedComponentsCacheDir"/>
+			            location="##injectorSharedComponentsCacheDir"/>
         </persistence>
     </namedCache>
 

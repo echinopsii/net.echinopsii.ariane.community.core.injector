@@ -13,8 +13,8 @@
         <persistence passivation="true">
             <singleFile fetchPersistentState="true"
                         ignoreModifications="false"
-                        purgeOnStartup="true" 
-			location="##injectorSharedGearsCacheDir">
+                        purgeOnStartup="false"
+			            location="##injectorSharedGearsCacheDir">
                 <async enabled="true"/>
             </singleFile>
         </persistence>

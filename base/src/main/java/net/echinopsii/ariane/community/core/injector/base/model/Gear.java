@@ -89,12 +89,4 @@ public interface Gear extends Runnable{
      * @param isRunning to set
      */
     public void setRunning(boolean isRunning);
-
-    /**
-     * Get the component URL if the gear is linked to a component to sniff
-     * else return null
-     *
-     * @return
-     */
-    public String getComponentURL();
 }

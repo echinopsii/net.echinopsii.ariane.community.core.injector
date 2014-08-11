@@ -84,7 +84,10 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
             cacheManager = new CacheManagerEmbeddedInfinispanImpl().start(infConfFile);
             super.setCacheManager(cacheManager);
             super.start();
-            log.debug("{} is started", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
+            //TODO: investigate infinispan purgeOnStartup instability
+            for (String key : this.keySetFromPrefix(""))
+                super.removeEntityFromCache(super.getEntityFromCache(key));
+            log.info("{} is started", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
         } else {
             log.error("{} can't be started... Infinispan configuration file is missing !", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
         }
@@ -95,7 +98,7 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
         if (cacheManager!=null && cacheManager.isStarted()) {
             super.stop();
             cacheManager.stop();
-            log.debug("{} is stopped", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
+            log.info("{} is stopped", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
         } else {
             log.error("{} can't be stopped as Infinispan cache manager has not been started !", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
         }
