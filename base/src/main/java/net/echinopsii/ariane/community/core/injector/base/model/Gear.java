@@ -23,7 +23,7 @@ package net.echinopsii.ariane.community.core.injector.base.model;
 /**
  * Gear interface provide some commons method to implemnents injector plugins gears (to be binded to akka actors)
  */
-public interface Gear extends Runnable{
+public interface Gear {
 
     /**
      * Get the gear id (must be unique in the gear registry context).
@@ -67,19 +67,19 @@ public interface Gear extends Runnable{
     public void setGearDescription(String gearDescription);
 
     /**
-     * Start the gear thread
+     * Start the gear
      */
     public void    start();
 
     /**
-     * Stop the gear thread
+     * Stop the gear
      */
     public void    stop();
 
     /**
      * Return the gear status
      *
-     * @return true if gear thead is running, false if not
+     * @return true if gear is running, false if not
      */
     public boolean isRunning();
 

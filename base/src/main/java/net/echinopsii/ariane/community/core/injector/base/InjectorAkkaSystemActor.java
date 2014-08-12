@@ -1,7 +1,7 @@
 /**
  * [DEFINE YOUR PROJECT NAME/MODULE HERE]
  * [DEFINE YOUR PROJECT DESCRIPTION HERE] 
- * Copyright (C) 7/31/14 echinopsii
+ * Copyright (C) 8/11/14 echinopsii
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -17,27 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.echinopsii.ariane.community.core.injector.base.model;
+package net.echinopsii.ariane.community.core.injector.base;
 
-import java.util.Date;
+import akka.actor.ActorSystem;
 
-public interface Component {
+public class InjectorAkkaSystemActor {
+    private final static ActorSystem system = ActorSystem.create("/Ariane/Injector");
 
-    public final static int ACTION_CREATE = 0;
-    public final static int ACTION_DELETE = 1;
-    public final static int ACTION_UPDATE = 2;
-
-    public String  getComponentId();
-    public String  getComponentName();
-    public String  getComponentType();
-
-    public int     getNextAction();
-    public boolean isRefreshing();
-    public Date    getLastRefresh();
-
-    public String  getAttachedGearId();
-    public void    setAttachedGearId(String attachedGearId);
-
-    public void refresh();
-
+    public final static ActorSystem getSystem() {
+        return system;
+    }
 }

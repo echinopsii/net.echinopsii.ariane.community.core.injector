@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
-public abstract class AbstractSimpleGear implements Gear, Serializable {
+public abstract class AbstractSimpleGear implements Runnable, Gear, Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractSimpleGear.class);
 
