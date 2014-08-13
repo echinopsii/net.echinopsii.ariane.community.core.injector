@@ -40,4 +40,6 @@ public interface Component {
 
     public void refresh();
 
+    public void refreshAndMap();
+
 }

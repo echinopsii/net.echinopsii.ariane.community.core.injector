@@ -22,7 +22,7 @@ package net.echinopsii.ariane.community.core.injector.base.model;
 import akka.actor.ActorRef;
 import akka.actor.ActorRefFactory;
 import akka.actor.Cancellable;
-import net.echinopsii.ariane.community.core.injector.base.InjectorAkkaSystemActor;
+import net.echinopsii.ariane.community.core.injector.base.InjectorAkkaSystemActivator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.concurrent.duration.Duration;
@@ -41,9 +41,9 @@ public abstract class AbstractAkkaGear implements Gear, Serializable {
     private          String          gearDesc  ;
     private volatile boolean         running = false ;
 
-    private volatile ActorRef          gearActor ;
-    private volatile ActorRefFactory   gearActorRefFactory ;
-    private volatile List<Cancellable> cancellableList = new ArrayList<Cancellable>();
+    private volatile transient ActorRef          gearActor ;
+    private volatile transient ActorRefFactory   gearActorRefFactory ;
+    private volatile transient List<Cancellable> cancellableList = new ArrayList<Cancellable>();
 
     @Override
     public String getGearId() {
@@ -97,7 +97,7 @@ public abstract class AbstractAkkaGear implements Gear, Serializable {
         if (gearActorRefFactory!=null)
             return gearActorRefFactory;
         else
-            return InjectorAkkaSystemActor.getSystem();
+            return InjectorAkkaSystemActivator.getSystem();
     }
 
     public void setGearActorRefFactory(ActorRefFactory gearActorRefFactory) {
@@ -105,26 +105,28 @@ public abstract class AbstractAkkaGear implements Gear, Serializable {
     }
 
     public void scheduleMessage(String message, int millisecondPeriod) {
-        cancellableList.add(InjectorAkkaSystemActor.getSystem().scheduler().schedule(Duration.Zero(),
+        log.debug("schedule message {} each {} millisecond", new Object[]{message, millisecondPeriod});
+        cancellableList.add(InjectorAkkaSystemActivator.getSystem().scheduler().schedule(Duration.Zero(),
                                                                                             Duration.create(millisecondPeriod, TimeUnit.MILLISECONDS),
                                                                                             gearActor,
                                                                                             message,
-                                                                                            InjectorAkkaSystemActor.getSystem().dispatcher(),
+                                                                                            InjectorAkkaSystemActivator.getSystem().dispatcher(),
                                                                                             null));
     }
 
     public void cancelMessagesScheduling() {
-        for (Cancellable cancellable : cancellableList) {
+        log.debug("cancelMessagesScheduling");
+        for (Cancellable cancellable : cancellableList)
             cancellable.cancel();
-            cancellableList.remove(cancellable);
-        }
+        cancellableList.removeAll(cancellableList);
     }
 
     public void tell(String message) {
-        InjectorAkkaSystemActor.getSystem().scheduler().scheduleOnce(Duration.Zero(),
-                                                                     gearActor,
-                                                                     message,
-                                                                     InjectorAkkaSystemActor.getSystem().dispatcher(),
-                                                                     null);
+        log.debug("tell {} to {}", new Object[]{message, gearActor.path().name()});
+        InjectorAkkaSystemActivator.getSystem().scheduler().scheduleOnce(Duration.Zero(),
+                                                                                gearActor,
+                                                                                message,
+                                                                                InjectorAkkaSystemActivator.getSystem().dispatcher(),
+                                                                                null);
     }
 }

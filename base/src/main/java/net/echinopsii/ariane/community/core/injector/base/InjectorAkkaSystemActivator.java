@@ -20,11 +20,22 @@
 package net.echinopsii.ariane.community.core.injector.base;
 
 import akka.actor.ActorSystem;
+import akka.osgi.ActorSystemActivator;
+import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class InjectorAkkaSystemActor {
-    private final static ActorSystem system = ActorSystem.create("/Ariane/Injector");
+public class InjectorAkkaSystemActivator extends ActorSystemActivator {
+    private static final Logger log = LoggerFactory.getLogger(InjectorAkkaSystemActivator.class);
+    private static ActorSystem system ;
 
-    public final static ActorSystem getSystem() {
+    public static ActorSystem getSystem() {
         return system;
+    }
+
+    @Override
+    public void configure(BundleContext context, ActorSystem system) {
+        this.system = system;
+        log.debug("Ariane Injector Akka System activated");
     }
 }
