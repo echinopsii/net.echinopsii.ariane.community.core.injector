@@ -99,7 +99,7 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
         MAIN_MENU_INJECTOR_CONTEXT = portalPluginFacesMBeanRegistry.getRegisteredServletContext().getContextPath()+"/";
 
         try {
-            MainMenuEntity mainMenuEntity = new MainMenuEntity("injectorsMItem", "Injectors", MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf", MenuEntityType.TYPE_MENU_ITEM, MAIN_MENU_DIR_RANK, "icon-filter icon-large");
+            MainMenuEntity mainMenuEntity = new MainMenuEntity("injectorsMItem", "Injectors", MAIN_MENU_INJECTOR_CONTEXT + "views/injectors/main.jsf", MenuEntityType.TYPE_MENU_ITEM, MAIN_MENU_DIR_RANK, "icon-inject-ariane icon-large");
             mainMenuEntity.getDisplayRoles().add("ntwadmin");
             mainMenuEntity.getDisplayRoles().add("sysadmin");
             mainMenuEntity.getDisplayRoles().add("orgadmin");
