@@ -111,7 +111,7 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
             mainMenuEntity.getDisplayPermissions().add("injDirComOrg:display");
 
             injectorMainMenuEntityList.add(mainMenuEntity);
-            mainMenuEntityRegistry.registerMainMenuEntity(mainMenuEntity);
+            mainMenuEntityRegistry.registerMainLeftMenuEntity(mainMenuEntity);
             treeMenuRootsRegistry.setLinkedMainMenuEntity(mainMenuEntity);
             log.debug("{} has registered its main menu items", new Object[]{INJECTOR_COMPONENT});
         } catch (Exception e) {
@@ -164,7 +164,7 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
     public void invalidate() throws Exception {
         if (mainMenuEntityRegistry!=null) {
             for(MainMenuEntity entity : injectorMainMenuEntityList) {
-                mainMenuEntityRegistry.unregisterMainMenuEntity(entity);
+                mainMenuEntityRegistry.unregisterMainLeftMenuEntity(entity);
             }
         }
         injectorMainMenuEntityList.clear();
