@@ -32,12 +32,20 @@
             var readyStateCheckIntervalDir = setInterval(function(){
                 if (document.readyState === "complete") {
                     clearInterval(readyStateCheckIntervalDir);
-                    $("#injectorBg").css({height: $(document).height() - 48});
+                    var bg = $("#injectorBg").css("background");
+                    if (bg.indexOf("bg-ariane-injector.jpg") > -1)
+                        $("#injectorBg").css({height: $(document).height() - 42});
+                    else
+                        $("#injectorBg").css({height: $(document).height() - 48});
                 }
             }, 100);
 
             window.onresize = function(event) {
-                $("#injectorBg").css({height: $(document).height() - 48});
+                var bg = $("#injectorBg").css("background");
+                if (bg.indexOf("bg-ariane-injector.jpg") > -1)
+                    $("#injectorBg").css({height: $(document).height() - 42});
+                else
+                    $("#injectorBg").css({height: $(document).height() - 48});
             };
         </script>
     </ui:define>
