@@ -4,20 +4,43 @@
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="/templates/mainLayout.xhtml">
     <ui:define name="moduleContent">
-        <p:layout id="injectorsLayout" widgetVar="injectorsLW">
-            <p:ajax event="toggle" listener="#{injectorLayoutController.onToggle}" />
-            <p:layoutUnit id="injectorsMenu" position="west" size="320" header="Injectors menu" resizable="true"
-                          collapsible="true" effect="fade" collapsed="#{injectorLayoutController.collapsed}">
-                <h:form id="injMenuForm">
-                    <p:panelMenu model="#{injectorMenuController.model}" style="border:0;margin:0;padding:0"/>
-                </h:form>
-            </p:layoutUnit>
-            <p:layoutUnit position="center" resizable="false">
-                <p:breadCrumb model="#{injectorBreadCrumController.model}" style="border:0;margin:0;padding:0"/>
-                <br/><br/>
-                <ui:insert name="injectorContent"></ui:insert>
-            </p:layoutUnit>
-        </p:layout>
+        <div id="injectorBg" class="backgroundInjector">
+            <p:layout id="injectorsLayout" widgetVar="injectorsLW">
+                <p:ajax event="toggle" listener="#{injectorLayoutController.onToggle}" />
+                <p:layoutUnit id="injectorsMenu" position="west" size="320" header="Injectors menu" resizable="true"
+                              collapsible="true" effect="fade" collapsed="#{injectorLayoutController.collapsed}">
+                    <h:form id="injMenuForm">
+                        <p:panelMenu model="#{injectorMenuController.model}" styleClass="injPanelMenu"/>
+                    </h:form>
+                </p:layoutUnit>
+                <p:layoutUnit id="injectorContent" position="center" resizable="false">
+                    <p:breadCrumb model="#{injectorBreadCrumController.model}" styleClass="injBreadCrumb"/>
+                    <br/><br/>
+                    <ui:insert name="injectorContent"></ui:insert>
+                </p:layoutUnit>
+            </p:layout>
+        </div>
+        <script type="application/javascript">
+            var readyStateCheckIntervalDir = setInterval(function(){
+                if (document.readyState === "complete") {
+                    clearInterval(readyStateCheckIntervalDir);
+                    var bg = $("#injectorBg").css("background");
+                    if (bg.indexOf("bg-ariane-injector.jpg") > -1)
+                        $("#injectorBg").css({height: $(document).height() - 42});
+                    else
+                        $("#injectorBg").css({height: $(document).height() - 48});
+
+                }
+            }, 100);
+
+            window.onresize = function(event) {
+                var bg = $("#injectorBg").css("background");
+                if (bg.indexOf("bg-ariane-injector.jpg") > -1)
+                    $("#injectorBg").css({height: $(document).height() - 42});
+                else
+                    $("#injectorBg").css({height: $(document).height() - 48});
+            };
+        </script>
     </ui:define>
 </ui:composition>
 </html>

@@ -6,8 +6,8 @@
 <ui:composition template="/templates/mainLayout.xhtml">
     <ui:define name="moduleContent">
         <!--TODO : parameters columns on userProfile preference -->
-	    <div class="backgroundInjector">    
-	        <div align="center" style="vertical-align: middle">
+        <div id="injectorBg" class="backgroundInjector">
+	        <div align="center" style="vertical-align: middle" class="sectionMenu">
 	            <ui:repeat value="#{injectorDashboardController.dashboardColumn}" var="column">
 	                <br/><br/><br/>
 	                <p:carousel id="basicCarousel" value="#{injectorDashboardController.getColumnWidgets(column)}" var="widget" itemStyle="width:350px" numVisible="3">
@@ -26,8 +26,20 @@
 	                </p:carousel>
 	            </ui:repeat>
 	        </div>
-	    </div>    
-        <br/><br/>
+            <br/><br/>
+	    </div>
+        <script type="application/javascript">
+            var readyStateCheckIntervalDir = setInterval(function(){
+                if (document.readyState === "complete") {
+                    clearInterval(readyStateCheckIntervalDir);
+                    $("#injectorBg").css({height: $(document).height() - 48});
+                }
+            }, 100);
+
+            window.onresize = function(event) {
+                $("#injectorBg").css({height: $(document).height() - 48});
+            };
+        </script>
     </ui:define>
 </ui:composition>
 </html>
