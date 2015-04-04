@@ -24,7 +24,12 @@ import net.echinopsii.ariane.community.core.injector.base.model.Cache;
 import net.echinopsii.ariane.community.core.injector.base.model.Component;
 
 public interface InjectorComponentsRegistry extends Cache<Component, String> {
-
     public List<String> keySetFromPrefix(String prefix);
 
+    public InjectorComponentsRegistry setRegistryName(String serviceName);
+    public InjectorComponentsRegistry setRegistryCacheID(String cacheID);
+    public InjectorComponentsRegistry setRegistryCacheName(String cacheName);
+
+    public void startRegistry();
+    public void stopRegistry();
 }

@@ -26,6 +26,7 @@ import net.echinopsii.ariane.community.core.injector.base.model.AbstractCacheGea
 import net.echinopsii.ariane.community.core.injector.base.model.CacheManager;
 import net.echinopsii.ariane.community.core.injector.base.model.CacheManagerEmbeddedInfinispanImpl;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorGearsRegistry;
+import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
 import org.apache.felix.ipojo.annotations.*;
 import org.infinispan.distexec.mapreduce.MapReduceTask;
 import org.slf4j.Logger;
@@ -41,20 +42,19 @@ import java.util.List;
 public class InjectorGearsRegistryImpl extends AbstractCacheGear implements InjectorGearsRegistry {
     private static final Logger log = LoggerFactory.getLogger(InjectorGearsRegistryImpl.class);
 
-    private static final String INJECTOR_GEARS_REGISTRY_SERVICE_NAME = "Ariane Injector Gears Registry";
+    private static final String INJECTOR_GEARS_REGISTRY_SERVICE_NAME = "Ariane Injector Shared Gears Registry";
     private static final String INJECTOR_GEARS_REGISTRY_CACHE_ID     = "ariane.community.core.injector.shared.gears.cache";
     private static final String INJECTOR_GEARS_REGISTRY_CACHE_NAME   = "Ariane Injector Shared Gears Cache";
 
-    public static final String INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY = "ariane.community.injector.gears.cache.configuration.path";
-
+    private static String registryName;
     private static Dictionary config = null;
     private static File infConfFile  = null;
     private static CacheManager cacheManager = null;
 
-    private static boolean isValid(Dictionary properties) {
+    public static boolean isValid(Dictionary properties) {
         boolean ret = false;
         if (properties!=null) {
-            Object path = properties.get(INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
+            Object path = properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
             if (path != null && path instanceof String) {
                 infConfFile = new File((String)path);
                 if (infConfFile.exists() && infConfFile.isFile())
@@ -64,22 +64,32 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
                     infConfFile = null;
                 }
             } else {
-                log.error("{} configuration parameters is not defined correctly !", new Object[]{INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY});
+                log.error("{} configuration parameters is not defined correctly !", new Object[]{InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY});
             }
         }
         return ret;
     }
 
+    public InjectorGearsRegistry setRegistryName(String serviceName) {
+        this.registryName = serviceName;
+        return this;
+    }
+
+    public InjectorGearsRegistry setRegistryCacheID(String cacheID) {
+        super.setCacheID(cacheID);
+        return this;
+    }
+
+    public InjectorGearsRegistry setRegistryCacheName(String cacheName) {
+        super.setCacheName(cacheName);
+        return this;
+    }
 
     public InjectorGearsRegistryImpl() {
         super();
-        super.setCacheID(INJECTOR_GEARS_REGISTRY_CACHE_ID);
-        super.setCacheName(INJECTOR_GEARS_REGISTRY_CACHE_NAME);
     }
 
-
-    @Validate
-    public void validate() throws InterruptedException {
+    public void startRegistry() {
         if (infConfFile!=null) {
             cacheManager = new CacheManagerEmbeddedInfinispanImpl().start(infConfFile);
             super.setCacheManager(cacheManager);
@@ -87,29 +97,41 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
             //TODO: investigate infinispan purgeOnStartup instability
             for (String key : this.keySetFromPrefix(""))
                 super.removeEntityFromCache(super.getEntityFromCache(key));
-            log.info("{} is started", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
+            log.info("{} is started", new Object[]{registryName});
         } else {
-            log.error("{} can't be started... Infinispan configuration file is missing !", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
+            log.error("{} can't be started... Infinispan configuration file is missing !", new Object[]{registryName});
+        }
+    }
+
+    @Validate
+    public void validate() throws InterruptedException {
+        setRegistryCacheID(INJECTOR_GEARS_REGISTRY_CACHE_ID);
+        setRegistryCacheName(INJECTOR_GEARS_REGISTRY_CACHE_NAME);
+        setRegistryName(INJECTOR_GEARS_REGISTRY_SERVICE_NAME);
+        startRegistry();
+    }
+
+    public void stopRegistry() {
+        if (cacheManager!=null && cacheManager.isStarted()) {
+            super.stop();
+            cacheManager.stop();
+            log.info("{} is stopped", new Object[]{registryName});
+        } else {
+            log.error("{} can't be stopped as Infinispan cache manager has not been started !", new Object[]{registryName});
         }
     }
 
     @Invalidate
     public void invalidate() throws InterruptedException {
-        if (cacheManager!=null && cacheManager.isStarted()) {
-            super.stop();
-            cacheManager.stop();
-            log.info("{} is stopped", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
-        } else {
-            log.error("{} can't be stopped as Infinispan cache manager has not been started !", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME});
-        }
+         stopRegistry();
     }
 
     @Updated
     public static void updated(Dictionary properties) {
-        log.debug("{} is being updated by {}", new Object[]{INJECTOR_GEARS_REGISTRY_SERVICE_NAME, Thread.currentThread().toString()});
+        log.debug("{} is being updated by {}", new Object[]{registryName, Thread.currentThread().toString()});
         log.debug("properties : {}", properties);
         if (!isValid(properties))
-            log.error("Invalid configuration for service " + INJECTOR_GEARS_REGISTRY_SERVICE_NAME);
+            log.error("Invalid configuration for service " + registryName);
     }
 
     @Override

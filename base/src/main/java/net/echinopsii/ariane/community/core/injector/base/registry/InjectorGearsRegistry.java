@@ -26,4 +26,11 @@ import java.util.List;
 
 public interface InjectorGearsRegistry extends Cache<Gear, String> {
     public List<String> keySetFromPrefix(String prefix);
+
+    public InjectorGearsRegistry setRegistryName(String serviceName);
+    public InjectorGearsRegistry setRegistryCacheID(String cacheID);
+    public InjectorGearsRegistry setRegistryCacheName(String cacheName);
+
+    public void startRegistry();
+    public void stopRegistry();
 }

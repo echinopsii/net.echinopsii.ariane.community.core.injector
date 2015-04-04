@@ -26,6 +26,7 @@ import net.echinopsii.ariane.community.core.injector.base.model.AbstractCacheCom
 import net.echinopsii.ariane.community.core.injector.base.model.CacheManager;
 import net.echinopsii.ariane.community.core.injector.base.model.CacheManagerEmbeddedInfinispanImpl;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorComponentsRegistry;
+import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
 import org.apache.felix.ipojo.annotations.*;
 import org.infinispan.distexec.mapreduce.MapReduceTask;
 import org.slf4j.Logger;
@@ -46,15 +47,14 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
     private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_ID     = "ariane.community.core.injector.shared.components.cache";
     private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME   = "Ariane Injector Shared Components Cache";
 
-    public static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY = "ariane.community.injector.components.cache.configuration.path";
-
+    private static String registryName;
     private static File         infConfFile  = null;
     private static CacheManager cacheManager = null;
 
-    private static boolean isValid(Dictionary properties) {
+    public static boolean isValid(Dictionary properties) {
         boolean ret = false;
         if (properties!=null) {
-            Object path = properties.get(INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
+            Object path = properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
             if (path != null && path instanceof String) {
                 infConfFile = new File((String)path);
                 if (infConfFile.exists() && infConfFile.isFile())
@@ -64,47 +64,73 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
                     infConfFile = null;
                 }
             } else {
-                log.error("{} configuration parameters is not defined correctly !", new Object[]{INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY});
+                log.error("{} configuration parameters is not defined correctly !", new Object[]{InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY});
             }
         }
         return ret;
     }
 
-    public InjectorComponentsRegistryImpl() {
-        super();
+    @Override
+    public InjectorComponentsRegistry setRegistryCacheID(String cacheID) {
         super.setCacheID(INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
-        super.setCacheName(INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME);
+        return this;
     }
 
-    @Validate
-    public void validate() throws InterruptedException {
+    @Override
+    public InjectorComponentsRegistry setRegistryCacheName(String cacheName) {
+        super.setCacheName(cacheName);
+        return this;
+    }
+
+    public InjectorComponentsRegistry setRegistryName(String serviceName) {
+        this.registryName =serviceName;
+        return this;
+    }
+
+    public InjectorComponentsRegistryImpl() {
+        super();
+    }
+
+    public void startRegistry() {
         if (infConfFile!=null) {
             cacheManager = new CacheManagerEmbeddedInfinispanImpl().start(infConfFile);
             super.setCacheManager(cacheManager);
             super.start();
-            log.debug("{} is started", new Object[]{INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME});
+            log.debug("{} is started", new Object[]{registryName});
         } else {
-            log.error("{} can't be started... Infinispan configuration file is missing !", new Object[]{INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME});
+            log.error("{} can't be started... Infinispan configuration file is missing !", new Object[]{registryName});
+        }
+    }
+
+    @Validate
+    public void validate() throws InterruptedException {
+        setRegistryCacheID(INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
+        setRegistryCacheName(INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME);
+        setRegistryName(INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME);
+        startRegistry();
+    }
+
+    public void stopRegistry() {
+        if (infConfFile!=null) {
+            super.stop();
+            cacheManager.stop();
+            log.debug("{} is stopped", new Object[]{registryName});
+        } else {
+            log.error("{} can't be stopped as Infinispan cache manager has not been started !", new Object[]{registryName});
         }
     }
 
     @Invalidate
     public void invalidate() throws InterruptedException {
-        if (infConfFile!=null) {
-            super.stop();
-            cacheManager.stop();
-            log.debug("{} is stopped", new Object[]{INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME});
-        } else {
-            log.error("{} can't be stopped as Infinispan cache manager has not been started !", new Object[]{INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME});
-        }
+        stopRegistry();
     }
 
     @Updated
     public static void updated(Dictionary properties) {
-        log.debug("{} is being updated by {}", new Object[]{INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME, Thread.currentThread().toString()});
+        log.debug("{} is being updated by {}", new Object[]{registryName, Thread.currentThread().toString()});
         log.debug("properties : {}", properties);
         if (!isValid(properties))
-            log.error("Invalid configuration for service " + INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME);
+            log.error("Invalid configuration for service " + registryName);
     }
 
     @Override
