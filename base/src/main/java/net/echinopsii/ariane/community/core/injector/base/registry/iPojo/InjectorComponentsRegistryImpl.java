@@ -43,7 +43,7 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
 
     private static final Logger log = LoggerFactory.getLogger(InjectorComponentsRegistryImpl.class);
 
-    private static final String INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME = "Ariane Injector Components Registry";
+    private static final String INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME = "Ariane Injector Shared Components Registry";
     private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_ID     = "ariane.community.core.injector.shared.components.cache";
     private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME   = "Ariane Injector Shared Components Cache";
 
@@ -82,8 +82,8 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
         return this;
     }
 
-    public InjectorComponentsRegistry setRegistryName(String serviceName) {
-        this.registryName =serviceName;
+    public InjectorComponentsRegistry setRegistryName(String registryName) {
+        this.registryName = registryName;
         return this;
     }
 
@@ -96,7 +96,7 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
             cacheManager = new CacheManagerEmbeddedInfinispanImpl().start(infConfFile);
             super.setCacheManager(cacheManager);
             super.start();
-            log.debug("{} is started", new Object[]{registryName});
+            log.info("{} is started", new Object[]{registryName});
         } else {
             log.error("{} can't be started... Infinispan configuration file is missing !", new Object[]{registryName});
         }
@@ -114,7 +114,7 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
         if (infConfFile!=null) {
             super.stop();
             cacheManager.stop();
-            log.debug("{} is stopped", new Object[]{registryName});
+            log.info("{} is stopped", new Object[]{registryName});
         } else {
             log.error("{} can't be stopped as Infinispan cache manager has not been started !", new Object[]{registryName});
         }

@@ -70,8 +70,8 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
         return ret;
     }
 
-    public InjectorGearsRegistry setRegistryName(String serviceName) {
-        this.registryName = serviceName;
+    public InjectorGearsRegistry setRegistryName(String registryName) {
+        this.registryName = registryName;
         return this;
     }
 
