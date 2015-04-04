@@ -22,14 +22,32 @@ package net.echinopsii.ariane.community.core.injector.base.registry.iPojo;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorComponentsRegistry;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorGearsRegistry;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
+import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
 
+@Component
+@Provides
+@Instantiate
 public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
 
     private static final Logger log = LoggerFactory.getLogger(InjectorRegistryFactoryImpl.class);
+
+    private static final String INJECTOR_REGISTRY_FACTORY_SERVICE_NAME = "Ariane Injector Registry Factory";
+
+
+    @Validate
+    public void validate() {
+        log.info("{} is started", new Object[]{INJECTOR_REGISTRY_FACTORY_SERVICE_NAME});
+    }
+
+    @Invalidate
+    public void invalidate() throws InterruptedException {
+        log.info("{} is stopped", new Object[]{INJECTOR_REGISTRY_FACTORY_SERVICE_NAME});
+    }
+
 
     @Override
     public boolean isValidProperties(Dictionary properties) {
