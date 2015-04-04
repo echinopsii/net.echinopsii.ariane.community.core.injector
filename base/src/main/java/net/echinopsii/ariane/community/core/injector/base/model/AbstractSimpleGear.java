@@ -1,7 +1,7 @@
 /**
- * [DEFINE YOUR PROJECT NAME/MODULE HERE]
- * [DEFINE YOUR PROJECT DESCRIPTION HERE] 
- * Copyright (C) 7/30/14 echinopsii
+ * Injector base
+ * Injector model abstract simple gear
+ * Copyright (C) 2014 Mathilde Ffrench
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as

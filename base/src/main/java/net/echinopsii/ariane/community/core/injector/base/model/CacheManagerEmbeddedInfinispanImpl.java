@@ -1,8 +1,7 @@
 /**
- * Tibco rv injector directory bundle
- * provide injector from Tibco RV components to MappingDS (RVRD, RVD ...)
- *
- * Copyright (C) 2014  Mathilde Ffrench
+ * Injector base
+ * Injector model cache manager embedded infinispan impl
+ * Copyright (C) 2014 Mathilde Ffrench
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as

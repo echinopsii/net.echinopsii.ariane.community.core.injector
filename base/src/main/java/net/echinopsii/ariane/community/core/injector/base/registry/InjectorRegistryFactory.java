@@ -1,7 +1,7 @@
 /**
- * [DEFINE YOUR PROJECT NAME/MODULE HERE]
- * [DEFINE YOUR PROJECT DESCRIPTION HERE] 
- * Copyright (C) 03/04/15 echinopsii
+ * Injector base
+ * Injector registry factory interface
+ * Copyright (C) 2015 Mathilde Ffrench
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
