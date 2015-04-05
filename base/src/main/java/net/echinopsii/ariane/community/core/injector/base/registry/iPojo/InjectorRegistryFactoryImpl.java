@@ -55,28 +55,47 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
         if (properties!=null) {
             Object registryType = properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_TYPE);
             if (registryType!=null && registryType instanceof String) {
-                if (registryType.equals(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_TYPE)) ret = InjectorComponentsRegistryImpl.isValid(properties);
-                else if (registryType.equals(InjectorRegistryFactory.INJECTORY_GEARS_REGISTRY_TYPE)) ret = InjectorGearsRegistryImpl.isValid(properties);
-                else {
+                if (registryType.equals(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_TYPE)) {
+                    ret = InjectorComponentsRegistryImpl.isValid(properties);
+                    if (ret) {
+                        Object registryName = properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME);
+                        if (registryName==null || !(registryName instanceof String)) {
+                            log.error("Gears Registry name is not defined correctly");
+                            ret = false;
+                        }
+                        Object cacheID = properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID);
+                        if (cacheID==null || !(cacheID instanceof String)) {
+                            log.error("Gears Cache ID is not defined correctly");
+                            ret = false;
+                        }
+                        Object cacheName = properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME);
+                        if (cacheName==null || !(cacheName instanceof  String)) {
+                            log.error("Gears Cache Name is not defined correctly");
+                            ret = false;
+                        }
+                    }
+                } else if (registryType.equals(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_TYPE)) {
+                    ret = InjectorGearsRegistryImpl.isValid(properties);
+                    if (ret) {
+                        Object registryName = properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME);
+                        if (registryName==null || !(registryName instanceof String)) {
+                            log.error("Components Registry name is not defined correctly");
+                            ret = false;
+                        }
+                        Object cacheID = properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
+                        if (cacheID==null || !(cacheID instanceof String)) {
+                            log.error("Components Cache ID is not defined correctly");
+                            ret = false;
+                        }
+                        Object cacheName = properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME);
+                        if (cacheName==null || !(cacheName instanceof  String)) {
+                            log.error("Components Cache Name is not defined correctly");
+                            ret = false;
+                        }
+                    }
+                } else {
                     log.error("Unsupported registry type {}.", new Object[]{registryType});
                     ret = false;
-                }
-                if (ret) {
-                    Object registryName = properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_NAME);
-                    if (registryName==null || !(registryName instanceof String)) {
-                        log.error("Registry name is not defined correctly");
-                        ret = false;
-                    }
-                    Object cacheID = properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_CACHE_ID);
-                    if (cacheID==null || !(cacheID instanceof String)) {
-                        log.error("Cache ID is not defined correctly");
-                        ret = false;
-                    }
-                    Object cacheName = properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_CACHE_NAME);
-                    if (cacheName==null || !(cacheName instanceof  String)) {
-                        log.error("Cache Name is not defined correctly");
-                        ret = false;
-                    }
                 }
             }
         }
@@ -86,11 +105,11 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
     @Override
     public InjectorGearsRegistry makeGearsRegistry(Dictionary properties) {
         InjectorGearsRegistry ret = null;
-        properties.put(InjectorRegistryFactory.INJECTOR_REGISTRY_TYPE, InjectorRegistryFactory.INJECTORY_GEARS_REGISTRY_TYPE);
+        properties.put(InjectorRegistryFactory.INJECTOR_REGISTRY_TYPE, InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_TYPE);
         if (isValidProperties(properties)) {
-            String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_NAME);
-            String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_CACHE_ID);
-            String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_CACHE_NAME);
+            String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME);
+            String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID);
+            String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME);
             ret = new InjectorGearsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).setRegistryCacheName(cacheName);
         }
         return ret;
@@ -101,9 +120,9 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
         InjectorComponentsRegistry ret = null;
         properties.put(InjectorRegistryFactory.INJECTOR_REGISTRY_TYPE, InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_TYPE);
         if (isValidProperties(properties)) {
-            String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_NAME);
-            String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_CACHE_ID);
-            String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_CACHE_NAME);
+            String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME);
+            String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
+            String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME);
             ret = new InjectorComponentsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).setRegistryCacheName(cacheName);
         }
         return ret;

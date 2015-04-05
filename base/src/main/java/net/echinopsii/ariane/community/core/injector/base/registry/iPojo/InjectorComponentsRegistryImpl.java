@@ -43,9 +43,9 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
 
     private static final Logger log = LoggerFactory.getLogger(InjectorComponentsRegistryImpl.class);
 
-    private static final String INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME = "Ariane Injector Shared Components Registry";
-    private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_ID     = "ariane.community.core.injector.shared.components.cache";
-    private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME   = "Ariane Injector Shared Components Cache";
+    private static final String INJECTOR_COMPONENTS_SHARED_REGISTRY_NAME = "Ariane Injector Shared Components Registry";
+    private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_ID    = "ariane.community.core.injector.shared.components.cache";
+    private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME  = "Ariane Injector Shared Components Cache";
 
     private static String registryName;
     private static File         infConfFile  = null;
@@ -72,7 +72,7 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
 
     @Override
     public InjectorComponentsRegistry setRegistryCacheID(String cacheID) {
-        super.setCacheID(INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
+        super.setCacheID(cacheID);
         return this;
     }
 
@@ -106,7 +106,7 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
     public void validate() throws InterruptedException {
         setRegistryCacheID(INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
         setRegistryCacheName(INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME);
-        setRegistryName(INJECTOR_COMPONENTS_REGISTRY_SERVICE_NAME);
+        setRegistryName(INJECTOR_COMPONENTS_SHARED_REGISTRY_NAME);
         startRegistry();
     }
 

@@ -23,16 +23,19 @@ import java.util.Dictionary;
 
 public interface InjectorRegistryFactory {
 
-    public static final String INJECTORY_GEARS_REGISTRY_TYPE="gears";
+    public static final String INJECTOR_GEARS_REGISTRY_TYPE                         = "gears";
+    public static final String INJECTOR_GEARS_REGISTRY_NAME                         = "ariane.community.injector.gears.registry.name";
+    public static final String INJECTOR_GEARS_REGISTRY_CACHE_ID                     = "ariane.community.injector.gears.registry.cache.id";
+    public static final String INJECTOR_GEARS_REGISTRY_CACHE_NAME                   = "ariane.community.injector.gears.registry.cache.name";
     public static final String INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY = "ariane.community.injector.gears.cache.configuration.path";
 
-    public static final String INJECTOR_COMPONENTS_REGISTRY_TYPE="components";
+    public static final String INJECTOR_COMPONENTS_REGISTRY_TYPE                         = "components";
+    public static final String INJECTOR_COMPONENTS_REGISTRY_NAME                         = "ariane.community.injector.components.registry.name";
+    public static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_ID                     = "ariane.community.injector.components.registry.cache.id";
+    public static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME                   = "ariane.community.injector.components.registry.cache.name";
     public static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY = "ariane.community.injector.components.cache.configuration.path";
 
-    public static final String INJECTOR_REGISTRY_NAME="ariane.community.injector.registry.name";
     public static final String INJECTOR_REGISTRY_TYPE="ariane.community.injector.registry.type";
-    public static final String INJECTOR_REGISTRY_CACHE_ID="ariane.community.injector.registry.cache.id";
-    public static final String INJECTOR_REGISTRY_CACHE_NAME="ariane.community.injector.registry.cache.name";
 
     public boolean isValidProperties(Dictionary properties);
 

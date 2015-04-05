@@ -42,9 +42,9 @@ import java.util.List;
 public class InjectorGearsRegistryImpl extends AbstractCacheGear implements InjectorGearsRegistry {
     private static final Logger log = LoggerFactory.getLogger(InjectorGearsRegistryImpl.class);
 
-    private static final String INJECTOR_GEARS_REGISTRY_SERVICE_NAME = "Ariane Injector Shared Gears Registry";
-    private static final String INJECTOR_GEARS_REGISTRY_CACHE_ID     = "ariane.community.core.injector.shared.gears.cache";
-    private static final String INJECTOR_GEARS_REGISTRY_CACHE_NAME   = "Ariane Injector Shared Gears Cache";
+    private static final String INJECTOR_GEARS_SHARED_REGISTRY_NAME = "Ariane Injector Shared Gears Registry";
+    private static final String INJECTOR_GEARS_REGISTRY_CACHE_ID    = "ariane.community.core.injector.shared.gears.cache";
+    private static final String INJECTOR_GEARS_REGISTRY_CACHE_NAME  = "Ariane Injector Shared Gears Cache";
 
     private static String registryName;
     private static Dictionary config = null;
@@ -107,7 +107,7 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
     public void validate() throws InterruptedException {
         setRegistryCacheID(INJECTOR_GEARS_REGISTRY_CACHE_ID);
         setRegistryCacheName(INJECTOR_GEARS_REGISTRY_CACHE_NAME);
-        setRegistryName(INJECTOR_GEARS_REGISTRY_SERVICE_NAME);
+        setRegistryName(INJECTOR_GEARS_SHARED_REGISTRY_NAME);
         startRegistry();
     }
 
