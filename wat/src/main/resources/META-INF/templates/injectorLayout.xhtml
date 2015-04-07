@@ -5,18 +5,22 @@
 <ui:composition template="/templates/mainLayout.xhtml">
     <ui:define name="moduleContent">
         <div id="injectorBg" class="backgroundInjector">
-            <p:layout id="injectorsLayout" widgetVar="injectorsLW">
-                <p:ajax event="toggle" listener="#{injectorLayoutController.onToggle}" />
-                <p:layoutUnit id="injectorsMenu" position="west" size="320" header="Injectors menu" resizable="true"
-                              collapsible="true" effect="fade" collapsed="#{injectorLayoutController.collapsed}" styleClass="arianeTransparentBg3-div arianeTransparentBg3-uiwc">
-                    <h:form id="injMenuForm">
-                        <p:panelMenu model="#{injectorMenuController.model}" styleClass="arianeTransparentBg3-uiwc"/>
-                    </h:form>
-                </p:layoutUnit>
-                <p:layoutUnit id="injectorContent" position="center" resizable="false" styleClass="arianeTransparentBg3-div arianeTransparentBg3-uiwc">
-                    <p:breadCrumb model="#{injectorBreadCrumController.model}" styleClass="injBreadCrumb"/>
-                    <br/><br/>
-                    <ui:insert name="injectorContent"></ui:insert>
+            <p:layout widgetVar="injectorsLW">
+                <p:layoutUnit id="injectorsLayout" position="center" resizable="false" styleClass="arianeTransparentBg0-div-noi">
+                    <p:layout>
+                        <p:ajax event="toggle" listener="#{injectorLayoutController.onToggle}" />
+                        <p:layoutUnit id="injectorsMenu" position="west" size="320" header="Injectors menu" resizable="true"
+                                      collapsible="true" effect="fade" collapsed="#{injectorLayoutController.collapsed}" styleClass="arianeTransparentBg3-div arianeTransparentBg3-uiwc">
+                            <h:form id="injMenuForm">
+                                <p:panelMenu model="#{injectorMenuController.model}" styleClass="arianeTransparentBg3-uiwc"/>
+                            </h:form>
+                        </p:layoutUnit>
+                        <p:layoutUnit id="injectorContent" position="center" resizable="false" styleClass="arianeTransparentBg3-div arianeTransparentBg3-uiwc">
+                            <p:breadCrumb model="#{injectorBreadCrumController.model}" styleClass="injBreadCrumb"/>
+                            <br/><br/>
+                            <ui:insert name="injectorContent"></ui:insert>
+                        </p:layoutUnit>
+                    </p:layout>
                 </p:layoutUnit>
             </p:layout>
         </div>
