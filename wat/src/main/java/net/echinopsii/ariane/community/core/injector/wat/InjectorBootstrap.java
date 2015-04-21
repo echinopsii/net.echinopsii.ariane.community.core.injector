@@ -50,9 +50,11 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
 
     @Requires(from="ArianePortalFacesMBeanRegistry")
     private FacesMBeanRegistry portalPluginFacesMBeanRegistry = null;
+    private static FacesMBeanRegistry portalPluginFacesMBeanRegistrySgt = null;
 
     @Requires(from="InjectorTreeMenuRootsRegistryImpl")
     private TreeMenuRootsRegistry treeMenuRootsRegistry = null;
+    private static TreeMenuRootsRegistry treeMenuRootsRegistrySgt = null;
 
     @Requires
     private MainMenuEntityRegistry mainMenuEntityRegistry = null;
@@ -69,10 +71,11 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
         mainMenuEntityRegistry = null;
     }
 
-    @Bind
+    @Bind(from="ArianePortalFacesMBeanRegistry")
     public void bindPortalPluginFacesMBeanRegistry(FacesMBeanRegistry r) {
         log.debug("Bound to portal plugin faces managed bean registry...");
         portalPluginFacesMBeanRegistry = r;
+        portalPluginFacesMBeanRegistrySgt = r;
     }
 
     @Unbind
@@ -81,16 +84,25 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
         portalPluginFacesMBeanRegistry = null;
     }
 
-    @Bind
+    @Bind(from="InjectorTreeMenuRootsRegistryImpl")
     public void bindTreeMenuRootsRegistry(TreeMenuRootsRegistry r) {
-        log.debug("Bound to directory tree menu roots registry...");
+        log.debug("Bound to injector tree menu roots registry..." + r.toString());
         treeMenuRootsRegistry = r;
+        treeMenuRootsRegistrySgt = r;
     }
 
     @Unbind
     public void unbindTreeMenuRootsRegistry() {
-        log.debug("Unbound from directory tree menu roots registry...");
+        log.debug("Unbound from injector tree menu roots registry...");
         treeMenuRootsRegistry = null;
+    }
+
+    public static FacesMBeanRegistry getPortalPluginFacesMBeanRegistry() {
+        return portalPluginFacesMBeanRegistrySgt;
+    }
+
+    public static TreeMenuRootsRegistry getTreeMenuRootsRegistry() {
+        return treeMenuRootsRegistrySgt;
     }
 
     @Validate
