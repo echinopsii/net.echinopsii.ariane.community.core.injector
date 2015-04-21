@@ -19,7 +19,7 @@
 
 package net.echinopsii.ariane.community.core.injector.wat.controller;
 
-import net.echinopsii.ariane.community.core.injector.wat.consumer.InjectorTreeMenuRootsRegistryServiceConsumer;
+import net.echinopsii.ariane.community.core.injector.wat.InjectorWatBootstrap;
 import net.echinopsii.ariane.community.core.portal.base.model.MenuEntityType;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 import org.apache.shiro.SecurityUtils;
@@ -114,9 +114,9 @@ public class InjectorMenuController {
     }
 
     public MenuModel getModel() {
-        if (InjectorTreeMenuRootsRegistryServiceConsumer.getInstance()!=null) {
+        if (InjectorWatBootstrap.getTreeMenuRootsRegistry()!=null) {
             Subject subject = SecurityUtils.getSubject();
-            for (TreeMenuEntity entity : InjectorTreeMenuRootsRegistryServiceConsumer.getInstance().getTreeMenuRootsRegistry().getTreeMenuRootsEntities()) {
+            for (TreeMenuEntity entity : InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuRootsEntities()) {
                 switch (entity.getType()) {
                     case MenuEntityType.TYPE_MENU_ITEM:
                         if (isAuthorized(subject, entity)) {

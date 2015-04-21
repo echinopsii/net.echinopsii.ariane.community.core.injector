@@ -18,8 +18,7 @@
  */
 package net.echinopsii.ariane.community.core.injector.wat.controller;
 
-import net.echinopsii.ariane.community.core.injector.wat.consumer.InjectorFacesMBeanRegistryConsumer;
-import net.echinopsii.ariane.community.core.injector.wat.consumer.InjectorTreeMenuRootsRegistryServiceConsumer;
+import net.echinopsii.ariane.community.core.injector.wat.InjectorWatBootstrap;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 import org.primefaces.component.menuitem.MenuItem;
 import org.primefaces.model.DefaultMenuModel;
@@ -36,7 +35,7 @@ import java.util.ArrayList;
  */
 public class InjectorBreadCrumController {
     private static final Logger log = LoggerFactory.getLogger(InjectorBreadCrumController.class);
-    private static String MAIN_MENU_INJECTOR_CONTEXT = InjectorFacesMBeanRegistryConsumer.getInstance().getPortalPluginFacesMBeanRegistry().getRegisteredServletContext().getContextPath();
+    private static String MAIN_MENU_INJECTOR_CONTEXT = InjectorWatBootstrap.getPortalPluginFacesMBeanRegistry().getRegisteredServletContext().getContextPath();
 
     private MenuModel model     = new DefaultMenuModel();
 
@@ -77,8 +76,8 @@ public class InjectorBreadCrumController {
         FacesContext context = FacesContext.getCurrentInstance();
         String contextAddress = MAIN_MENU_INJECTOR_CONTEXT + context.getExternalContext().getRequestServletPath();
         ArrayList<TreeMenuEntity> orderedBreadScrumMenuFromRootToLeaf = new ArrayList<TreeMenuEntity>();
-        if (InjectorTreeMenuRootsRegistryServiceConsumer.getInstance()!=null) {
-            TreeMenuEntity leaf   = InjectorTreeMenuRootsRegistryServiceConsumer.getInstance().getTreeMenuRootsRegistry().getTreeMenuEntityFromContextAddress(contextAddress);
+        if (InjectorWatBootstrap.getTreeMenuRootsRegistry()!=null) {
+            TreeMenuEntity leaf   = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromContextAddress(contextAddress);
             if (leaf!=null) {
                 orderedBreadScrumMenuFromRootToLeaf.add(0,leaf);
                 TreeMenuEntity parent = leaf.getParentTreeMenuEntity();

@@ -36,9 +36,9 @@ import java.util.ArrayList;
 @Component
 @Provides(properties= {@StaticServiceProperty(name="targetArianeComponent", type="java.lang.String", value="Portal")})
 @Instantiate
-public class InjectorBootstrap implements FaceletsResourceResolverService {
-    private static final Logger log = LoggerFactory.getLogger(InjectorBootstrap.class);
-    private static final String INJECTOR_COMPONENT = "Ariane Injector Component";
+public class InjectorWatBootstrap implements FaceletsResourceResolverService {
+    private static final Logger log = LoggerFactory.getLogger(InjectorWatBootstrap.class);
+    private static final String INJECTOR_COMPONENT = "Ariane WAT Injector Component";
 
     protected static ArrayList<MainMenuEntity> injectorMainMenuEntityList = new ArrayList<MainMenuEntity>() ;
     protected static ArrayList<TreeMenuEntity> injectorTreeEntityList     = new ArrayList<TreeMenuEntity>() ;
@@ -107,7 +107,7 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
 
     @Validate
     public void validate() throws Exception {
-        portalPluginFacesMBeanRegistry.registerPluginFacesMBeanConfig(InjectorBootstrap.class.getResource(FACES_CONFIG_FILE_PATH));
+        portalPluginFacesMBeanRegistry.registerPluginFacesMBeanConfig(InjectorWatBootstrap.class.getResource(FACES_CONFIG_FILE_PATH));
         MAIN_MENU_INJECTOR_CONTEXT = portalPluginFacesMBeanRegistry.getRegisteredServletContext().getContextPath()+"/";
 
         try {
@@ -194,6 +194,6 @@ public class InjectorBootstrap implements FaceletsResourceResolverService {
     @Override
     public URL resolveURL(String path) {
         log.debug("Resolve {} from directory commons-jsf...", new Object[]{path});
-        return InjectorBootstrap.class.getResource(basePath + path);
+        return InjectorWatBootstrap.class.getResource(basePath + path);
     }
 }

@@ -19,7 +19,7 @@
 
 package net.echinopsii.ariane.community.core.injector.wat.controller;
 
-import net.echinopsii.ariane.community.core.injector.wat.consumer.InjectorTreeMenuRootsRegistryServiceConsumer;
+import net.echinopsii.ariane.community.core.injector.wat.InjectorWatBootstrap;
 import net.echinopsii.ariane.community.core.portal.base.model.MenuEntityType;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 import org.apache.shiro.SecurityUtils;
@@ -95,11 +95,11 @@ public class InjectorDashboardController {
     }
 
     public InjectorDashboardController() {
-        if (InjectorTreeMenuRootsRegistryServiceConsumer.getInstance()!=null) {
+        if (InjectorWatBootstrap.getTreeMenuRootsRegistry()!=null) {
             Subject subject = SecurityUtils.getSubject();
             DefaultDashboardColumn lonlyItemColumn = new DefaultDashboardColumn();
             model.addColumn(lonlyItemColumn);
-            for (TreeMenuEntity entity : InjectorTreeMenuRootsRegistryServiceConsumer.getInstance().getTreeMenuRootsRegistry().getTreeMenuRootsEntities()) {
+            for (TreeMenuEntity entity : InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuRootsEntities()) {
                 switch (entity.getType()) {
                     case MenuEntityType.TYPE_MENU_ITEM:
                         if (isAuthorized(subject, entity)) {
@@ -155,7 +155,7 @@ public class InjectorDashboardController {
     private TreeMenuEntity getInitRootFromWidgetName(String widgetName) {
         TreeMenuEntity ret = null;
         String[] table = widgetName.split(" / ");
-        ret = InjectorTreeMenuRootsRegistryServiceConsumer.getInstance().getTreeMenuRootsRegistry().getTreeMenuEntityFromValue(table[0]);
+        ret = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromValue(table[0]);
         return ret;
     }
 

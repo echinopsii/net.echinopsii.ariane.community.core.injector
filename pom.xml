@@ -11,6 +11,7 @@
 
     <modules>
         <module>base</module>
+	<module>messaging</module>
         <module>wat</module>
     </modules>
 
@@ -74,6 +75,9 @@
         <version.net.echinopsii.ariane.core.portal>0.6.2-SNAPSHOT</version.net.echinopsii.ariane.core.portal>
         <version.net.echinopsii.ariane.core.portal.min>0.6.0</version.net.echinopsii.ariane.core.portal.min>
         <version.net.echinopsii.ariane.core.portal.max>0.7.0</version.net.echinopsii.ariane.core.portal.max>
+        <version.net.echinopsii.ariane.core.messaging>0.1.0-SNAPSHOT</version.net.echinopsii.ariane.core.messaging>
+        <version.net.echinopsii.ariane.core.messaging.min>0.1.0</version.net.echinopsii.ariane.core.messaging.min>
+        <version.net.echinopsii.ariane.core.messaging.max>0.2.0</version.net.echinopsii.ariane.core.messaging.max>
 
         <!-- Dependencies versions-->
         <version.com.fasterxml.jackson>2.1.2</version.com.fasterxml.jackson>
