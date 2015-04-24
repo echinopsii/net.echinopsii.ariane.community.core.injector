@@ -19,6 +19,9 @@
 
 package net.echinopsii.ariane.community.core.injector.messaging;
 
+import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteComponentService;
+import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
+import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteTreeService;
 import net.echinopsii.ariane.community.core.portal.base.plugin.TreeMenuRootsRegistry;
 import net.echinopsii.ariane.community.core.messaging.api.MomClient;
 import org.apache.felix.ipojo.annotations.*;
@@ -31,13 +34,19 @@ import java.util.Dictionary;
 @Instantiate
 public class InjectorMessagingBootstrap {
     private static final Logger log = LoggerFactory.getLogger(InjectorMessagingBootstrap.class);
-    private static final String INJECTOR_COMPONENT = "Ariane Messaging Injector Component";
+    private static final String INJECTOR_COMPONENT = "Ariane Injector Messaging Component";
 
     public static final String PROPS_FIELD_TREE_QUEUE = "remote.injector.tree.queue";
     public static final String PROPS_FIELD_GEAR_QUEUE = "remote.injector.gear.queue";
     public static final String PROPS_FIELD_COMP_QUEUE = "remote.injector.comp.queue";
 
     private static Dictionary conf = null;
+    private boolean isStarted = false;
+
+    private RemoteComponentService remoteComponentService = new RemoteComponentService();
+    private RemoteGearService remoteGearService = new RemoteGearService();
+    private RemoteTreeService remoteTreeService = new RemoteTreeService();
+
 
     @Requires(from="InjectorTreeMenuRootsRegistryImpl")
     private TreeMenuRootsRegistry treeMenuRootsRegistry = null;
@@ -62,22 +71,32 @@ public class InjectorMessagingBootstrap {
 
     @Validate
     public void validate() throws Exception {
-        while (conf==null)
-            Thread.sleep(100);
+        if (!isStarted) {
+            while (conf==null)
+                Thread.sleep(100);
 
-        log.info("{} is started", new Object[]{INJECTOR_COMPONENT});
+            remoteComponentService.start(conf);
+            remoteGearService.start(conf);
+            remoteTreeService.start(conf);
+
+            isStarted=true;
+            log.info("{} is started", new Object[]{INJECTOR_COMPONENT});
+        }
     }
 
     @Invalidate
     public void invalidate() throws Exception {
+        remoteComponentService.stop();
+        remoteGearService.stop();
+        remoteTreeService.stop();
         log.info("{} is stopped", new Object[]{INJECTOR_COMPONENT});
     }
 
     private static boolean isValid(Dictionary properties) {
         boolean ret = true;
         if (properties.get(MomClient.MOM_CLI)==null || properties.get(MomClient.MOM_CLI).equals("")) {
-            ret = false;
             log.error(MomClient.MOM_CLI + " is not defined.");
+            ret = false;
         }
         if (properties.get(MomClient.MOM_HOST)==null || properties.get(MomClient.MOM_HOST).equals("")) {
             ret = false;
@@ -118,23 +137,14 @@ public class InjectorMessagingBootstrap {
             }
         }
 
-        if (ret) {
-            if (properties.get(PROPS_FIELD_TREE_QUEUE)==null || properties.get(PROPS_FIELD_TREE_QUEUE).equals(""))
-                properties.put(PROPS_FIELD_TREE_QUEUE, "remote.injector.tree");
-            if (properties.get(PROPS_FIELD_COMP_QUEUE)==null || properties.get(PROPS_FIELD_COMP_QUEUE).equals(""))
-                properties.put(PROPS_FIELD_COMP_QUEUE, "remote.injector.comp");
-            if (properties.get(PROPS_FIELD_GEAR_QUEUE)==null || properties.get(PROPS_FIELD_GEAR_QUEUE).equals(""))
-                properties.put(PROPS_FIELD_GEAR_QUEUE, "remote.injector.gear");
-        }
-
         return ret;
     }
 
     @Updated
     public static void updated(Dictionary properties) {
-        log.debug("{} is being updated by {}", new Object[]{INJECTOR_COMPONENT, Thread.currentThread().toString()});
-        log.debug("properties : {}", properties.toString());
-        if (conf == null && properties.size()>1 && isValid(properties))
+        if (conf == null && properties.size()>1 && isValid(properties)) {
+            log.debug("{} is being updated by {}", new Object[]{INJECTOR_COMPONENT, Thread.currentThread().toString()});
             conf = properties;
+        }
     }
 }
