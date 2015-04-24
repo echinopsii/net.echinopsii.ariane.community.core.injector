@@ -38,7 +38,7 @@ import java.util.ArrayList;
 @Instantiate
 public class InjectorWatBootstrap implements FaceletsResourceResolverService {
     private static final Logger log = LoggerFactory.getLogger(InjectorWatBootstrap.class);
-    private static final String INJECTOR_COMPONENT = "Ariane WAT Injector Component";
+    private static final String INJECTOR_COMPONENT = "Ariane Injector WAT Component";
 
     protected static ArrayList<MainMenuEntity> injectorMainMenuEntityList = new ArrayList<MainMenuEntity>() ;
     protected static ArrayList<TreeMenuEntity> injectorTreeEntityList     = new ArrayList<TreeMenuEntity>() ;
