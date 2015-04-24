@@ -38,6 +38,7 @@ public class RemoteComponentService {
         try {
             client = MomClientFactory.make((String) properties.get(MomClient.MOM_CLI));
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("Error while loading MoM client : " + e.getMessage());
             log.error("Provided MoM client : " + properties.get(MomClient.MOM_CLI));
             return;
@@ -46,6 +47,7 @@ public class RemoteComponentService {
         try {
             client.init(properties);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("Error while initializing MoM client : " + e.getMessage());
             log.error("Provided MoM host : " + properties.get(MomClient.MOM_HOST));
             log.error("Provided MoM port : " + properties.get(MomClient.MOM_PORT));
