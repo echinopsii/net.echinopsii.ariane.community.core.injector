@@ -57,7 +57,7 @@ public class RemoteTreeService {
             ritQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE);
 
         client.getServiceFactory().requestService(ritQueue, new RemoteComponentWorker());
-        log.info("Remote injector tree messaging service waiting message on  " + ritQueue + "...");
+        log.info("Ariane remote injector tree messaging service waiting message on  " + ritQueue + "...");
     }
 
     public void stop() throws Exception {

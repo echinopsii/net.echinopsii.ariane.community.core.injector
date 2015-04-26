@@ -59,7 +59,7 @@ public class RemoteComponentService {
             ricQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE);
 
         client.getServiceFactory().requestService(ricQueue, new RemoteComponentWorker());
-        log.info("Remote injector component messaging service waiting message on  " + ricQueue + "...");
+        log.info("Ariane remote injector component messaging service waiting message on  " + ricQueue + "...");
     }
 
     public void stop() throws Exception {
