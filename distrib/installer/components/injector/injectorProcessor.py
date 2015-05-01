@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os
+from components.injector.cuInjectorMessagingManagedServiceProcessor import injectorMessagingManagedServiceSyringe
 from components.injector.dbIDMMySQLPopulator import dbIDMMySQLPopulator
 from components.injector.cuInjectorComponentsRegistryProcessor import cpInjectorComponentsCacheConfFilePath, cuInjectorComponentsRegistryProcessor
 from components.injector.cuInjectorComponentsCacheProcessor import cpInjectorSharedComponentsCacheDir, cuInjectorComponentsCacheProcessor
@@ -38,6 +39,9 @@ class injectorProcessor:
         if not os.path.exists(self.injectorCachesDirPath):
             os.makedirs(self.injectorCachesDirPath, 0o755)
 
+        self.injectorMessagingSyringe = injectorMessagingManagedServiceSyringe(self.kernelRepositoryDirPath, silent)
+        self.injectorMessagingSyringe.shootBuilder()
+
         self.injectorComponentsCacheCUProcessor = cuInjectorComponentsCacheProcessor(self.injectorCachesDirPath)
         self.injectorComponentsRegistryCUProcessor = cuInjectorComponentsRegistryProcessor(self.kernelRepositoryDirPath)
 
@@ -47,6 +51,8 @@ class injectorProcessor:
         self.injectorIDMSQLPopulator = dbIDMMySQLPopulator(idmDBConfig)
 
     def process(self):
+        self.injectorMessagingSyringe.inject()
+
         self.injectorComponentsCacheCUProcessor.setKeyParamValue(cpInjectorSharedComponentsCacheDir.name, self.injectorCachesDirPath)
         self.injectorComponentsCacheCUProcessor.process()
 

@@ -1,0 +1,7 @@
+{
+    "##MHOST_FQDN": "localhost",
+    "##MHOST_PORT": "5672",
+    "##MHOST_USER": "ariane",
+    "##MHOST_PASSWD": "password",
+    "##MHOST_VHOST": "/ariane"
+}
