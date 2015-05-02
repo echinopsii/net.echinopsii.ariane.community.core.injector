@@ -75,11 +75,12 @@ public class InjectorMessagingBootstrap {
             while (conf==null)
                 Thread.sleep(100);
 
+            isStarted=true;
+
             remoteComponentService.start(conf);
             remoteGearService.start(conf);
             remoteTreeService.start(conf);
 
-            isStarted=true;
             log.info("{} is started", new Object[]{INJECTOR_COMPONENT});
         }
     }
