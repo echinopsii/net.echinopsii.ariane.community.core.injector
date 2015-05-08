@@ -3,5 +3,6 @@
     "##MHOST_PORT": "5672",
     "##MHOST_USER": "ariane",
     "##MHOST_PASSWD": "password",
-    "##MHOST_VHOST": "/ariane"
+    "##MHOST_VHOST": "/ariane",
+    "##ARIANE_OPS_TEAM": "ARIANEops"
 }

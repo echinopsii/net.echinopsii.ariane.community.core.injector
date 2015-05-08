@@ -17,6 +17,8 @@
 import getpass
 import json
 import os
+import platform
+import socket
 from tools.AConfParamNotNone import AConfParamNotNone
 from tools.AConfUnit import AConfUnit
 
@@ -83,12 +85,42 @@ class cpInjectorMessagingMoMHostVhost(AConfParamNotNone):
         self.value = None
 
 
+class cpInjectorArianeFQDN(AConfParamNotNone):
+
+    name = "##ARIANE_FQDN"
+    description = "Ariane server FQDN"
+    hide = False
+
+    def __init__(self):
+        self.value = None
+
+
+class cpInjectorArianeHost(AConfParamNotNone):
+
+    name = "##ARIANE_HOST"
+    description = "Ariane server hostname"
+    hide = False
+
+    def __init__(self):
+        self.value = None
+
+
+class cpInjectorArianeOPST(AConfParamNotNone):
+
+    name = "##ARIANE_OPS_TEAM"
+    description = "Ariane OPS team"
+    hide = False
+
+    def __init__(self):
+        self.value = None
+
+
 class cuInjectorMessagingManagedServiceProcessor(AConfUnit):
 
     def __init__(self, targetConfDir):
         self.confUnitName = "Injector Messaging Managed Service Processor"
-        self.confTemplatePath = os.path.abspath("resources/templates/components/net.echinopsii.ariane.community.core.injector.MessagingManagedService.properties.tpl")
-        self.confFinalPath = targetConfDir + "net.echinopsii.ariane.community.core.injector.MessagingManagedService.properties"
+        self.confTemplatePath = os.path.abspath("resources/templates/components/net.echinopsii.ariane.community.core.InjectorMessagingManagedService.properties.tpl")
+        self.confFinalPath = targetConfDir + "net.echinopsii.ariane.community.core.InjectorMessagingManagedService.properties"
 
         injectorMessagingMoMCliRBQVersion = cpInjectorMessagingMoMCliRBQVersion()
         injectorMessagingMoMHostFQDN = cpInjectorMessagingMoMHostFQDN()
@@ -96,6 +128,9 @@ class cuInjectorMessagingManagedServiceProcessor(AConfUnit):
         injectorMessagingMoMHostUser = cpInjectorMessagingMoMHostUser()
         injectorMessagingMoMHostPasswd = cpInjectorMessagingMoMHostPasswd()
         injectorMessagingMoMHostVhost = cpInjectorMessagingMoMHostVhost()
+        injectorArianeFQDN = cpInjectorArianeFQDN()
+        injectorArianeHost = cpInjectorArianeHost()
+        injectorArianeOPST = cpInjectorArianeOPST()
 
         self.paramsDictionary = {
             injectorMessagingMoMCliRBQVersion.name: injectorMessagingMoMCliRBQVersion,
@@ -103,7 +138,10 @@ class cuInjectorMessagingManagedServiceProcessor(AConfUnit):
             injectorMessagingMoMHostPort.name: injectorMessagingMoMHostPort,
             injectorMessagingMoMHostUser.name: injectorMessagingMoMHostUser,
             injectorMessagingMoMHostPasswd.name: injectorMessagingMoMHostPasswd,
-            injectorMessagingMoMHostVhost.name: injectorMessagingMoMHostVhost
+            injectorMessagingMoMHostVhost.name: injectorMessagingMoMHostVhost,
+            injectorArianeFQDN.name: injectorArianeFQDN,
+            injectorArianeHost.name: injectorArianeHost,
+            injectorArianeOPST.name: injectorArianeOPST
         }
 
 
@@ -121,21 +159,31 @@ class injectorMessagingManagedServiceSyringe:
         for key in self.injectorMessagingManagedServiceCUProcessor.getParamsKeysList():
 
             if (key == cpInjectorMessagingMoMHostFQDN.name or key == cpInjectorMessagingMoMHostPort.name or 
-                key == cpInjectorMessagingMoMHostUser.name or key == cpInjectorMessagingMoMHostPasswd.name) and not injectorMessagingManagedServiceConnectionDefined:
+                key == cpInjectorMessagingMoMHostUser.name or key == cpInjectorMessagingMoMHostPasswd.name) \
+                    and not injectorMessagingManagedServiceConnectionDefined:
 
-                momHostFQDNDefault   = self.injectorMessagingManagedServiceCUValues[cpInjectorMessagingMoMHostFQDN.name]
+                momHostFQDNDefault = self.injectorMessagingManagedServiceCUValues[cpInjectorMessagingMoMHostFQDN.name]
                 momHostFQDNDefaultUI = "[default - " + momHostFQDNDefault + "] "
+                momHostFQDN = momHostFQDNDefault
 
                 momHostPortDefault = self.injectorMessagingManagedServiceCUValues[cpInjectorMessagingMoMHostPort.name]
                 momHostPortDefaultUI = "[default - " + momHostPortDefault + "] "
+                momHostPort = int(momHostPortDefault)
 
                 momHostUserDefault = self.injectorMessagingManagedServiceCUValues[cpInjectorMessagingMoMHostUser.name]
                 momHostUserDefaultUI = "[default - " + momHostUserDefault + "] "
+                momHostUser = momHostUserDefault
 
                 momHostPasswordDefault = self.injectorMessagingManagedServiceCUValues[cpInjectorMessagingMoMHostPasswd.name]
+                momHostPassword = momHostPasswordDefault
 
                 momHostVhostDefault = self.injectorMessagingManagedServiceCUValues[cpInjectorMessagingMoMHostVhost.name]
                 momHostVhostDefaultUI = "[default - " + momHostVhostDefault + "] "
+                momHostVhost = momHostVhostDefault
+
+                arianeOpsTeamDefault = self.injectorMessagingManagedServiceCUValues[cpInjectorArianeOPST.name]
+                arianeOpsTeamDefaultUI = "[default - " + arianeOpsTeamDefault + "] "
+                arianeOpsTeam = arianeOpsTeamDefault
 
                 while not injectorMessagingManagedServiceConnectionDefined:
 
@@ -146,17 +194,12 @@ class injectorMessagingManagedServiceSyringe:
                         else:
                             momHostUserDefaultUI = "[default - " + momHostUser + "] "
                             momHostUserDefault = momHostUser
-                    else:
-                        momHostUser = momHostUserDefault
 
                     if not self.silent:
                         momHostPassword = getpass.getpass("%-- >> Define Injector Messaging RabbitMQ Password: ")
                         while momHostPassword == "" or momHostPassword is None:
                             momHostPassword = getpass.getpass("%-- >> Define Injector Messaging RabbitMQ Password: ")
                         momHostPasswordDefault = momHostPassword
-
-                    else:
-                        momHostPassword = momHostPasswordDefault
 
                     if not self.silent:
                         momHostFQDN = input("%-- >> Define Injector Messaging RabbitMQ server FQDN " + momHostFQDNDefaultUI + ": ")
@@ -165,55 +208,60 @@ class injectorMessagingManagedServiceSyringe:
                         else:
                             momHostFQDNDefaultUI = "[default - " + momHostFQDN + "] "
                             momHostFQDNDefault = momHostFQDN
-                    else:
-                        momHostFQDN = momHostFQDNDefault
 
                     if not self.silent:
                         momPortIsValid = False
                         momPortStr = ""
                         while not momPortIsValid:
-                            momPort = 0
+                            momHostPort = 0
                             momPortStr = input("%-- >> Define Injector Messaging RabbitMQ server port " + momHostPortDefaultUI + ": ")
                             if momPortStr == "" or momPortStr is None:
                                 momPortStr = momHostPortDefault
-                                momPort = int(momHostPortDefault)
+                                momHostPort = int(momHostPortDefault)
                                 momPortIsValid = True
                             else:
                                 try:
-                                    momPort = int(momPortStr)
-                                    if (momPort <= 0) or (momPort > 65535):
-                                        print("%-- !! Invalid Injector MoM Messaging RabbitMQ port " + str(momPort) + ": not in port range")
+                                    momHostPort = int(momPortStr)
+                                    if (momHostPort <= 0) or (momHostPort > 65535):
+                                        print("%-- !! Invalid Injector MoM Messaging RabbitMQ port " + str(momHostPort) + ": not in port range")
                                     else:
                                         momHostPortDefaultUI = "[default - " + momPortStr + "] "
                                         momHostPortDefault = momPortStr
                                         momPortIsValid = True
                                 except ValueError:
                                     print("%-- !! Invalid Injector MoM Messaging RabbitMQ port " + momPortStr + " : not a number")
-                    else:
-                        momPortStr = momHostPortDefault
-                        momPort = int(momPortStr)
 
                     if not self.silent:
                         momVhostIsValid = False
-                        momVhost = ""
+                        momHostVhost = ""
                         while not momVhostIsValid:
-                            momVhost = input("%-- >> Define Injector MoM Messaging RabbitMQ vhost " + momHostVhostDefaultUI + ": ")
-                            if momVhost != "":
+                            momHostVhost = input("%-- >> Define Injector MoM Messaging RabbitMQ vhost " + momHostVhostDefaultUI + ": ")
+                            if momHostVhost != "":
                                 momVhostIsValid = True
-                                momHostVhostDefault = momVhost
-                                momHostVhostDefaultUI = "[default - " + momVhost + "] "
+                                momHostVhostDefault = momHostVhost
+                                momHostVhostDefaultUI = "[default - " + momHostVhost + "] "
                             elif momHostVhostDefault != "":
-                                momVhost = momHostVhostDefault
+                                momHostVhost = momHostVhostDefault
                                 momVhostIsValid = True
-                    else:
-                        momVhost = momHostVhostDefault
 
                     injectorMessagingManagedServiceConnectionDefined = True
-                    self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostFQDN.name, momHostFQDN)
-                    self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostPort.name, momPort)
-                    self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostUser.name, momHostUser)
-                    self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostPasswd.name, momHostPassword)
-                    self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostVhost.name, momVhost)
+
+                if not self.silent:
+                    arianeOpsTeam = input("%-- >> Define Ariane OPS team name " + arianeOpsTeamDefaultUI + ": ")
+                    if arianeOpsTeam == "" or arianeOpsTeam is None:
+                        arianeOpsTeam = arianeOpsTeam
+                    else:
+                        arianeOpsTeamDefaultUI = "[default - " + arianeOpsTeam + "] "
+                        arianeOpsTeamDefault = arianeOpsTeam
+
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostFQDN.name, momHostFQDN)
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostPort.name, momHostPort)
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostUser.name, momHostUser)
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostPasswd.name, momHostPassword)
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostVhost.name, momHostVhost)
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorArianeFQDN.name, socket.getfqdn())
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorArianeHost, platform.node())
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorArianeOPST, arianeOpsTeam)
 
             elif key == cpInjectorMessagingMoMCliRBQVersion.name:
                 self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMCliRBQVersion.name, "0.6.2-SNAPSHOT")

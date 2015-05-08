@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
 
-@Component(managedservice="net.echinopsii.ariane.community.core.injector.MessagingManagedService")
+@Component(managedservice="net.echinopsii.ariane.community.core.InjectorMessagingManagedService")
 @Instantiate
 public class InjectorMessagingBootstrap {
     private static final Logger log = LoggerFactory.getLogger(InjectorMessagingBootstrap.class);
