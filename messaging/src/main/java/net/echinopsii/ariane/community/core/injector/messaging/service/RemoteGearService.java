@@ -20,7 +20,7 @@
 package net.echinopsii.ariane.community.core.injector.messaging.service;
 
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
-import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteComponentWorker;
+import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteGearWorker;
 import net.echinopsii.ariane.community.core.messaging.api.MomClient;
 import net.echinopsii.ariane.community.core.messaging.api.MomClientFactory;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class RemoteGearService {
         if (properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE)!=null)
             rigQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE);
 
-        client.getServiceFactory().requestService(rigQueue, new RemoteComponentWorker());
+        client.getServiceFactory().requestService(rigQueue, new RemoteGearWorker());
         log.info("Ariane Injector Remote Gear Messaging Service is waiting message on  " + rigQueue + "...");
     }
 

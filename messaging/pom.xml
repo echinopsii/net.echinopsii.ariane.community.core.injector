@@ -24,6 +24,11 @@
             <artifactId>net.echinopsii.ariane.community.core.messaging.api</artifactId>
             <version>${version.net.echinopsii.ariane.core.messaging}</version>
         </dependency>
+        <dependency>
+            <groupId>net.echinopsii.ariane.community.core.portal</groupId>
+            <artifactId>net.echinopsii.ariane.community.core.portal.base</artifactId>
+            <version>${version.net.echinopsii.ariane.core.portal}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -20,7 +20,7 @@
 package net.echinopsii.ariane.community.core.injector.messaging.service;
 
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
-import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteComponentWorker;
+import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteTreeWorker;
 import net.echinopsii.ariane.community.core.messaging.api.MomClient;
 import net.echinopsii.ariane.community.core.messaging.api.MomClientFactory;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ public class RemoteTreeService {
         if (properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE)!=null)
             ritQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE);
 
-        client.getServiceFactory().requestService(ritQueue, new RemoteComponentWorker());
+        client.getServiceFactory().requestService(ritQueue, new RemoteTreeWorker());
         log.info("Ariane Injector Remote Tree Messaging Service is waiting message on  " + ritQueue + "...");
     }
 
