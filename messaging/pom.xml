@@ -20,9 +20,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.echinopsii.ariane.community.core.messaging</groupId>
-            <artifactId>net.echinopsii.ariane.community.core.messaging.api</artifactId>
-            <version>${version.net.echinopsii.ariane.core.messaging}</version>
+            <groupId>net.echinopsii.ariane.community.messaging</groupId>
+            <artifactId>net.echinopsii.ariane.community.messaging.api</artifactId>
+            <version>${version.net.echinopsii.ariane.messaging}</version>
         </dependency>
         <dependency>
             <groupId>net.echinopsii.ariane.community.core.portal</groupId>

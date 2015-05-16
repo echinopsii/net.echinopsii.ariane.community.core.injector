@@ -19,8 +19,8 @@
 
 package net.echinopsii.ariane.community.core.injector.messaging.worker;
 
-import net.echinopsii.ariane.community.core.messaging.api.AppMsgWorker;
-import net.echinopsii.ariane.community.core.messaging.api.MomMsgTranslator;
+import net.echinopsii.ariane.community.messaging.api.AppMsgWorker;
+import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

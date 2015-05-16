@@ -20,8 +20,8 @@
 package net.echinopsii.ariane.community.core.injector.messaging.worker;
 
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
-import net.echinopsii.ariane.community.core.messaging.api.AppMsgWorker;
-import net.echinopsii.ariane.community.core.messaging.api.MomMsgTranslator;
+import net.echinopsii.ariane.community.messaging.api.AppMsgWorker;
+import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
 import net.echinopsii.ariane.community.core.portal.base.json.TreeMenuEntityJSON;
 import net.echinopsii.ariane.community.core.portal.base.model.MainMenuEntity;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;

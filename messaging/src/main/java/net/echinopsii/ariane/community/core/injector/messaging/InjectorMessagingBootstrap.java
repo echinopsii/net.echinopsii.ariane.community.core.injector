@@ -23,7 +23,7 @@ import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteCom
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteTreeService;
 import net.echinopsii.ariane.community.core.portal.base.plugin.TreeMenuRootsRegistry;
-import net.echinopsii.ariane.community.core.messaging.api.MomClient;
+import net.echinopsii.ariane.community.messaging.api.MomClient;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,7 +116,7 @@ public class InjectorMessagingBootstrap {
             log.error(MomClient.MOM_PSWD + " is not defined.");
         }
 
-        if (ret && !properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.core.messaging.rabbitmq.Client")) {
+        if (ret && !properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.rabbitmq.Client")) {
             ret = false;
             log.error("MoM client implementation not supported yet : {}", new Object[]{properties.get(MomClient.MOM_CLI)});
         } else if (ret) {

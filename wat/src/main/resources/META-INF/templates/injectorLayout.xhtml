@@ -12,10 +12,10 @@
                         <p:layoutUnit id="injectorsMenu" position="west" size="320" header="Injectors menu" resizable="true"
                                       collapsible="true" effect="fade" collapsed="#{injectorLayoutController.collapsed}" styleClass="arianeTransparentBg3-div arianeTransparentBg3-uiwc">
                             <h:form id="injMenuForm">
-                                <p:panelMenu model="#{injectorMenuController.model}" styleClass="arianeTransparentBg3-uiwc"/>
+                                <p:panelMenu model="#{injectorMenuController.model}" styleClass="arineDataTableMenuForm arianeTransparentBg3-uiwc arianeDataTable"/>
                             </h:form>
                         </p:layoutUnit>
-                        <p:layoutUnit id="injectorContent" position="center" resizable="false" styleClass="arianeTransparentBg3-div arianeTransparentBg3-uiwc">
+                        <p:layoutUnit id="injectorContent" position="center" resizable="false" styleClass="arianeTransparentBg3-div arianeTransparentBg3-uiwc arianeDataTable">
                             <p:breadCrumb model="#{injectorBreadCrumController.model}" styleClass="injBreadCrumb"/>
                             <br/><br/>
                             <ui:insert name="injectorContent"></ui:insert>

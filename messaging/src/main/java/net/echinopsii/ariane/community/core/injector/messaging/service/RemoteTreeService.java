@@ -21,8 +21,8 @@ package net.echinopsii.ariane.community.core.injector.messaging.service;
 
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
 import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteTreeWorker;
-import net.echinopsii.ariane.community.core.messaging.api.MomClient;
-import net.echinopsii.ariane.community.core.messaging.api.MomClientFactory;
+import net.echinopsii.ariane.community.messaging.api.MomClient;
+import net.echinopsii.ariane.community.messaging.api.MomClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
