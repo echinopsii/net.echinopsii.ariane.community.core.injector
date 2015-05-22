@@ -1,7 +1,8 @@
 /**
- *
- *
- * Copyright (C) 2015 mffrench
+ * Injector wat
+ * Injectors External Configuration Scheduling Controller
+ * Copyright (C) 2015 echinopsii
+ * Author: mffrench
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,5 +19,9 @@
  */
 package net.echinopsii.ariane.community.core.injector.wat.controller;
 
+import net.echinopsii.ariane.community.core.injector.wat.InjectorWatBootstrap;
+import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
+
 public class InjectorExternalConfigurationScheduling {
+
 }

@@ -1,7 +1,8 @@
 /**
- *
- *
- * Copyright (C) 2015 mffrench
+ * Injector wat
+ * Injectors External Tree Menu Entity Controller
+ * Copyright (C) 2015 echinopsii
+ * Author: mffrench
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -18,5 +19,24 @@
  */
 package net.echinopsii.ariane.community.core.injector.wat.controller;
 
+import net.echinopsii.ariane.community.core.injector.wat.InjectorWatBootstrap;
+import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
+
 public class InjectorExternalTreeMenuEntity {
+    private String treeMenuEntityID = "not defined";
+    private TreeMenuEntity treeMenuEntity;
+
+    public String getTreeMenuEntityID() {
+        return treeMenuEntityID;
+    }
+
+    public void setTreeMenuEntityID(String treeMenuEntityID) {
+        this.treeMenuEntityID = treeMenuEntityID;
+    }
+
+    public TreeMenuEntity getTreeMenuEntity() {
+        if (treeMenuEntity == null && treeMenuEntityID != null)
+            treeMenuEntity = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromID(treeMenuEntityID);
+        return treeMenuEntity;
+    }
 }

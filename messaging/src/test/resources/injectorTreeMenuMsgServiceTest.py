@@ -92,12 +92,12 @@ result = requestor.call({'OPERATION': 'REGISTER', 'TREE_MENU_ENTITY': '{"id": "s
 
 result = requestor.call({'OPERATION': 'SET_PARENT', 'TREE_MENU_ENTITY_ID': 'systemDir', 'TREE_MENU_ENTITY_PARENT_ID': idMap})
 
-result = requestor.call({'OPERATION': 'REGISTER', 'TREE_MENU_ENTITY': '{"id": "dockerLeaf", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?dockerLeaf", '
+result = requestor.call({'OPERATION': 'REGISTER', 'TREE_MENU_ENTITY': '{"id": "docker", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?id=docker", '
                                                                       '"description": "Docker injector", "icon": "cog", "displayRoles": [], '
                                                                       '"displayPermissions": []}'})
 
-result = requestor.call({'OPERATION': 'SET_PARENT', 'TREE_MENU_ENTITY_ID': 'dockerLeaf', 'TREE_MENU_ENTITY_PARENT_ID': 'systemDir'})
+result = requestor.call({'OPERATION': 'SET_PARENT', 'TREE_MENU_ENTITY_ID': 'docker', 'TREE_MENU_ENTITY_PARENT_ID': 'systemDir'})
 
-result = requestor.call({'OPERATION': 'UPDATE', 'TREE_MENU_ENTITY': '{"id": "dockerLeaf", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?dockerLeaf", '
+result = requestor.call({'OPERATION': 'UPDATE', 'TREE_MENU_ENTITY': '{"id": "docker", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?id=docker", '
                                                                       '"description": "Docker injector", "icon": "icon-cog", "displayRoles": [], '
                                                                       '"displayPermissions": []}'})

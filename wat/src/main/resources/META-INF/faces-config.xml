@@ -28,4 +28,40 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>injectorExternalTreeMenuEntity</managed-bean-name>
+        <managed-bean-class>net.echinopsii.ariane.community.core.injector.wat.controller.InjectorExternalTreeMenuEntity</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>injectorExternalCacheComponents</managed-bean-name>
+        <managed-bean-class>net.echinopsii.ariane.community.core.injector.wat.controller.InjectorExternalCacheComponents</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>injectorExternalCacheGears</managed-bean-name>
+        <managed-bean-class>net.echinopsii.ariane.community.core.injector.wat.controller.InjectorExternalCacheGears</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>injectorExternalConfigurationComponentsCache</managed-bean-name>
+        <managed-bean-class>net.echinopsii.ariane.community.core.injector.wat.controller.InjectorExternalConfigurationComponentsCache</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>injectorExternalConfigurationGearsCache</managed-bean-name>
+        <managed-bean-class>net.echinopsii.ariane.community.core.injector.wat.controller.InjectorExternalConfigurationGearsCache</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>injectorExternalConfigurationScheduling</managed-bean-name>
+        <managed-bean-class>net.echinopsii.ariane.community.core.injector.wat.controller.InjectorExternalConfigurationScheduling</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+
 </faces-config>
