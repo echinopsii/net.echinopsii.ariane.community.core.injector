@@ -73,8 +73,6 @@ connection = pika.BlockingConnection(parameters)
 requestor = Requestor(connection, 'remote.injector.tree')
 requestor.start()
 
-requestor.call('hello!')
-
 result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITIES'})
 
 result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITY_I', 'TREE_MENU_ENTITY_ID': 'mappingDir'})
@@ -87,17 +85,22 @@ result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITY_C', 'TREE_MENU_ENTIT
 result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITY_C', 'TREE_MENU_ENTITY_CONTEXT_ADDRESS': '/ariane/views/injectors/tibcorv.jsf'})
 
 result = requestor.call({'OPERATION': 'REGISTER', 'TREE_MENU_ENTITY': '{"id": "systemDir", "value": "System", "type": 2, "contextAddress": "", '
-                                                             '"description": "", "icon": "cog", "displayRoles": [], '
-                                                             '"displayPermissions": []}'})
+                                                             '"description": "", "icon": "cog", "displayRoles": ["sysadmin"], '
+                                                             '"displayPermissions": ["injMapSysDocker:display"]}'})
 
 result = requestor.call({'OPERATION': 'SET_PARENT', 'TREE_MENU_ENTITY_ID': 'systemDir', 'TREE_MENU_ENTITY_PARENT_ID': idMap})
 
 result = requestor.call({'OPERATION': 'REGISTER', 'TREE_MENU_ENTITY': '{"id": "docker", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?id=docker", '
-                                                                      '"description": "Docker injector", "icon": "cog", "displayRoles": [], '
-                                                                      '"displayPermissions": []}'})
+                                                                      '"description": "Docker injector", "icon": "cog", "displayRoles": ["sysadmin", "sysreviewer"], '
+                                                                      '"displayPermissions": ["injMapSysDocker:display"]}'})
 
 result = requestor.call({'OPERATION': 'SET_PARENT', 'TREE_MENU_ENTITY_ID': 'docker', 'TREE_MENU_ENTITY_PARENT_ID': 'systemDir'})
 
 result = requestor.call({'OPERATION': 'UPDATE', 'TREE_MENU_ENTITY': '{"id": "docker", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?id=docker", '
-                                                                      '"description": "Docker injector", "icon": "icon-cog", "displayRoles": [], '
-                                                                      '"displayPermissions": []}'})
+                                                                      '"description": "Docker injector", "icon": "icon-cog", "displayRoles": ["sysadmin", "sysreviewer"], '
+                                                                      '"displayPermissions": ["injMapSysDocker:display"]}'})
+
+result = requestor.call({'OPERATION': 'UPDATE', 'TREE_MENU_ENTITY': '{"id": "docker", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?id=docker", '
+                                                                    '"description": "Docker injector", "icon": "icon-cog", "displayRoles": ["sysadmin", "sysreviewer"], '
+                                                                    '"displayPermissions": ["injMapSysDocker:display"], "otherActionsRoles": {"action": ["sysadmin"]},'
+                                                                    '"otherActionsPerms": {"action": ["injMapSysDocker:action"]}}'})

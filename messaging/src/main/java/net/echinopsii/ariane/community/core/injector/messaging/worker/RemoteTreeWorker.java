@@ -148,9 +148,13 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
                                 entityToUpdate.setDescription(entity.getDescription());
                                 entityToUpdate.setIcon(entity.getIcon());
                                 entityToUpdate.getDisplayRoles().clear();
-                                entityToUpdate.getDisplayRoles().addAll(entity.getDisplayPermissions());
+                                entityToUpdate.getDisplayRoles().addAll(entity.getDisplayRoles());
                                 entityToUpdate.getDisplayPermissions().clear();
                                 entityToUpdate.getDisplayPermissions().addAll(entity.getDisplayPermissions());
+                                entityToUpdate.getOtherActionsRoles().clear();
+                                entityToUpdate.getOtherActionsRoles().putAll(entity.getOtherActionsRoles());
+                                entityToUpdate.getOtherActionsPerms().clear();
+                                entityToUpdate.getOtherActionsPerms().putAll(entity.getOtherActionsPerms());
                                 reply.put(REPLY_RC, 0);
                                 reply.put(MomMsgTranslator.MSG_BODY, "Tree Menu Entity Registered successfully...");
                             }
