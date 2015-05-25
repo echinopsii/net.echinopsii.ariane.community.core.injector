@@ -10,7 +10,7 @@
                     <p:layout>
                         <p:ajax event="toggle" listener="#{injectorLayoutController.onToggle}" />
                         <p:layoutUnit id="injectorsMenu" position="west" size="320" header="Injectors menu" resizable="true"
-                                      collapsible="true" effect="fade" collapsed="#{injectorLayoutController.collapsed}" styleClass="arianeTransparentBg3-div arianeTransparentBg3-uiwc">
+                                      collapsible="true" effect="fade" collapsed="#{injectorLayoutController.collapsed}" styleClass="arianeDataTableLayout arianeDataTable arianeTransparentBg3-div arianeTransparentBg3-uiwc">
                             <h:form id="injMenuForm">
                                 <p:panelMenu model="#{injectorMenuController.model}" styleClass="arineDataTableMenuForm arianeTransparentBg3-uiwc arianeDataTable"/>
                             </h:form>
@@ -33,7 +33,6 @@
                         $("#injectorBg").css({height: $(document).height() - 43});
                     else
                         $("#injectorBg").css({height: $(document).height() - 48});
-
                 }
             }, 100);
 

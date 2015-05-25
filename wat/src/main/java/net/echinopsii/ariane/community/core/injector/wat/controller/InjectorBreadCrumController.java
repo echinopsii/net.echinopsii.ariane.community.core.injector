@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.faces.context.FacesContext;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Injector bread crum controller transform injector roots registry into primefaces menu model to be used in injector layout bread crum component.<br/>
@@ -75,9 +76,15 @@ public class InjectorBreadCrumController {
     public MenuModel getModel() {
         FacesContext context = FacesContext.getCurrentInstance();
         String contextAddress = MAIN_MENU_INJECTOR_CONTEXT + context.getExternalContext().getRequestServletPath();
+        Map map = context.getExternalContext().getRequestParameterMap();
+
         ArrayList<TreeMenuEntity> orderedBreadScrumMenuFromRootToLeaf = new ArrayList<TreeMenuEntity>();
         if (InjectorWatBootstrap.getTreeMenuRootsRegistry()!=null) {
-            TreeMenuEntity leaf   = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromContextAddress(contextAddress);
+            TreeMenuEntity leaf   = null;
+            if (contextAddress.contains("external") && map.get("id")!=null)
+                leaf = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromID((String)map.get("id"));
+            else
+                leaf = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromContextAddress(contextAddress);
             if (leaf!=null) {
                 orderedBreadScrumMenuFromRootToLeaf.add(0,leaf);
                 TreeMenuEntity parent = leaf.getParentTreeMenuEntity();
