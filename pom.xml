@@ -5,7 +5,7 @@
     <!-- General information -->
     <groupId>net.echinopsii.ariane.community.core</groupId>
     <artifactId>net.echinopsii.ariane.community.core.injector</artifactId>
-    <version>0.6.2-SNAPSHOT</version>
+    <version>0.6.2</version>
     <name>Ariane Community Core Injector Parent</name>
     <packaging>pom</packaging>
 
