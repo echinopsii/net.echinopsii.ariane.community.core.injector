@@ -260,8 +260,8 @@ class injectorMessagingManagedServiceSyringe:
                 self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostPasswd.name, momHostPassword)
                 self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMHostVhost.name, momHostVhost)
                 self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorArianeFQDN.name, socket.getfqdn())
-                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorArianeHost, platform.node())
-                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorArianeOPST, arianeOpsTeam)
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorArianeHost.name, platform.node())
+                self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorArianeOPST.name, arianeOpsTeam)
 
             elif key == cpInjectorMessagingMoMCliRBQVersion.name:
                 self.injectorMessagingManagedServiceCUProcessor.setKeyParamValue(cpInjectorMessagingMoMCliRBQVersion.name, "0.6.2-SNAPSHOT")
