@@ -61,7 +61,7 @@ public class RemoteTreeService {
     }
 
     public void stop() throws Exception {
-        log.info("Stop remote injector tree messaging service ...");
+        log.info("Stop Injector Remote Tree Messaging service ...");
         if (client!=null)
             client.close();
     }

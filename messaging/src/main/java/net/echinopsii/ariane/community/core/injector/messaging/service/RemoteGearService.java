@@ -61,7 +61,7 @@ public class RemoteGearService {
     }
 
     public void stop() throws Exception {
-        log.info("Stop remote injector gear messaging service ...");
+        log.info("Stop Injector Remote Gear Messaging Service ...");
         if (client!=null)
             client.close();
     }

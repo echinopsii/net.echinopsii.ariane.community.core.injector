@@ -19,6 +19,7 @@
 
 package net.echinopsii.ariane.community.core.injector.messaging;
 
+import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteCacheFactoryService;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteComponentService;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteTreeService;
@@ -43,6 +44,7 @@ public class InjectorMessagingBootstrap {
     private static Dictionary conf = null;
     private boolean isStarted = false;
 
+    private RemoteCacheFactoryService remoteCacheFactoryService = new RemoteCacheFactoryService();
     private RemoteComponentService remoteComponentService = new RemoteComponentService();
     private RemoteGearService remoteGearService = new RemoteGearService();
     private RemoteTreeService remoteTreeService = new RemoteTreeService();
@@ -77,9 +79,10 @@ public class InjectorMessagingBootstrap {
 
             isStarted=true;
 
+            remoteCacheFactoryService.start(conf);
+            remoteTreeService.start(conf);
             remoteComponentService.start(conf);
             remoteGearService.start(conf);
-            remoteTreeService.start(conf);
 
             log.info("{} is started", new Object[]{INJECTOR_COMPONENT});
         }
@@ -90,6 +93,7 @@ public class InjectorMessagingBootstrap {
         remoteComponentService.stop();
         remoteGearService.stop();
         remoteTreeService.stop();
+        remoteCacheFactoryService.stop();
         log.info("{} is stopped", new Object[]{INJECTOR_COMPONENT});
     }
 

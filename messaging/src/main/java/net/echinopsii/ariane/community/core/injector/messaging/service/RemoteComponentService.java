@@ -63,7 +63,7 @@ public class RemoteComponentService {
     }
 
     public void stop() throws Exception {
-        log.info("Stop remote injector component messaging service ...");
+        log.info("Stop Injector Remote Component Messaging Service ...");
         if (client!=null)
             client.close();
     }
