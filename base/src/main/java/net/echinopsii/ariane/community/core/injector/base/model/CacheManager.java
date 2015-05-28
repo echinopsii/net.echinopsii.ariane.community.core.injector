@@ -22,6 +22,7 @@ package net.echinopsii.ariane.community.core.injector.base.model;
 import org.infinispan.Cache;
 
 import java.io.File;
+import java.util.Dictionary;
 import java.util.Properties;
 
 public interface CacheManager {

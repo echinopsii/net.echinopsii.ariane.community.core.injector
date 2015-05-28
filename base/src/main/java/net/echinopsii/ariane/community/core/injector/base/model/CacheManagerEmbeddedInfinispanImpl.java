@@ -21,6 +21,7 @@ package net.echinopsii.ariane.community.core.injector.base.model;
 
 import org.infinispan.Cache;
 import org.infinispan.configuration.cache.*;
+import org.infinispan.eviction.EvictionStrategy;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Dictionary;
 import java.util.Properties;
 
 public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
@@ -35,6 +37,16 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
 
     private EmbeddedCacheManager manager = null;
     private static CacheManagerEmbeddedInfinispanImpl INSTANCE = null;
+
+    public static final String INJECTOR_CACHE_MGR_NAME = "ariane.community.injector.cache.mgr.name";
+    public static final String INJECTOR_CACHE_NAME = "ariane.community.injector.cache.name";
+    public static final String INJECTOR_CACHE_EVICTION_STRATEGY = "ariane.community.injector.cache.eviction.strategy";
+    public static final String INJECTOR_CACHE_EVICTION_MAX_ENTRIES = "ariane.community.injector.cache.eviction.max.entries";
+    public static final String INJECTOR_CACHE_PERSISTENCE_PASSIVATION = "ariane.community.injector.cache.persistence.passivation";
+    public static final String INJECTOR_CACHE_PERSISTENCE_SF_FETCH = "ariane.community.injector.cache.persistence.sf.fetch";
+    public static final String INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF = "ariane.community.injector.cache.persistence.sf.ignore.diff";
+    public static final String INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP = "ariane.community.injector.cache.persistence.sf.purge.startup";
+    public static final String INJECTOR_CACHE_PERSISTENCE_SF_LOCATION = "ariane.community.injector.cache.persistence.sf.location";
 
     /**
      * Factory method for this singleton.
@@ -48,6 +60,68 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
         return INSTANCE;
     }
 
+    public static boolean isValidProperties(Dictionary properties) {
+        boolean ret = true;
+        if (properties.get(INJECTOR_CACHE_MGR_NAME)==null) ret = false;
+        if (ret && properties.get(INJECTOR_CACHE_NAME)==null) ret = false;
+
+        if (ret && (
+                    (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)==null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null) ||
+                    (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null)
+            )) ret = false;
+        else if (ret && properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null) {
+            if (!(properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals(EvictionStrategy.LIRS) ||
+                properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals(EvictionStrategy.LRU) ||
+                properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals(EvictionStrategy.NONE) ||
+                properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals(EvictionStrategy.UNORDERED)))
+                ret = false;
+        }
+
+        if (ret && properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION)==null) ret = false;
+        else if (ret && !(
+                            properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION) instanceof String &&
+                            (
+                                    ((String)properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION)).toLowerCase().equals("true") ||
+                                    ((String)properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION)).toLowerCase().equals("false")
+                            )
+                        )
+                ) ret = false;
+
+        if (ret && properties.get(INJECTOR_CACHE_PERSISTENCE_SF_FETCH)==null) ret = false;
+        else if (ret && !(
+                            properties.get(INJECTOR_CACHE_PERSISTENCE_SF_FETCH) instanceof String &&
+                            (
+                                    ((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_FETCH)).toLowerCase().equals("true") ||
+                                    ((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_FETCH)).toLowerCase().equals("false")
+                            )
+                        )
+                ) ret = false;
+
+        if (ret && properties.get(INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF)==null) ret = false;
+        else if (ret && !(
+                            properties.get(INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF) instanceof String &&
+                            (
+                                    ((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF)).toLowerCase().equals("true") ||
+                                    ((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF)).toLowerCase().equals("false")
+                            )
+                        )
+                ) ret = false;
+
+        if (ret && properties.get(INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP)==null) ret = false;
+        else if (ret && !(
+                        properties.get(INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP) instanceof String &&
+                        (
+                                ((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP)).toLowerCase().equals("true") ||
+                                ((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP)).toLowerCase().equals("false")
+                        )
+                    )
+                ) ret = false;
+
+        if (ret && properties.get(INJECTOR_CACHE_PERSISTENCE_SF_LOCATION)==null) ret = false;
+
+        return ret;
+    }
+
     @Override
     public CacheManager start(File confFile) {
         try {
@@ -56,7 +130,6 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
             log.error("Error while initializing Infinispan Embedded Cache Manager !");
             e.printStackTrace();
         }
-
         return this;
     }
 

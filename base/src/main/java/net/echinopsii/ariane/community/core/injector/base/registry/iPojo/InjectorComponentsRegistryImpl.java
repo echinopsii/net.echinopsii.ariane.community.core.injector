@@ -63,7 +63,7 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
                     log.error("infinispan configuration file path ({}) is not correct ! ", new Object[]{(String)path});
                     infConfFile = null;
                 }
-            } else {
+            } else if (!CacheManagerEmbeddedInfinispanImpl.isValidProperties(properties)) {
                 log.error("{} configuration parameters is not defined correctly !", new Object[]{InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY});
             }
         }
