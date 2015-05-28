@@ -55,6 +55,7 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
         boolean ret = false;
         if (properties!=null) {
             Object path = properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
+            config = properties;
             if (path != null && path instanceof String) {
                 infConfFile = new File((String)path);
                 if (infConfFile.exists() && infConfFile.isFile())
@@ -63,7 +64,7 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
                     log.error("infinispan configuration file path ({}) is not correct ! ", new Object[]{(String)path});
                     infConfFile = null;
                 }
-            } else {
+            } else if (!CacheManagerEmbeddedInfinispanImpl.isValidProperties(properties)) {
                 log.error("{} configuration parameters is not defined correctly !", new Object[]{InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY});
             }
         }
@@ -91,7 +92,9 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
 
     public void startRegistry() {
         if (infConfFile!=null) {
-            cacheManager = new CacheManagerEmbeddedInfinispanImpl().start(infConfFile);
+            cacheManager = new CacheManagerEmbeddedInfinispanImpl();
+            if (infConfFile!=null) cacheManager.start(infConfFile);
+            else cacheManager.start(config);
             super.setCacheManager(cacheManager);
             super.start();
             //TODO: investigate infinispan purgeOnStartup instability

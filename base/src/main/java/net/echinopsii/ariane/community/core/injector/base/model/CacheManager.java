@@ -27,6 +27,9 @@ import java.util.Properties;
 
 public interface CacheManager {
     public CacheManager start(File confFile);
+
+    CacheManager start(Dictionary properties);
+
     public CacheManager stop();
     public boolean      isStarted();
     public Cache getCache(String id);

@@ -21,6 +21,8 @@ package net.echinopsii.ariane.community.core.injector.base.model;
 
 import org.infinispan.Cache;
 import org.infinispan.configuration.cache.*;
+import org.infinispan.configuration.global.GlobalConfiguration;
+import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.eviction.EvictionStrategy;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
@@ -62,7 +64,7 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
 
     public static boolean isValidProperties(Dictionary properties) {
         boolean ret = true;
-        if (properties.get(INJECTOR_CACHE_MGR_NAME)==null) ret = false;
+        if (properties.get(INJECTOR_CACHE_MGR_NAME)==null && properties.get(INJECTOR_CACHE_MGR_NAME) instanceof String) ret = false;
         if (ret && properties.get(INJECTOR_CACHE_NAME)==null) ret = false;
 
         if (ret && (
@@ -70,10 +72,10 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
                     (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null)
             )) ret = false;
         else if (ret && properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null) {
-            if (!(properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals(EvictionStrategy.LIRS) ||
-                properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals(EvictionStrategy.LRU) ||
-                properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals(EvictionStrategy.NONE) ||
-                properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals(EvictionStrategy.UNORDERED)))
+            if (!(  properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("LIRS") ||
+                    properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("LRU") ||
+                    properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("NONE") ||
+                    properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("UNORDERED")))
                 ret = false;
         }
 
@@ -130,6 +132,32 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
             log.error("Error while initializing Infinispan Embedded Cache Manager !");
             e.printStackTrace();
         }
+        return this;
+    }
+
+    @Override
+    public CacheManager start(Dictionary properties) {
+        GlobalConfigurationBuilder globalConfigurationBuilder = new GlobalConfigurationBuilder();
+        globalConfigurationBuilder.globalJmxStatistics().enable().cacheManagerName((String)properties.get(INJECTOR_CACHE_MGR_NAME));
+        GlobalConfiguration globalConfiguration = globalConfigurationBuilder.build();
+
+        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+        if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null) {
+            EvictionStrategy strategy = null;
+            if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("LIRS")) strategy = EvictionStrategy.LIRS;
+            if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("LRU")) strategy = EvictionStrategy.LRU;
+            if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("NONE")) strategy = EvictionStrategy.NONE;
+            if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("UNORDERED")) strategy = EvictionStrategy.UNORDERED;
+            configurationBuilder.eviction().strategy(strategy).maxEntries(new Integer((String)properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)));
+        }
+        PersistenceConfigurationBuilder persistenceConfigurationBuilder = configurationBuilder.persistence();
+        if (properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION).equals("true"))
+            persistenceConfigurationBuilder.passivation(true);
+        else
+            persistenceConfigurationBuilder.passivation(false);
+
+        //TODO: TOBE CONTINUED ;)
+
         return this;
     }
 

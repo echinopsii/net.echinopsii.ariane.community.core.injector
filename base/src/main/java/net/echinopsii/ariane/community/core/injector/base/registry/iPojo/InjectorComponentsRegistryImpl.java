@@ -48,12 +48,14 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
     private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME  = "Ariane Injector Shared Components Cache";
 
     private static String registryName;
+    private static Dictionary config = null;
     private static File         infConfFile  = null;
     private static CacheManager cacheManager = null;
 
     public static boolean isValid(Dictionary properties) {
         boolean ret = false;
         if (properties!=null) {
+            config = properties;
             Object path = properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
             if (path != null && path instanceof String) {
                 infConfFile = new File((String)path);
@@ -93,7 +95,9 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
 
     public void startRegistry() {
         if (infConfFile!=null) {
-            cacheManager = new CacheManagerEmbeddedInfinispanImpl().start(infConfFile);
+            cacheManager = new CacheManagerEmbeddedInfinispanImpl();
+            if (infConfFile!=null) cacheManager.start(infConfFile);
+            else cacheManager.start(config);
             super.setCacheManager(cacheManager);
             super.start();
             log.info("{} is started", new Object[]{registryName});
