@@ -37,8 +37,6 @@ public interface InjectorRegistryFactory {
 
     public static final String INJECTOR_REGISTRY_TYPE="ariane.community.injector.registry.type";
 
-    public boolean isValidProperties(Dictionary properties);
-
     public InjectorGearsRegistry makeGearsRegistry(Dictionary properties);
     public InjectorComponentsRegistry makeComponentsRegistry(Dictionary properties);
 }

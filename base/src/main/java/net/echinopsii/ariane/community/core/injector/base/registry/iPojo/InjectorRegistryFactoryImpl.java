@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
+import java.util.HashMap;
 
 @Component
 @Provides
@@ -37,6 +38,8 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
 
     private static final String INJECTOR_REGISTRY_FACTORY_SERVICE_NAME = "Ariane Injector Registry Factory";
 
+    private HashMap<String, InjectorGearsRegistry> injectorGearsRegistryHashMap = new HashMap<>();
+    private HashMap<String, InjectorComponentsRegistry> injectorComponentsRegistryHashMap = new HashMap<>();
 
     @Validate
     public void validate() {
@@ -48,9 +51,7 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
         log.info("{} is stopped", new Object[]{INJECTOR_REGISTRY_FACTORY_SERVICE_NAME});
     }
 
-
-    @Override
-    public boolean isValidProperties(Dictionary properties) {
+    private static boolean isValid(Dictionary properties) {
         boolean ret = false;
         if (properties!=null) {
             Object registryType = properties.get(InjectorRegistryFactory.INJECTOR_REGISTRY_TYPE);
@@ -102,15 +103,24 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
         return ret;
     }
 
+    private boolean isValidProperties(Dictionary properties) {
+        return isValid(properties);
+    }
+
     @Override
     public InjectorGearsRegistry makeGearsRegistry(Dictionary properties) {
         InjectorGearsRegistry ret = null;
         properties.put(InjectorRegistryFactory.INJECTOR_REGISTRY_TYPE, InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_TYPE);
         if (isValidProperties(properties)) {
-            String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME);
-            String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID);
-            String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME);
-            ret = new InjectorGearsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).setRegistryCacheName(cacheName);
+            if (injectorGearsRegistryHashMap.containsKey((String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID)))
+                ret = injectorGearsRegistryHashMap.get((String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID));
+            else {
+                String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME);
+                String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID);
+                String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME);
+                ret = new InjectorGearsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).setRegistryCacheName(cacheName);
+                injectorGearsRegistryHashMap.put((String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID), ret);
+            }
         }
         return ret;
     }
@@ -120,10 +130,15 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
         InjectorComponentsRegistry ret = null;
         properties.put(InjectorRegistryFactory.INJECTOR_REGISTRY_TYPE, InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_TYPE);
         if (isValidProperties(properties)) {
-            String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME);
-            String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
-            String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME);
-            ret = new InjectorComponentsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).setRegistryCacheName(cacheName);
+            if (injectorComponentsRegistryHashMap.containsKey((String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID)))
+                ret = injectorComponentsRegistryHashMap.get((String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID));
+            else {
+                String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME);
+                String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
+                String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME);
+                ret = new InjectorComponentsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).setRegistryCacheName(cacheName);
+                injectorComponentsRegistryHashMap.put((String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID), ret);
+            }
         }
         return ret;
     }
