@@ -18,28 +18,102 @@
  */
 package net.echinopsii.ariane.community.core.injector.messaging.worker;
 
+import net.echinopsii.ariane.community.core.injector.base.model.AbstractCacheComponent;
+import net.echinopsii.ariane.community.core.injector.base.model.AbstractCacheGear;
+import net.echinopsii.ariane.community.core.injector.base.registry.InjectorComponentsRegistry;
+import net.echinopsii.ariane.community.core.injector.base.registry.InjectorGearsRegistry;
+import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
+import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
 import net.echinopsii.ariane.community.messaging.api.AppMsgWorker;
 import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
-public class RemoteCacheFactoryWorker implements AppMsgWorker {
+public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryFactory {
     private static final Logger log = LoggerFactory.getLogger(RemoteCacheFactoryWorker.class);
 
-    public final static String OPERATION_FDN = "OPERATION";
-    public final static String OPERATION_ = "";
+    public final static String OPERATION_FDN                     = "OPERATION";
+    public final static String OPERATION_MAKE_GEAR_REGISTRY      = "MAKE_GEAR_REGISTRY";
+    public final static String OPERATION_MAKE_COMPONENT_REGISTRY = "MAKE_COMPONENT_REGISTRY";
+    public final static String OPERATION_NOT_DEFINED             = "NOT_DEFINED";
 
+    public final static String REPLY_RC = "RC";
+    public final static String REPLY_MSG = "SERVER_ERROR_MESSAGE";
 
     @Override
     public Map<String, Object> apply(Map<String, Object> message) {
-        log.debug("Remote Injector Gear Worker on  : {" + message.get(MomMsgTranslator.MSG_APPLICATION_ID) +  " }...");
-        //TODO WORK
-        log.debug("Remote Injector Gear Worker return DONE");
-        Map<String, Object> reply = new HashMap<String, Object>();
+        log.debug("Remote Injector Cache Factory Worker on  : { " + message.toString() +  " }...");
+
+        log.debug("Injector Remote Tree Worker on  : { " + message.toString() + " }...");
+
+        Map<String, Object>        reply              = new HashMap<>();
+        InjectorGearsRegistry      gearsRegistry      = null;
+        InjectorComponentsRegistry componentsRegistry = null;
+
+        Object oOperation = message.get(OPERATION_FDN);
+        String operation = null;
+        Dictionary properties = null;
+
+
+        if (oOperation==null)
+            operation = OPERATION_NOT_DEFINED;
+        else
+            operation = oOperation.toString();
+
+        switch (operation) {
+            case OPERATION_MAKE_GEAR_REGISTRY:
+                properties = new Properties();
+                for (String key : message.keySet())
+                    if (!key.equals(OPERATION_FDN))
+                        properties.put(key, message.get(key));
+                gearsRegistry = this.makeGearsRegistry(properties);
+                if (gearsRegistry==null) {
+                    reply.put(REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... Have a look at Ariane server logs !");
+                } else {
+                    reply.put(REPLY_RC, 0);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Gear registry " + ((AbstractCacheGear)gearsRegistry).getCacheID() + " successfully created or retrieved.");
+                }
+                break;
+            case OPERATION_MAKE_COMPONENT_REGISTRY:
+                properties = new Properties();
+                for (String key : message.keySet())
+                    if (!key.equals(OPERATION_FDN))
+                        properties.put(key, message.get(key));
+                componentsRegistry = this.makeComponentsRegistry(properties);
+                if (componentsRegistry==null) {
+                    reply.put(REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... Have a look at Ariane server logs !");
+                } else {
+                    reply.put(REPLY_RC, 0);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Component registry " + ((AbstractCacheComponent)componentsRegistry).getCacheID() + " successfully created or retrieved.");
+                }
+                break;
+            case OPERATION_NOT_DEFINED:
+                reply.put(REPLY_RC, 1);
+                reply.put(MomMsgTranslator.MSG_BODY, "Operation not defined ! ");
+                break;
+            default:
+                break;
+        }
+
         reply.put(MomMsgTranslator.MSG_BODY, "DONE");
         return reply;
+    }
+
+
+    @Override
+    public InjectorGearsRegistry makeGearsRegistry(Dictionary properties) {
+        return InjectorMessagingBootstrap.getInjectorRegistryFactory().makeGearsRegistry(properties);
+    }
+
+    @Override
+    public InjectorComponentsRegistry makeComponentsRegistry(Dictionary properties) {
+        return InjectorMessagingBootstrap.getInjectorRegistryFactory().makeComponentsRegistry(properties);
     }
 }

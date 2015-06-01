@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Dictionary;
 
-public class RemoteCacheFactoryService implements InjectorRegistryFactory {
+public class RemoteCacheFactoryService {
 
     private static final Logger log = LoggerFactory.getLogger(RemoteCacheFactoryService.class);
 
@@ -67,20 +67,5 @@ public class RemoteCacheFactoryService implements InjectorRegistryFactory {
         log.info("Stop Injector Remote Cache Factory Messaging Service ...");
         if (client!=null)
             client.close();
-    }
-
-    @Override
-    public boolean isValidProperties(Dictionary properties) {
-        return false;
-    }
-
-    @Override
-    public InjectorGearsRegistry makeGearsRegistry(Dictionary properties) {
-        return null;
-    }
-
-    @Override
-    public InjectorComponentsRegistry makeComponentsRegistry(Dictionary properties) {
-        return null;
     }
 }

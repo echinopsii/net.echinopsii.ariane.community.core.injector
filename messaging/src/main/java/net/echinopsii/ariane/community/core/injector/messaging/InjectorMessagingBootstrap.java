@@ -19,6 +19,7 @@
 
 package net.echinopsii.ariane.community.core.injector.messaging;
 
+import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteCacheFactoryService;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteComponentService;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
@@ -65,11 +66,33 @@ public class InjectorMessagingBootstrap {
     public void unbindTreeMenuRootsRegistry() {
         log.debug("Unbound from injector tree menu roots registry...");
         treeMenuRootsRegistry = null;
+        treeMenuRootsRegistrySgt = null;
     }
 
     public static TreeMenuRootsRegistry getTreeMenuRootsRegistry() {
         return treeMenuRootsRegistrySgt;
     }
+
+    @Requires
+    private InjectorRegistryFactory injectorRegistryFactory = null;
+    private static InjectorRegistryFactory injectorRegistryFactorySgt = null;
+
+    @Bind
+    public void bindInjectorRegistryFactory(InjectorRegistryFactory r) {
+        log.debug("Bound to injector registry factory..." + r.toString());
+        injectorRegistryFactory = r;
+        injectorRegistryFactorySgt = r;
+    }
+
+    @Unbind
+    public void unbindInjectorRegistryFactory() {
+        log.debug("Unboumd from injector registry factory...");
+        injectorRegistryFactory = null;
+        injectorRegistryFactorySgt = null;
+    }
+
+    public static InjectorRegistryFactory getInjectorRegistryFactory() { return injectorRegistryFactorySgt; }
+
 
     @Validate
     public void validate() throws Exception {
