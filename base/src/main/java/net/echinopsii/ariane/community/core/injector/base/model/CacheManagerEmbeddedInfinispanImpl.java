@@ -49,6 +49,7 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
     public static final String INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF = "ariane.community.injector.cache.persistence.sf.ignore.diff";
     public static final String INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP = "ariane.community.injector.cache.persistence.sf.purge.startup";
     public static final String INJECTOR_CACHE_PERSISTENCE_SF_LOCATION = "ariane.community.injector.cache.persistence.sf.location";
+    public static final String INJECTOR_CACHE_PERSISTENCE_ASYNC = "ariane.community.injector.cache.persistence.async";
 
     /**
      * Factory method for this singleton.
@@ -69,7 +70,7 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
 
         if (ret && (
                     (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)==null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null) ||
-                    (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null)
+                    (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)==null)
             )) ret = false;
         else if (ret && properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null && properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null) {
             if (!(  properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("LIRS") ||
@@ -142,6 +143,7 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
         GlobalConfiguration globalConfiguration = globalConfigurationBuilder.build();
 
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+
         if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null) {
             EvictionStrategy strategy = null;
             if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("LIRS")) strategy = EvictionStrategy.LIRS;
@@ -150,13 +152,36 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
             if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("UNORDERED")) strategy = EvictionStrategy.UNORDERED;
             configurationBuilder.eviction().strategy(strategy).maxEntries(new Integer((String)properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)));
         }
+
         PersistenceConfigurationBuilder persistenceConfigurationBuilder = configurationBuilder.persistence();
-        if (properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION).equals("true"))
+        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION)).toLowerCase().equals("true"))
             persistenceConfigurationBuilder.passivation(true);
         else
             persistenceConfigurationBuilder.passivation(false);
 
-        //TODO: TOBE CONTINUED ;)
+        SingleFileStoreConfigurationBuilder singleFileStoreConfigurationBuilder = persistenceConfigurationBuilder.addSingleFileStore();
+        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_FETCH)).toLowerCase().equals("true"))
+            singleFileStoreConfigurationBuilder.fetchPersistentState(true);
+        else
+            singleFileStoreConfigurationBuilder.fetchPersistentState(false);
+
+        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF)).toLowerCase().equals("true"))
+            singleFileStoreConfigurationBuilder.ignoreModifications(true);
+        else
+            singleFileStoreConfigurationBuilder.ignoreModifications(false);
+
+        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP)).toLowerCase().equals("true"))
+            singleFileStoreConfigurationBuilder.purgeOnStartup(true);
+        else
+            singleFileStoreConfigurationBuilder.purgeOnStartup(true);
+
+        singleFileStoreConfigurationBuilder.location("mylocation");
+        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_ASYNC)).toLowerCase().equals("true"))
+            singleFileStoreConfigurationBuilder.async().enable();
+
+        Configuration configuration = configurationBuilder.build();
+
+        manager = new DefaultCacheManager(globalConfiguration, configuration);
 
         return this;
     }

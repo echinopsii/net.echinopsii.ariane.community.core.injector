@@ -52,20 +52,20 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
     private static CacheManager cacheManager = null;
 
     public static boolean isValid(Dictionary properties) {
-        boolean ret = false;
+        boolean ret = true;
         if (properties!=null) {
             Object path = properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
             config = properties;
             if (path != null && path instanceof String) {
                 infConfFile = new File((String)path);
-                if (infConfFile.exists() && infConfFile.isFile())
-                    ret = true;
-                else {
+                if (!infConfFile.exists() || !infConfFile.isFile()) {
+                    ret = false;
                     log.error("infinispan configuration file path ({}) is not correct ! ", new Object[]{(String)path});
                     infConfFile = null;
                 }
             } else if (!CacheManagerEmbeddedInfinispanImpl.isValidProperties(properties)) {
-                log.error("{} configuration parameters is not defined correctly !", new Object[]{InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY});
+                ret = false;
+                log.error("Configuration parameters are not defined correctly !");
             }
         }
         return ret;

@@ -53,19 +53,19 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
     private static CacheManager cacheManager = null;
 
     public static boolean isValid(Dictionary properties) {
-        boolean ret = false;
+        boolean ret = true;
         if (properties!=null) {
             config = properties;
             Object path = properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
             if (path != null && path instanceof String) {
                 infConfFile = new File((String)path);
-                if (infConfFile.exists() && infConfFile.isFile())
-                    ret = true;
-                else {
+                if (!infConfFile.exists() || !infConfFile.isFile()) {
+                    ret = false;
                     log.error("infinispan configuration file path ({}) is not correct ! ", new Object[]{(String)path});
                     infConfFile = null;
                 }
             } else if (!CacheManagerEmbeddedInfinispanImpl.isValidProperties(properties)) {
+                ret = false;
                 log.error("{} configuration parameters is not defined correctly !", new Object[]{InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY});
             }
         }
