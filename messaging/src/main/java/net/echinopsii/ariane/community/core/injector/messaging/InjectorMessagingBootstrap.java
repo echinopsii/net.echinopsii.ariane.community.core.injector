@@ -41,6 +41,7 @@ public class InjectorMessagingBootstrap {
     public static final String PROPS_FIELD_TREE_QUEUE = "remote.injector.tree.queue";
     public static final String PROPS_FIELD_GEAR_QUEUE = "remote.injector.gear.queue";
     public static final String PROPS_FIELD_COMP_QUEUE = "remote.injector.comp.queue";
+    public static final String PROPS_FIELD_RCFT_QUEUE = "remote.injector.rcft.queue";
 
     private static Dictionary conf = null;
     private boolean isStarted = false;

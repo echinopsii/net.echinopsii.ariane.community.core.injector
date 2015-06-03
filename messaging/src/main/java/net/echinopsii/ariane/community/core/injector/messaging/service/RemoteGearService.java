@@ -53,8 +53,8 @@ public class RemoteGearService {
             return;
         }
 
-        if (properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE)!=null)
-            rigQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE);
+        if (properties.get(InjectorMessagingBootstrap.PROPS_FIELD_GEAR_QUEUE)!=null)
+            rigQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_GEAR_QUEUE);
 
         client.getServiceFactory().requestService(rigQueue, new RemoteGearWorker());
         log.info("Ariane Injector Remote Gear Messaging Service is waiting message on  " + rigQueue + "...");

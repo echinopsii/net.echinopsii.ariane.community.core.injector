@@ -20,6 +20,7 @@ package net.echinopsii.ariane.community.core.injector.messaging.worker;
 
 import net.echinopsii.ariane.community.core.injector.base.model.AbstractCacheComponent;
 import net.echinopsii.ariane.community.core.injector.base.model.AbstractCacheGear;
+import net.echinopsii.ariane.community.core.injector.base.model.CacheManagerEmbeddedInfinispanImpl;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorComponentsRegistry;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorGearsRegistry;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
@@ -38,8 +39,8 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
     private static final Logger log = LoggerFactory.getLogger(RemoteCacheFactoryWorker.class);
 
     public final static String OPERATION_FDN                     = "OPERATION";
-    public final static String OPERATION_MAKE_GEAR_REGISTRY      = "MAKE_GEAR_REGISTRY";
-    public final static String OPERATION_MAKE_COMPONENT_REGISTRY = "MAKE_COMPONENT_REGISTRY";
+    public final static String OPERATION_MAKE_GEAR_REGISTRY      = "MAKE_GEARS_REGISTRY";
+    public final static String OPERATION_MAKE_COMPONENT_REGISTRY = "MAKE_COMPONENTS_REGISTRY";
     public final static String OPERATION_NOT_DEFINED             = "NOT_DEFINED";
 
     public final static String REPLY_RC = "RC";
@@ -58,7 +59,7 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
         Object oOperation = message.get(OPERATION_FDN);
         String operation = null;
         Dictionary properties = null;
-
+        boolean isValid = true;
 
         if (oOperation==null)
             operation = OPERATION_NOT_DEFINED;
@@ -68,30 +69,150 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
         switch (operation) {
             case OPERATION_MAKE_GEAR_REGISTRY:
                 properties = new Properties();
-                for (String key : message.keySet())
-                    if (!key.equals(OPERATION_FDN))
-                        properties.put(key, message.get(key));
-                gearsRegistry = this.makeGearsRegistry(properties);
-                if (gearsRegistry==null) {
+
+                if (message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME)==null) {
+                    isValid = false;
                     reply.put(REPLY_RC, 1);
-                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... Have a look at Ariane server logs !");
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME + " is not defined !");
+                } else properties.put(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME, message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME).toString());
+
+                if (isValid && message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID)==null) {
+                    isValid = false;
+                    reply.put(REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID + " is not defined !");
                 } else {
-                    reply.put(REPLY_RC, 0);
-                    reply.put(MomMsgTranslator.MSG_BODY, "Gear registry " + ((AbstractCacheGear)gearsRegistry).getCacheID() + " successfully created or retrieved.");
+                    // default cache name = registry cache id
+                    properties.put(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID, message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID).toString());
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME, message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID).toString());
                 }
+
+                if (isValid && message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME)==null){
+                    isValid = false;
+                    reply.put(REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME + " is not defined !");
+                } else properties.put(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME, message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME).toString());
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME)==null) {
+                    isValid=false;
+                    reply.put(REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... " + CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME + " is not defined !");
+                } else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME).toString());
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME).toString());
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_EVICTION_STRATEGY)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_EVICTION_STRATEGY, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_EVICTION_STRATEGY).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_EVICTION_STRATEGY, "LRU");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_EVICTION_MAX_ENTRIES)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_EVICTION_MAX_ENTRIES, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_EVICTION_MAX_ENTRIES).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_EVICTION_MAX_ENTRIES, "2000");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_PASSIVATION)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_PASSIVATION, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_PASSIVATION).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_PASSIVATION, "true");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_FETCH)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_FETCH, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_FETCH).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_FETCH, "true");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF, "false");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP, "false");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_ASYNC)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_ASYNC, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_ASYNC).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_ASYNC, "true");
+
+                if (isValid) {
+                    try {
+                        gearsRegistry = this.makeGearsRegistry(properties);
+
+                        if (gearsRegistry==null) {
+                            reply.put(REPLY_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... Have a look at Ariane server logs !");
+                        } else {
+                            reply.put(REPLY_RC, 0);
+                            reply.put(MomMsgTranslator.MSG_BODY, "Gear registry " + ((AbstractCacheGear)gearsRegistry).getCacheID() + " successfully created or retrieved.");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        reply.put(REPLY_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_BODY, "Exception while creating gears registry... Have a look at Ariane server logs ! ");
+                    }
+                }
+
                 break;
             case OPERATION_MAKE_COMPONENT_REGISTRY:
                 properties = new Properties();
-                for (String key : message.keySet())
-                    if (!key.equals(OPERATION_FDN))
-                        properties.put(key, message.get(key));
-                componentsRegistry = this.makeComponentsRegistry(properties);
-                if (componentsRegistry==null) {
+
+                if (message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME)==null) {
+                    isValid = false;
                     reply.put(REPLY_RC, 1);
-                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... Have a look at Ariane server logs !");
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME + " is not defined !");
+                } else properties.put(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME, message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME).toString());
+
+                if (isValid && message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID)==null) {
+                    isValid = false;
+                    reply.put(REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID + " is not defined !");
                 } else {
-                    reply.put(REPLY_RC, 0);
-                    reply.put(MomMsgTranslator.MSG_BODY, "Component registry " + ((AbstractCacheComponent)componentsRegistry).getCacheID() + " successfully created or retrieved.");
+                    // default cache name = registry cache id
+                    properties.put(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID, message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID).toString());
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME, message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID).toString());
+                }
+
+                if (isValid && message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME)==null){
+                    isValid = false;
+                    reply.put(REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME + " is not defined !");
+                } else properties.put(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME, message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME).toString());
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME)==null) {
+                    isValid=false;
+                    reply.put(REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... " + CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME + " is not defined !");
+                } else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME).toString());
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME).toString());
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_PASSIVATION)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_PASSIVATION, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_PASSIVATION).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_PASSIVATION, "false");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_FETCH)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_FETCH, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_FETCH).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_FETCH, "true");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF, "false");
+
+                if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP)!=null)
+                    properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP).toString());
+                else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP, "false");
+
+                if (isValid) {
+                    try {
+                        componentsRegistry = this.makeComponentsRegistry(properties);
+                        if (componentsRegistry==null) {
+                            reply.put(REPLY_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_BODY, "Operation parameters are not valid... Have a look at Ariane server logs !");
+                        } else {
+                            reply.put(REPLY_RC, 0);
+                            reply.put(MomMsgTranslator.MSG_BODY, "Component registry " + ((AbstractCacheComponent)componentsRegistry).getCacheID() + " successfully created or retrieved.");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        reply.put(REPLY_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_BODY, "Exception while creating components registry... Have a look at Ariane server logs ! ");
+                    }
                 }
                 break;
             case OPERATION_NOT_DEFINED:
@@ -102,7 +223,6 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
                 break;
         }
 
-        reply.put(MomMsgTranslator.MSG_BODY, "DONE");
         return reply;
     }
 
