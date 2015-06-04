@@ -19,6 +19,7 @@
 
 package net.echinopsii.ariane.community.core.injector.base.registry;
 
+import java.util.Dictionary;
 import java.util.List;
 import net.echinopsii.ariane.community.core.injector.base.model.Cache;
 import net.echinopsii.ariane.community.core.injector.base.model.Component;
@@ -29,7 +30,9 @@ public interface InjectorComponentsRegistry extends Cache<Component, String> {
     public InjectorComponentsRegistry setRegistryName(String serviceName);
     public InjectorComponentsRegistry setRegistryCacheID(String cacheID);
     public InjectorComponentsRegistry setRegistryCacheName(String cacheName);
+    public InjectorComponentsRegistry setRegistryConfiguration(Dictionary properties);
 
     public void startRegistry();
     public void stopRegistry();
+    public boolean isStarted();
 }

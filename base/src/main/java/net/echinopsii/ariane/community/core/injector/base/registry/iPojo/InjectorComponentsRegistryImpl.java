@@ -47,22 +47,21 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
     private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_ID    = "ariane.community.core.injector.shared.components.cache";
     private static final String INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME  = "Ariane Injector Shared Components Cache";
 
-    private static String registryName;
-    private static Dictionary config = null;
-    private static File         infConfFile  = null;
-    private static CacheManager cacheManager = null;
+    private String registryName;
+    private Dictionary config = null;
+    private File         infConfFile  = null;
+    private CacheManager cacheManager = null;
+    private boolean started = false;
 
     public static boolean isValid(Dictionary properties) {
         boolean ret = true;
         if (properties!=null) {
-            config = properties;
             Object path = properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY);
             if (path != null && path instanceof String) {
-                infConfFile = new File((String)path);
-                if (!infConfFile.exists() || !infConfFile.isFile()) {
+                File testConfFile = new File((String)path);
+                if (!testConfFile.exists() || !testConfFile.isFile()) {
                     ret = false;
                     log.error("infinispan configuration file path ({}) is not correct ! ", new Object[]{(String)path});
-                    infConfFile = null;
                 }
             } else if (!CacheManagerEmbeddedInfinispanImpl.isValidProperties(properties)) {
                 ret = false;
@@ -89,21 +88,25 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
         return this;
     }
 
+    public InjectorComponentsRegistry setRegistryConfiguration(Dictionary properties) {
+        config = properties;
+        if (properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY)!=null)
+            infConfFile = new File((String)properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_CONFIGURATION_PATH_KEY));
+        return this;
+    }
+
     public InjectorComponentsRegistryImpl() {
         super();
     }
 
     public void startRegistry() {
-        if (infConfFile!=null) {
-            cacheManager = new CacheManagerEmbeddedInfinispanImpl();
-            if (infConfFile!=null) cacheManager.start(infConfFile);
-            else cacheManager.start(config);
-            super.setCacheManager(cacheManager);
-            super.start();
-            log.info("{} is started", new Object[]{registryName});
-        } else {
-            log.error("{} can't be started... Infinispan configuration file is missing !", new Object[]{registryName});
-        }
+        cacheManager = new CacheManagerEmbeddedInfinispanImpl();
+        if (infConfFile!=null) cacheManager.start(infConfFile);
+        else cacheManager.start(config);
+        super.setCacheManager(cacheManager);
+        super.start();
+        started = true;
+        log.info("{} is started", new Object[]{registryName});
     }
 
     @Validate
@@ -115,13 +118,18 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
     }
 
     public void stopRegistry() {
-        if (infConfFile!=null) {
+        if (started) {
             super.stop();
             cacheManager.stop();
+            started = false;
             log.info("{} is stopped", new Object[]{registryName});
         } else {
             log.error("{} can't be stopped as Infinispan cache manager has not been started !", new Object[]{registryName});
         }
+    }
+
+    public boolean isStarted() {
+        return started;
     }
 
     @Invalidate
@@ -130,11 +138,11 @@ public class InjectorComponentsRegistryImpl extends AbstractCacheComponent imple
     }
 
     @Updated
-    public static void updated(Dictionary properties) {
+    public void updated(Dictionary properties) {
         log.debug("{} is being updated by {}", new Object[]{registryName, Thread.currentThread().toString()});
         log.debug("properties : {}", properties);
-        if (!isValid(properties))
-            log.error("Invalid configuration for service " + registryName);
+        if (!isValid(properties)) log.error("Invalid configuration for service " + registryName);
+        else this.setRegistryConfiguration(properties);
     }
 
     @Override

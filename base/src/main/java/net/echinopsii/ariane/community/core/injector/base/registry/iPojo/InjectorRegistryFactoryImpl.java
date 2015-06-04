@@ -158,7 +158,8 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
                 String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME);
                 String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID);
                 String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME);
-                ret = new InjectorGearsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).setRegistryCacheName(cacheName);
+                ret = new InjectorGearsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).
+                        setRegistryCacheName(cacheName).setRegistryConfiguration(properties);
                 injectorGearsRegistryHashMap.put((String) properties.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID), ret);
             }
         }
@@ -177,7 +178,8 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
                 String registryName = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME);
                 String cacheID = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID);
                 String cacheName = (String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME);
-                ret = new InjectorComponentsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).setRegistryCacheName(cacheName);
+                ret = new InjectorComponentsRegistryImpl().setRegistryName(registryName).setRegistryCacheID(cacheID).
+                        setRegistryCacheName(cacheName).setRegistryConfiguration(properties);
                 injectorComponentsRegistryHashMap.put((String) properties.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID), ret);
             }
         }

@@ -22,6 +22,7 @@ package net.echinopsii.ariane.community.core.injector.base.registry;
 import net.echinopsii.ariane.community.core.injector.base.model.Cache;
 import net.echinopsii.ariane.community.core.injector.base.model.Gear;
 
+import java.util.Dictionary;
 import java.util.List;
 
 public interface InjectorGearsRegistry extends Cache<Gear, String> {
@@ -30,7 +31,9 @@ public interface InjectorGearsRegistry extends Cache<Gear, String> {
     public InjectorGearsRegistry setRegistryName(String serviceName);
     public InjectorGearsRegistry setRegistryCacheID(String cacheID);
     public InjectorGearsRegistry setRegistryCacheName(String cacheName);
+    public InjectorGearsRegistry setRegistryConfiguration(Dictionary properties);
 
     public void startRegistry();
     public void stopRegistry();
+    public boolean isStarted();
 }

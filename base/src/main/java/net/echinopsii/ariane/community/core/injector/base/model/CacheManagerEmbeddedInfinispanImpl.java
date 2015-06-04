@@ -139,49 +139,54 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
     @Override
     public CacheManager start(Dictionary properties) {
         GlobalConfigurationBuilder globalConfigurationBuilder = new GlobalConfigurationBuilder();
-        globalConfigurationBuilder.globalJmxStatistics().enable().cacheManagerName((String)properties.get(INJECTOR_CACHE_MGR_NAME));
+        globalConfigurationBuilder.globalJmxStatistics().enable().cacheManagerName((String) properties.get(INJECTOR_CACHE_MGR_NAME));
         GlobalConfiguration globalConfiguration = globalConfigurationBuilder.build();
 
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 
-        if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY)!=null) {
+        if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY) != null) {
             EvictionStrategy strategy = null;
             if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("LIRS")) strategy = EvictionStrategy.LIRS;
             if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("LRU")) strategy = EvictionStrategy.LRU;
             if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("NONE")) strategy = EvictionStrategy.NONE;
-            if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("UNORDERED")) strategy = EvictionStrategy.UNORDERED;
-            configurationBuilder.eviction().strategy(strategy).maxEntries(new Integer((String)properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)));
+            if (properties.get(INJECTOR_CACHE_EVICTION_STRATEGY).equals("UNORDERED"))
+                strategy = EvictionStrategy.UNORDERED;
+            configurationBuilder.eviction().strategy(strategy).maxEntries(new Integer((String) properties.get(INJECTOR_CACHE_EVICTION_MAX_ENTRIES)));
         }
 
         PersistenceConfigurationBuilder persistenceConfigurationBuilder = configurationBuilder.persistence();
-        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION)).toLowerCase().equals("true"))
+        if (((String) properties.get(INJECTOR_CACHE_PERSISTENCE_PASSIVATION)).toLowerCase().equals("true"))
             persistenceConfigurationBuilder.passivation(true);
         else
             persistenceConfigurationBuilder.passivation(false);
 
         SingleFileStoreConfigurationBuilder singleFileStoreConfigurationBuilder = persistenceConfigurationBuilder.addSingleFileStore();
-        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_FETCH)).toLowerCase().equals("true"))
+        if (((String) properties.get(INJECTOR_CACHE_PERSISTENCE_SF_FETCH)).toLowerCase().equals("true"))
             singleFileStoreConfigurationBuilder.fetchPersistentState(true);
         else
             singleFileStoreConfigurationBuilder.fetchPersistentState(false);
 
-        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF)).toLowerCase().equals("true"))
+        if (((String) properties.get(INJECTOR_CACHE_PERSISTENCE_SF_IGNORE_DIFF)).toLowerCase().equals("true"))
             singleFileStoreConfigurationBuilder.ignoreModifications(true);
         else
             singleFileStoreConfigurationBuilder.ignoreModifications(false);
 
-        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP)).toLowerCase().equals("true"))
+        if (((String) properties.get(INJECTOR_CACHE_PERSISTENCE_SF_PURGE_STARTUP)).toLowerCase().equals("true"))
             singleFileStoreConfigurationBuilder.purgeOnStartup(true);
         else
-            singleFileStoreConfigurationBuilder.purgeOnStartup(true);
+            singleFileStoreConfigurationBuilder.purgeOnStartup(false);
 
-        singleFileStoreConfigurationBuilder.location("mylocation");
-        if (((String)properties.get(INJECTOR_CACHE_PERSISTENCE_ASYNC)).toLowerCase().equals("true"))
+        singleFileStoreConfigurationBuilder.location((String) properties.get(INJECTOR_CACHE_PERSISTENCE_SF_LOCATION));
+        if (((String) properties.get(INJECTOR_CACHE_PERSISTENCE_ASYNC)).toLowerCase().equals("true"))
             singleFileStoreConfigurationBuilder.async().enable();
 
         Configuration configuration = configurationBuilder.build();
 
-        manager = new DefaultCacheManager(globalConfiguration, configuration);
+        try {
+            manager = new DefaultCacheManager(globalConfiguration, configuration);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
 
         return this;
     }
