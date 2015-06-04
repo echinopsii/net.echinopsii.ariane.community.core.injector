@@ -29,7 +29,6 @@ import java.util.*;
 public class RemoteGearWorker implements AppMsgWorker {
     private static final Logger log = LoggerFactory.getLogger(RemoteGearWorker.class);
 
-    public final static String OPERATION_FDN = "OPERATION";
     public final static String OPERATION_ = "";
 
 
