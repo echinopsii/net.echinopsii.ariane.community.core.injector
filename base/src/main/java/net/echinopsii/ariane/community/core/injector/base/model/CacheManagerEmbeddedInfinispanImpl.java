@@ -140,6 +140,8 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
     public CacheManager start(Dictionary properties) {
         GlobalConfigurationBuilder globalConfigurationBuilder = new GlobalConfigurationBuilder();
         globalConfigurationBuilder.globalJmxStatistics().enable().cacheManagerName((String) properties.get(INJECTOR_CACHE_MGR_NAME));
+        ClassLoader cl = this.getClass().getClassLoader();
+        globalConfigurationBuilder.classLoader(cl);
         GlobalConfiguration globalConfiguration = globalConfigurationBuilder.build();
 
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
@@ -177,7 +179,7 @@ public class CacheManagerEmbeddedInfinispanImpl implements CacheManager {
             singleFileStoreConfigurationBuilder.purgeOnStartup(false);
 
         singleFileStoreConfigurationBuilder.location((String) properties.get(INJECTOR_CACHE_PERSISTENCE_SF_LOCATION));
-        if (((String) properties.get(INJECTOR_CACHE_PERSISTENCE_ASYNC)).toLowerCase().equals("true"))
+        if (properties.get(INJECTOR_CACHE_PERSISTENCE_ASYNC)!=null && ((String) properties.get(INJECTOR_CACHE_PERSISTENCE_ASYNC)).toLowerCase().equals("true"))
             singleFileStoreConfigurationBuilder.async().enable();
 
         Configuration configuration = configurationBuilder.build();
