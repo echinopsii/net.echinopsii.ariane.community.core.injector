@@ -41,4 +41,7 @@ public interface InjectorRegistryFactory {
 
     public InjectorGearsRegistry makeGearsRegistry(Dictionary properties);
     public InjectorComponentsRegistry makeComponentsRegistry(Dictionary properties);
+
+    public InjectorGearsRegistry getGearsRegistry(String cacheID);
+    public InjectorComponentsRegistry getComponentsRegistry(String cacheID);
 }

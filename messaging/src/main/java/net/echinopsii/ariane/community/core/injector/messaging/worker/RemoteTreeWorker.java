@@ -45,7 +45,6 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
     public final static String OPERATION_VAL_GETTREEMREV = "GET_TREE_MENU_ENTITY_V";
     public final static String OPERATION_VAL_GETTREEMREI = "GET_TREE_MENU_ENTITY_I";
     public final static String OPERATION_VAL_GETTREEMREC = "GET_TREE_MENU_ENTITY_C";
-    public final static String OPERATION_NOT_DEFINED = "NOT_DEFINED";
 
     public final static String TREE_MENU_ENTITY = "TREE_MENU_ENTITY";
     public final static String TREE_MENU_ENTITY_VALUE = "TREE_MENU_ENTITY_VALUE";
@@ -70,7 +69,7 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
         String ret;
 
         if (oOperation==null)
-            operation = OPERATION_NOT_DEFINED;
+            operation = RemoteWorkerCommon.OPERATION_NOT_DEFINED;
         else
             operation = oOperation.toString();
         switch (operation) {
@@ -277,7 +276,7 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
                     reply.put(MomMsgTranslator.MSG_BODY, "Invalid request");
                 }
                 break;
-            case OPERATION_NOT_DEFINED:
+            case RemoteWorkerCommon.OPERATION_NOT_DEFINED:
                 reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                 reply.put(MomMsgTranslator.MSG_BODY, "Operation not defined ! ");
                 break;

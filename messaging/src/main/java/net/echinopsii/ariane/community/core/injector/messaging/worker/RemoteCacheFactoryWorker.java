@@ -1,7 +1,7 @@
 /**
- *
- *
- * Copyright (C) 2015 mffrench
+ * Injector Messaging Module
+ * Remote Cache Factory Injector Messaging worker
+ * Copyright (C) 21/04/15 echinopsii
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -40,13 +40,10 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
 
     public final static String OPERATION_MAKE_GEAR_REGISTRY      = "MAKE_GEARS_REGISTRY";
     public final static String OPERATION_MAKE_COMPONENT_REGISTRY = "MAKE_COMPONENTS_REGISTRY";
-    public final static String OPERATION_NOT_DEFINED             = "NOT_DEFINED";
 
     @Override
     public Map<String, Object> apply(Map<String, Object> message) {
         log.debug("Remote Injector Cache Factory Worker on  : { " + message.toString() +  " }...");
-
-        log.debug("Injector Remote Tree Worker on  : { " + message.toString() + " }...");
 
         Map<String, Object>        reply              = new HashMap<>();
         InjectorGearsRegistry      gearsRegistry      = null;
@@ -58,7 +55,7 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
         boolean isValid = true;
 
         if (oOperation==null)
-            operation = OPERATION_NOT_DEFINED;
+            operation = RemoteWorkerCommon.OPERATION_NOT_DEFINED;
         else
             operation = oOperation.toString();
 
@@ -217,7 +214,7 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
                     }
                 }
                 break;
-            case OPERATION_NOT_DEFINED:
+            case RemoteWorkerCommon.OPERATION_NOT_DEFINED:
                 reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                 reply.put(MomMsgTranslator.MSG_BODY, "Operation not defined ! ");
                 break;
@@ -228,7 +225,6 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
         return reply;
     }
 
-
     @Override
     public InjectorGearsRegistry makeGearsRegistry(Dictionary properties) {
         return InjectorMessagingBootstrap.getInjectorRegistryFactory().makeGearsRegistry(properties);
@@ -237,5 +233,15 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
     @Override
     public InjectorComponentsRegistry makeComponentsRegistry(Dictionary properties) {
         return InjectorMessagingBootstrap.getInjectorRegistryFactory().makeComponentsRegistry(properties);
+    }
+
+    @Override
+    public InjectorGearsRegistry getGearsRegistry(String cacheID) {
+        return InjectorMessagingBootstrap.getInjectorRegistryFactory().getGearsRegistry(cacheID);
+    }
+
+    @Override
+    public InjectorComponentsRegistry getComponentsRegistry(String cacheID) {
+        return InjectorMessagingBootstrap.getInjectorRegistryFactory().getComponentsRegistry(cacheID);
     }
 }

@@ -185,4 +185,14 @@ public class InjectorRegistryFactoryImpl implements InjectorRegistryFactory {
         }
         return ret;
     }
+
+    @Override
+    public InjectorGearsRegistry getGearsRegistry(String cacheID) {
+        return injectorGearsRegistryHashMap.get(cacheID);
+    }
+
+    @Override
+    public InjectorComponentsRegistry getComponentsRegistry(String cacheID) {
+        return injectorComponentsRegistryHashMap.get(cacheID);
+    }
 }
