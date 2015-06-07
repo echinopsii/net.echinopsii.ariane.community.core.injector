@@ -18,5 +18,80 @@
  */
 package net.echinopsii.ariane.community.core.injector.messaging.worker.model;
 
-public class RemoteComponent {
+import net.echinopsii.ariane.community.core.injector.base.model.Component;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class RemoteComponent implements Component, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private String componentId = null;
+    private String componentName = null;
+    private String componentType = null;
+    private int nextAction = -1;
+    private boolean refreshing = false;
+    private Date lastRefresh = null;
+    private String attachedGearId = null;
+
+    private String gearAdminQueue = null;
+
+    @Override
+    public String getComponentId() {
+        return componentId;
+    }
+
+    @Override
+    public String getComponentName() {
+        return componentName;
+    }
+
+    @Override
+    public String getComponentType() {
+        return componentType;
+    }
+
+    @Override
+    public int getNextAction() {
+        return nextAction;
+    }
+
+    @Override
+    public boolean isRefreshing() {
+        return refreshing;
+    }
+
+    @Override
+    public Date getLastRefresh() {
+        return lastRefresh;
+    }
+
+    @Override
+    public String getAttachedGearId() {
+        return attachedGearId;
+    }
+
+    @Override
+    public void setAttachedGearId(String attachedGearId) {
+        this.attachedGearId = attachedGearId;
+    }
+
+    public String getGearAdminQueue() {
+        return gearAdminQueue;
+    }
+
+    public void setGearAdminQueue(String gearAdminQueue) {
+        this.gearAdminQueue = gearAdminQueue;
+    }
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public void refreshAndMap() {
+
+    }
 }

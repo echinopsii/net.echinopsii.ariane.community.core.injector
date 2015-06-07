@@ -18,5 +18,16 @@
  */
 package net.echinopsii.ariane.community.core.injector.messaging.worker.json;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.echinopsii.ariane.community.core.injector.messaging.worker.model.RemoteComponent;
+
+import java.io.IOException;
+
 public class RemoteComponentJSON {
+
+    public final static RemoteComponent JSON2RemoteComoonent(String payload) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        RemoteComponent component = mapper.readValue(payload, RemoteComponent.class);
+        return component;
+    }
 }
