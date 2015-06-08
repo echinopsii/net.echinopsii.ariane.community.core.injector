@@ -35,8 +35,8 @@ import java.util.Map;
 public class RemoteComponentWorker implements AppMsgWorker {
     private static final Logger log = LoggerFactory.getLogger(RemoteComponentWorker.class);
 
-    public final static String OPERATION_PUSH_COMPONENT_IN_CACHE = "PUSH_GEAR_IN_CACHE";
-    public final static String OPERATION_DEL_COMPONENT_FROM_CACHE = "DEL_GEAR_FROM_CACHE";
+    public final static String OPERATION_PUSH_COMPONENT_IN_CACHE = "PUSH_COMPONENT_IN_CACHE";
+    public final static String OPERATION_DEL_COMPONENT_FROM_CACHE = "DEL_COMPONENT_FROM_CACHE";
 
     public final static String REMOTE_COMPONENT = "REMOTE_COMPONENT";
 

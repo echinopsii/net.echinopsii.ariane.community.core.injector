@@ -219,6 +219,8 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
                 reply.put(MomMsgTranslator.MSG_BODY, "Operation not defined ! ");
                 break;
             default:
+                reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                reply.put(MomMsgTranslator.MSG_BODY, "Unknown operation ! ");
                 break;
         }
 
