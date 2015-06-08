@@ -118,6 +118,11 @@ result = requestor.call({'OPERATION': 'PUSH_COMPONENT_IN_CACHE'
 })
 #RC = 0 - successfull
 
+result = requestor.call({'OPERATION': 'PULL_COMPONENT_FROM_CACHE'
+    ,'REMOTE_COMPONENT': '{"componentId": "ariane.community.plugin.docker.components.cache.localhost"}'
+    ,'CACHE_ID': registry_cache_id
+})
+
 result = requestor.call({'OPERATION': 'DEL_COMPONENT_FROM_CACHE'
     ,'REMOTE_COMPONENT': '{"componentId": "ariane.community.plugin.docker.components.cache.localhost", '
                          '"componentName": "docker@localhost", '

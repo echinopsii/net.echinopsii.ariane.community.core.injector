@@ -37,6 +37,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
 
     public final static String OPERATION_PUSH_COMPONENT_IN_CACHE = "PUSH_COMPONENT_IN_CACHE";
     public final static String OPERATION_DEL_COMPONENT_FROM_CACHE = "DEL_COMPONENT_FROM_CACHE";
+    public final static String OPERATION_PULL_COMPONENT_FROM_CACHE = "PULL_COMPONENT_FROM_CACHE";
 
     public final static String REMOTE_COMPONENT = "REMOTE_COMPONENT";
 
@@ -51,6 +52,8 @@ public class RemoteComponentWorker implements AppMsgWorker {
         String cacheID = null;
 
         Object oComponentJSON = null;
+
+        String ret;
 
         if (oOperation==null)
             operation = RemoteWorkerCommon.OPERATION_NOT_DEFINED;
@@ -67,7 +70,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
                             oComponentJSON = message.get(REMOTE_COMPONENT);
                             if (oComponentJSON != null) {
                                 try {
-                                    RemoteComponent remoteComponent = RemoteComponentJSON.JSON2RemoteComoonent(oComponentJSON.toString());
+                                    RemoteComponent remoteComponent = RemoteComponentJSON.JSON2RemoteComponent(oComponentJSON.toString());
                                     RemoteComponent registeredComponent = (RemoteComponent)componentsRegistry.getEntityFromCache(remoteComponent.getComponentId());
                                     if (registeredComponent!=null) {
                                         registeredComponent.setComponentName(remoteComponent.getComponentName());
@@ -114,12 +117,53 @@ public class RemoteComponentWorker implements AppMsgWorker {
                             oComponentJSON = message.get(REMOTE_COMPONENT);
                             if (oComponentJSON != null) {
                                 try {
-                                    RemoteComponent remoteComponent = RemoteComponentJSON.JSON2RemoteComoonent(oComponentJSON.toString());
+                                    RemoteComponent remoteComponent = RemoteComponentJSON.JSON2RemoteComponent(oComponentJSON.toString());
                                     RemoteComponent registeredComponent = (RemoteComponent)componentsRegistry.getEntityFromCache(remoteComponent.getComponentId());
                                     if (registeredComponent!=null) {
                                         componentsRegistry.removeEntityFromCache(registeredComponent);
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 0);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully deleted from registry " + oCacheID.toString());
+                                    } else {
+                                        reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                        reply.put(MomMsgTranslator.MSG_BODY, "Remote Component "+ remoteComponent.getComponentId() +" doesn't exists on cache " + oCacheID.toString() + "  ! ");
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                    reply.put(MomMsgTranslator.MSG_BODY, "Remote Component serialization problem... Have a look to Ariane server logs ! ");
+                                }
+                            } else {
+                                reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                reply.put(MomMsgTranslator.MSG_BODY, "Component to delete is not defined ! ");
+                            }
+                        } else {
+                            reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_BODY, "Registry from cache ID " + oCacheID.toString() + " is not started ! ");
+                        }
+                    } else {
+                        reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_BODY, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
+                    }
+                } else {
+                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_BODY, "Cache ID is not defined ! ");
+                }
+                break;
+            case OPERATION_PULL_COMPONENT_FROM_CACHE:
+                oCacheID = message.get(RemoteWorkerCommon.CACHE_ID);
+                if (oCacheID!=null) {
+                    InjectorComponentsRegistry componentsRegistry =  InjectorMessagingBootstrap.getInjectorRegistryFactory().getComponentsRegistry(oCacheID.toString());
+                    if (componentsRegistry!=null) {
+                        if (componentsRegistry.isStarted()) {
+                            oComponentJSON = message.get(REMOTE_COMPONENT);
+                            if (oComponentJSON != null) {
+                                try {
+                                    RemoteComponent remoteComponent = RemoteComponentJSON.JSON2RemoteComponent(oComponentJSON.toString());
+                                    RemoteComponent registeredComponent = (RemoteComponent)componentsRegistry.getEntityFromCache(remoteComponent.getComponentId());
+                                    if (registeredComponent!=null) {
+                                        ret = RemoteComponentJSON.remoteComponent2JSON(registeredComponent);
+                                        reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_BODY, ret);
                                     } else {
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component "+ remoteComponent.getComponentId() +" doesn't exists on cache " + oCacheID.toString() + "  ! ");
