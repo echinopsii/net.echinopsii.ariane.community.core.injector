@@ -84,14 +84,6 @@ result = requestor.call({'OPERATION': 'MAKE_GEARS_REGISTRY'
                          ,'ariane.community.injector.gears.registry.cache.id': registry_cache_id
                          ,'ariane.community.injector.gears.registry.cache.name': registry_cache_name
                          ,'ariane.community.injector.cache.mgr.name': cache_mgr_name
-#                         ,'ariane.community.injector.cache.name': 'ariane.community.plugin.docker.gears.cache'
-#                         ,'ariane.community.injector.cache.eviction.strategy': 'LRU'
-#                         ,'ariane.community.injector.cache.eviction.max.entries': '2000'
-#                         ,'ariane.community.injector.cache.persistence.passivation': 'true'
-#                         ,'ariane.community.injector.cache.persistence.sf.fetch': 'true'
-#                         ,'ariane.community.injector.cache.persistence.sf.ignore.diff': 'false'
-#                         ,'ariane.community.injector.cache.persistence.sf.purge.startup': 'false'
-#                         ,'ariane.community.injector.cache.persistence.async': 'true'
 })
 
 requestor = Requestor(connection, 'remote.injector.gear')

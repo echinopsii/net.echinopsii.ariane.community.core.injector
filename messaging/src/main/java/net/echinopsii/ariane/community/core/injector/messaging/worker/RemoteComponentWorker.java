@@ -90,6 +90,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                     e.printStackTrace();
                                     reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                                     reply.put(RemoteWorkerCommon.REPLY_MSG, "Remote Component serialization problem... Have a look to Ariane server logs ! ");
+                                    reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                                 }
                             } else {
                                 reply.put(RemoteWorkerCommon.REPLY_RC, 1);
