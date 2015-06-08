@@ -53,6 +53,9 @@
                 <configuration>
                     <instructions>
                         <Bundle-Activator>net.echinopsii.ariane.community.core.injector.base.InjectorAkkaSystemActivator</Bundle-Activator>
+                        <DynamicImport-Package>
+                            net.echinopsii.ariane.community.core.injector.messaging.worker.model
+                        </DynamicImport-Package>
                         <Import-Package>
                             com.fasterxml.jackson.datatype.jsonorg;version="${version.com.fasterxml.jackson}",
                             com.fasterxml.jackson.databind;version="${version.com.fasterxml.jackson}",

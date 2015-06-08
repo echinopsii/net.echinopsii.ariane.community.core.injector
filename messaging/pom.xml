@@ -48,6 +48,14 @@
                 <!-- This plugin takes care of packaging the artifact as an OSGi Bundle -->
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
+                <configuration>
+                    <instructions>
+                        <Export-Package>
+                            net.echinopsii.ariane.community.core.injector.messaging.worker.model;version=${project.version}
+                        </Export-Package>
+                    </instructions>
+                </configuration>
+
             </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
