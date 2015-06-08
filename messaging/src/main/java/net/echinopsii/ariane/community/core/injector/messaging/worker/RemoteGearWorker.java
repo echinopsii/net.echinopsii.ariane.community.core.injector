@@ -70,8 +70,8 @@ public class RemoteGearWorker implements AppMsgWorker {
                             if (oGearJSON!=null) {
                                 try {
                                     RemoteGear remoteGear = RemoteGearJSON.JSON2RemoteGear(oGearJSON.toString());
-                                    if (gearsRegistry.getEntityFromCache(remoteGear.getGearId())!=null) {
-                                        RemoteGear registeredGear = (RemoteGear)gearsRegistry.getEntityFromCache(remoteGear.getGearId());
+                                    RemoteGear registeredGear = (RemoteGear)gearsRegistry.getEntityFromCache(remoteGear.getGearId());
+                                    if (registeredGear!=null) {
                                         registeredGear.setGearName(remoteGear.getGearName());
                                         registeredGear.setGearDescription(remoteGear.getGearDescription());
                                         registeredGear.setGearAdminQueue(remoteGear.getGearAdminQueue());

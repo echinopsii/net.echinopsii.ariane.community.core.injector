@@ -21,11 +21,14 @@ package net.echinopsii.ariane.community.core.injector.messaging.worker;
 
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorComponentsRegistry;
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
+import net.echinopsii.ariane.community.core.injector.messaging.worker.json.RemoteComponentJSON;
+import net.echinopsii.ariane.community.core.injector.messaging.worker.model.RemoteComponent;
 import net.echinopsii.ariane.community.messaging.api.AppMsgWorker;
 import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,7 +66,28 @@ public class RemoteComponentWorker implements AppMsgWorker {
                         if (componentsRegistry.isStarted()) {
                             oComponentJSON = message.get(REMOTE_COMPONENT);
                             if (oComponentJSON != null) {
-
+                                try {
+                                    RemoteComponent remoteComponent = RemoteComponentJSON.JSON2RemoteComoonent(oComponentJSON.toString());
+                                    RemoteComponent registeredComponent = (RemoteComponent)componentsRegistry.getEntityFromCache(remoteComponent.getComponentId());
+                                    if (registeredComponent!=null) {
+                                        registeredComponent.setComponentName(remoteComponent.getComponentName());
+                                        registeredComponent.setComponentType(remoteComponent.getComponentType());
+                                        registeredComponent.setRefreshing(remoteComponent.isRefreshing());
+                                        registeredComponent.setLastRefresh(remoteComponent.getLastRefresh());
+                                        registeredComponent.setNextAction(remoteComponent.getNextAction());
+                                        registeredComponent.setComponentAdminQueue(remoteComponent.getComponentAdminQueue());
+                                        reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully updated on registry " + oCacheID.toString());
+                                    } else {
+                                        componentsRegistry.putEntityToCache(remoteComponent);
+                                        reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully pushed to registry " + oCacheID.toString());
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                    reply.put(MomMsgTranslator.MSG_BODY, "Remote Component serialization problem... Have a look to Ariane server logs ! ");
+                                }
                             } else {
                                 reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                                 reply.put(MomMsgTranslator.MSG_BODY, "Component to push is not defined ! ");
@@ -89,7 +113,22 @@ public class RemoteComponentWorker implements AppMsgWorker {
                         if (componentsRegistry.isStarted()) {
                             oComponentJSON = message.get(REMOTE_COMPONENT);
                             if (oComponentJSON != null) {
-
+                                try {
+                                    RemoteComponent remoteComponent = RemoteComponentJSON.JSON2RemoteComoonent(oComponentJSON.toString());
+                                    RemoteComponent registeredComponent = (RemoteComponent)componentsRegistry.getEntityFromCache(remoteComponent.getComponentId());
+                                    if (registeredComponent!=null) {
+                                        componentsRegistry.removeEntityFromCache(registeredComponent);
+                                        reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully deleted from registry " + oCacheID.toString());
+                                    } else {
+                                        reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                        reply.put(MomMsgTranslator.MSG_BODY, "Remote Component "+ remoteComponent.getComponentId() +" doesn't exists on cache " + oCacheID.toString() + "  ! ");
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                    reply.put(MomMsgTranslator.MSG_BODY, "Remote Component serialization problem... Have a look to Ariane server logs ! ");
+                                }
                             } else {
                                 reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                                 reply.put(MomMsgTranslator.MSG_BODY, "Component to delete is not defined ! ");
