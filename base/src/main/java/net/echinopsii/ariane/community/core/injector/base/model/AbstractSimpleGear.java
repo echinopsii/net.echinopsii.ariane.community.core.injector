@@ -31,6 +31,7 @@ public abstract class AbstractSimpleGear implements Runnable, Gear, Serializable
     private           String  gearId     ;
     private           String  gearName   ;
     private           String  gearDesc   ;
+    private           int     sleepingPeriod;
     private transient Thread  gearThread ;
     private volatile  boolean running = false;
 
@@ -52,6 +53,16 @@ public abstract class AbstractSimpleGear implements Runnable, Gear, Serializable
     @Override
     public void setGearDescription(String gearDescription) {
         this.gearDesc = gearDescription;
+    }
+
+    @Override
+    public int getSleepingPeriod() {
+        return sleepingPeriod;
+    }
+
+    @Override
+    public void setSleepingPeriod(int gearSleepingPeriod) {
+        this.sleepingPeriod = gearSleepingPeriod;
     }
 
     @Override

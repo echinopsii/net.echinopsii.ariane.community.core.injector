@@ -66,6 +66,20 @@ public interface Gear {
     public void setGearDescription(String gearDescription);
 
     /**
+     * Get the gear sleeping period
+     *
+     * @return the gear sleeping period
+     */
+    public int getSleepingPeriod();
+
+    /**
+     * Set the sleeping period
+     *
+     * @param sleepingPeriod to set
+     */
+    public void setSleepingPeriod(int sleepingPeriod);
+
+    /**
      * Start the gear
      */
     public void    start();
@@ -83,7 +97,7 @@ public interface Gear {
     public boolean isRunning();
 
     /**
-     * Set isRunning bool
+     * Set running bool
      *
      * @param isRunning to set
      */

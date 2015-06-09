@@ -29,6 +29,7 @@ public class RemoteGear implements Gear, Serializable {
     private String gearId;
     private String gearName;
     private String gearDescription;
+    private int sleepingPeriod;
     private boolean running = false;
 
     private String gearAdminQueue;
@@ -61,6 +62,16 @@ public class RemoteGear implements Gear, Serializable {
     @Override
     public void setGearDescription(String gearDescription) {
         this.gearDescription = gearDescription;
+    }
+
+    @Override
+    public int getSleepingPeriod() {
+        return sleepingPeriod;
+    }
+
+    @Override
+    public void setSleepingPeriod(int sleepingPeriod) {
+        this.sleepingPeriod = sleepingPeriod;
     }
 
     public String getGearAdminQueue() {

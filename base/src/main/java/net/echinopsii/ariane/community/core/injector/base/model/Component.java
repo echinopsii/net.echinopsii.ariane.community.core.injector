@@ -32,8 +32,16 @@ public interface Component {
     public String  getComponentType();
 
     public int     getNextAction();
+    public void    setNextAction(int nextAction);
+
     public boolean isRefreshing();
+    public void setRefreshing(boolean refreshing);
+
     public Date    getLastRefresh();
+    public void    setLastRefresh(Date date);
+
+    public String  getLastRefreshDuration();
+    public void setLastRefreshDuration(String lastRefreshDuration);
 
     public String  getAttachedGearId();
     public void    setAttachedGearId(String attachedGearId);

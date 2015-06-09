@@ -37,6 +37,7 @@ public class RemoteComponent implements Component, Serializable {
     private boolean refreshing = false;
     private String jsonLastRefresh = null;
     private Date lastRefresh = null;
+    private String lastRefreshDuration = null;
     private String attachedGearId = null;
 
     private String componentAdminQueue = null;
@@ -79,6 +80,7 @@ public class RemoteComponent implements Component, Serializable {
         return nextAction;
     }
 
+    @Override
     public void setNextAction(int nextAction) {
         this.nextAction = nextAction;
     }
@@ -88,6 +90,7 @@ public class RemoteComponent implements Component, Serializable {
         return refreshing;
     }
 
+    @Override
     public void setRefreshing(boolean refreshing) {
         this.refreshing = refreshing;
     }
@@ -106,9 +109,21 @@ public class RemoteComponent implements Component, Serializable {
         return lastRefresh;
     }
 
+    @Override
     public void setLastRefresh(Date lastRefresh) {
         this.lastRefresh = lastRefresh;
     }
+
+    @Override
+    public String getLastRefreshDuration() {
+        return this.lastRefreshDuration;
+    }
+
+    @Override
+    public void setLastRefreshDuration(String lastRefreshDuration) {
+        this.lastRefreshDuration = lastRefreshDuration;
+    }
+
 
     @Override
     public String getAttachedGearId() {

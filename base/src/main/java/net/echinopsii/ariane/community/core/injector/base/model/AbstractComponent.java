@@ -27,30 +27,47 @@ public abstract class AbstractComponent implements Component, Serializable {
     private int nextAction;
     private boolean isRefreshing = false;
     private Date lastRefresh = new Date();
+    private String lastRefreshDuration;
     private String attachedGearId ;
 
+    @Override
     public int getNextAction() {
         return nextAction;
     }
 
+    @Override
     public void setNextAction(int nextAction) {
         this.nextAction = nextAction;
     }
 
+    @Override
     public boolean isRefreshing() {
         return isRefreshing;
     }
 
+    @Override
     public void setRefreshing(boolean refreshing) {
         isRefreshing = refreshing;
     }
 
+    @Override
     public Date getLastRefresh() {
         return lastRefresh;
     }
 
+    @Override
     public void setLastRefresh(Date lastRefresh) {
         this.lastRefresh = lastRefresh;
+    }
+
+    @Override
+    public String getLastRefreshDuration() {
+        return lastRefreshDuration;
+    }
+
+    @Override
+    public void setLastRefreshDuration(String lastRefreshDuration) {
+        this.lastRefreshDuration = lastRefreshDuration;
     }
 
     public String getAttachedGearId() {

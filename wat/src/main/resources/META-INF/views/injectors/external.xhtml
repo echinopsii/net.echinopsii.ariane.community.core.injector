@@ -15,30 +15,6 @@
         <ui:fragment rendered="#{arianeidm:canDisplayTreeMenuEntity(injectorExternalTreeMenuEntity.treeMenuEntity)}">
             <div>
                 <div style="width:49%; float:left;">
-                    <p:fieldset id="confpnl" legend="Scheduling configuration" toggleable="true" toggleSpeed="500">
-                        <h:form>
-                            <p:growl id="rabbitmqConfigurationMessages" showDetail="true" />
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="#{injectorExternalTreeMenuEntity.treeMenuEntityID} directory query period (second): " styleClass="inputTitle"/>
-                                    <p:inplace editor="true">
-                                        <p:inputText required="true" label="text" value="#{injectorExternalTreeMenuEntity.treeMenuEntityID} injector directoryQueryPeriod"/>
-                                    </p:inplace>
-
-                                    <h:outputText value="#{injectorExternalTreeMenuEntity.treeMenuEntityID} entities sniffing period (second): " styleClass="inputTitle"/>
-                                    <p:inplace editor="true">
-                                        <p:inputText required="true" label="text" value="#{injectorExternalTreeMenuEntity.treeMenuEntityID} injector componentSniffPeriod"/>
-                                    </p:inplace>
-                                </h:panelGrid>
-                                <p:commandButton value="Apply changes and restart" id="confApply" icon="icon-power-off icon-large" update="@form"
-                                                 styleClass="ui-priority-primary icon-large"
-                                                 rendered="#{arianeidm:canActionOnTreeMenuEntity(injectorExternalTreeMenuEntity.treeMenuEntity,'action')}"/>
-
-                            </h:panelGrid>
-                        </h:form>
-                    </p:fieldset>
-                </div>
-                <div style="width:49%; float:right;">
                     <p:fieldset id="cacheGearConfpnl" legend="Gears cache configuration" collapsed="true" toggleable="true" toggleSpeed="500">
                         <h:dataTable var="key" value="#{injectorExternalTreeMenuEntity.treeMenuEntityID} keys">
                             <h:column>
@@ -49,8 +25,8 @@
                             </h:column>
                         </h:dataTable>
                     </p:fieldset>
-                    <br/>
-
+                </div>
+                <div style="width:49%; float:right;">
                     <p:fieldset id="cacheComponentConfpnl" legend="Components cache configuration" collapsed="true" toggleable="true" toggleSpeed="500">
                         <h:dataTable var="key" value="#{injectorExternalTreeMenuEntity.treeMenuEntityID}">
                             <h:column>
