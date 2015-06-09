@@ -58,10 +58,4 @@
         <managed-bean-scope>view</managed-bean-scope>
     </managed-bean>
 
-    <managed-bean>
-        <managed-bean-name>injectorExternalConfigurationScheduling</managed-bean-name>
-        <managed-bean-class>net.echinopsii.ariane.community.core.injector.wat.controller.InjectorExternalConfigurationScheduling</managed-bean-class>
-        <managed-bean-scope>view</managed-bean-scope>
-    </managed-bean>
-
 </faces-config>

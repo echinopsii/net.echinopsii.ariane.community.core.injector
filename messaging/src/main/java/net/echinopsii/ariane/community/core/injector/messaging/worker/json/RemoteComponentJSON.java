@@ -35,6 +35,7 @@ public class RemoteComponentJSON {
     public final static String REMOTE_COMPONENT_NEXT_ACTION = "nextAction";
     public final static String REMOTE_COMPONENT_REFRESHING = "refreshing";
     public final static String REMOTE_COMPONENT_JSON_LAST_REFRESH = "jsonLastRefresh";
+    public final static String REMOTE_COMPONENT_LAST_REFRESH_DURATION = "lastRefreshDuration";
     public final static String REMOTE_COMPONENT_ATTACHED_GEAR_ID = "attachedGearId";
     public final static String REMOTE_COMPONENT_ADMIN_QUEUE = "componentAdminQueue";
 
@@ -47,6 +48,7 @@ public class RemoteComponentJSON {
         jgenerator.writeNumberField(REMOTE_COMPONENT_NEXT_ACTION, remoteComponent.getNextAction());
         jgenerator.writeBooleanField(REMOTE_COMPONENT_REFRESHING, remoteComponent.isRefreshing());
         jgenerator.writeStringField(REMOTE_COMPONENT_JSON_LAST_REFRESH, remoteComponent.getJsonLastRefresh());
+        jgenerator.writeStringField(REMOTE_COMPONENT_LAST_REFRESH_DURATION, remoteComponent.getLastRefreshDuration());
         jgenerator.writeStringField(REMOTE_COMPONENT_ATTACHED_GEAR_ID, remoteComponent.getAttachedGearId());
         jgenerator.writeStringField(REMOTE_COMPONENT_ADMIN_QUEUE, remoteComponent.getComponentAdminQueue());
         jgenerator.writeEndObject();

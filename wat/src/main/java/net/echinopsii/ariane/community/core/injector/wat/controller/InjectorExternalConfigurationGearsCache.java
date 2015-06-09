@@ -19,9 +19,58 @@
  */
 package net.echinopsii.ariane.community.core.injector.wat.controller;
 
+import net.echinopsii.ariane.community.core.injector.base.registry.InjectorGearsRegistry;
 import net.echinopsii.ariane.community.core.injector.wat.InjectorWatBootstrap;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.TreeSet;
+
 public class InjectorExternalConfigurationGearsCache {
 
+    private static String TID_NOT_DEFINED = "not defined";
+
+    private String treeMenuEntityID = TID_NOT_DEFINED;
+    private TreeMenuEntity treeMenuEntity;
+    private InjectorGearsRegistry gearsRegistry;
+
+    private Properties gearsCacheConf;
+    private List<String> keys = new ArrayList<>() ;
+
+    public void init() {
+        if (treeMenuEntity == null && treeMenuEntityID != null && !treeMenuEntityID.equals(TID_NOT_DEFINED))
+            treeMenuEntity = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromID(treeMenuEntityID);
+        if (treeMenuEntity!=null && gearsRegistry==null)
+            gearsRegistry = InjectorWatBootstrap.getInjectorRegistryFactory().getGearsRegistry(treeMenuEntity.getRemoteInjectorTreeEntityGearsCacheId());
+        if (gearsRegistry!=null) {
+            gearsCacheConf = gearsRegistry.getConfiguration();
+            TreeSet<Object> sortedKeys = new TreeSet<>();
+            sortedKeys.addAll(gearsCacheConf.keySet());
+            for (Object key: sortedKeys) {
+                if (key instanceof String)
+                    keys.add((String)key);
+            }
+        }
+    }
+
+    public List<String> getKeys() {
+        return keys;
+    }
+
+    public String getGearsCacheConf(String key) {
+        String ret = "";
+        if (gearsCacheConf!=null)
+            ret = gearsCacheConf.get(key).toString();
+        return ret;
+    }
+
+    public String getTreeMenuEntityID() {
+        return treeMenuEntityID;
+    }
+
+    public void setTreeMenuEntityID(String treeMenuEntityID) {
+        this.treeMenuEntityID = treeMenuEntityID;
+    }
 }

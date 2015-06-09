@@ -23,8 +23,16 @@ import net.echinopsii.ariane.community.core.injector.wat.InjectorWatBootstrap;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 
 public class InjectorExternalTreeMenuEntity {
-    private String treeMenuEntityID = "not defined";
+
+    private static String TID_NOT_DEFINED = "not defined";
+
+    private String treeMenuEntityID = TID_NOT_DEFINED;
     private TreeMenuEntity treeMenuEntity;
+
+    public void init() {
+        if (treeMenuEntity == null && treeMenuEntityID != null && !treeMenuEntityID.equals(TID_NOT_DEFINED))
+            treeMenuEntity = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromID(treeMenuEntityID);
+    }
 
     public String getTreeMenuEntityID() {
         return treeMenuEntityID;
@@ -35,8 +43,6 @@ public class InjectorExternalTreeMenuEntity {
     }
 
     public TreeMenuEntity getTreeMenuEntity() {
-        if (treeMenuEntity == null && treeMenuEntityID != null)
-            treeMenuEntity = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromID(treeMenuEntityID);
         return treeMenuEntity;
     }
 }

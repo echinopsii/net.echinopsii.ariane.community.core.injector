@@ -19,6 +19,7 @@
 
 package net.echinopsii.ariane.community.core.injector.wat;
 
+import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
 import net.echinopsii.ariane.community.core.portal.base.plugin.FaceletsResourceResolverService;
 import net.echinopsii.ariane.community.core.portal.base.model.MainMenuEntity;
 import net.echinopsii.ariane.community.core.portal.base.model.MenuEntityType;
@@ -104,6 +105,26 @@ public class InjectorWatBootstrap implements FaceletsResourceResolverService {
     public static TreeMenuRootsRegistry getTreeMenuRootsRegistry() {
         return treeMenuRootsRegistrySgt;
     }
+
+    @Requires
+    private InjectorRegistryFactory injectorRegistryFactory = null;
+    private static InjectorRegistryFactory injectorRegistryFactorySgt = null;
+
+    @Bind
+    public void bindInjectorRegistryFactory(InjectorRegistryFactory r) {
+        log.debug("Bound to injector registry factory..." + r.toString());
+        injectorRegistryFactory = r;
+        injectorRegistryFactorySgt = r;
+    }
+
+    @Unbind
+    public void unbindInjectorRegistryFactory() {
+        log.debug("Unboumd from injector registry factory...");
+        injectorRegistryFactory = null;
+        injectorRegistryFactorySgt = null;
+    }
+
+    public static InjectorRegistryFactory getInjectorRegistryFactory() { return injectorRegistryFactorySgt; }
 
     @Validate
     public void validate() throws Exception {

@@ -72,9 +72,10 @@ public class RemoteGearWorker implements AppMsgWorker {
                                     RemoteGear remoteGear = RemoteGearJSON.JSON2RemoteGear(oGearJSON.toString());
                                     RemoteGear registeredGear = (RemoteGear)gearsRegistry.getEntityFromCache(remoteGear.getGearId());
                                     if (registeredGear!=null) {
-                                        registeredGear.setGearName(remoteGear.getGearName());
-                                        registeredGear.setGearDescription(remoteGear.getGearDescription());
-                                        registeredGear.setGearAdminQueue(remoteGear.getGearAdminQueue());
+                                        if (remoteGear.getGearName()!=null) registeredGear.setGearName(remoteGear.getGearName());
+                                        if (remoteGear.getGearDescription()!=null) registeredGear.setGearDescription(remoteGear.getGearDescription());
+                                        if (remoteGear.getGearAdminQueue()!=null) registeredGear.setGearAdminQueue(remoteGear.getGearAdminQueue());
+                                        if (remoteGear.getSleepingPeriod()<=0) registeredGear.setSleepingPeriod(remoteGear.getSleepingPeriod());
                                         registeredGear.setRunning(remoteGear.isRunning());
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 0);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Gear " + remoteGear.getGearName() + " successfully updated on registry " + oCacheID.toString());

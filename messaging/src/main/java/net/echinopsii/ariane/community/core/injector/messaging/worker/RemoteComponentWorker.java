@@ -73,12 +73,13 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                     RemoteComponent remoteComponent = RemoteComponentJSON.JSON2RemoteComponent(oComponentJSON.toString());
                                     RemoteComponent registeredComponent = (RemoteComponent)componentsRegistry.getEntityFromCache(remoteComponent.getComponentId());
                                     if (registeredComponent!=null) {
-                                        registeredComponent.setComponentName(remoteComponent.getComponentName());
-                                        registeredComponent.setComponentType(remoteComponent.getComponentType());
+                                        if (remoteComponent.getComponentName()!=null) registeredComponent.setComponentName(remoteComponent.getComponentName());
+                                        if (remoteComponent.getComponentType()!=null) registeredComponent.setComponentType(remoteComponent.getComponentType());
                                         registeredComponent.setRefreshing(remoteComponent.isRefreshing());
-                                        registeredComponent.setLastRefresh(remoteComponent.getLastRefresh());
-                                        registeredComponent.setNextAction(remoteComponent.getNextAction());
-                                        registeredComponent.setComponentAdminQueue(remoteComponent.getComponentAdminQueue());
+                                        if (remoteComponent.getLastRefresh()!=null) registeredComponent.setLastRefresh(remoteComponent.getLastRefresh());
+                                        if (remoteComponent.getLastRefreshDuration()!=null) registeredComponent.setLastRefreshDuration(remoteComponent.getLastRefreshDuration());
+                                        if (remoteComponent.getNextAction()!=0) registeredComponent.setNextAction(remoteComponent.getNextAction());
+                                        if (remoteComponent.getComponentAdminQueue()!=null) registeredComponent.setComponentAdminQueue(remoteComponent.getComponentAdminQueue());
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 0);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully updated on registry " + oCacheID.toString());
                                     } else {

@@ -1,8 +1,8 @@
-#sudo pip3 install python3-pika
 import uuid
 import pika
 import json
 from pprint import pprint
+__author__ = 'mffrench'
 
 
 class Requestor(object):
@@ -65,28 +65,55 @@ client_properties = {
     'ariane.cmp': 'echinopsii'
 }
 
+cache_mgr_name = 'ARIANE_PLUGIN_DOCKER_GEARS_CACHE_MGR'
+registry_name = 'Ariane Docker plugin gears registry'
+registry_cache_id = 'ariane.community.plugin.docker.gears.cache'
+registry_cache_name = 'Ariane Docker plugin gears cache'
+
 credentials = pika.PlainCredentials('ariane', 'password')
 parameters = pika.ConnectionParameters("localhost", 5672, '/ariane',
                                        credentials=credentials, client_props=client_properties)
 connection = pika.BlockingConnection(parameters)
 
+requestor = Requestor(connection, 'remote.injector.cachefactory')
+requestor.start()
+result = requestor.call({'OPERATION': 'MAKE_GEARS_REGISTRY'
+    ,'ariane.community.injector.gears.registry.name': registry_name
+    ,'ariane.community.injector.gears.registry.cache.id': registry_cache_id
+    ,'ariane.community.injector.gears.registry.cache.name': registry_cache_name
+    ,'ariane.community.injector.cache.mgr.name': cache_mgr_name
+})
+
+requestor = Requestor(connection, 'remote.injector.gear')
+requestor.start()
+
+result = requestor.call({'OPERATION': 'PUSH_GEAR_IN_CACHE'
+    ,'REMOTE_GEAR': '{"gearId": "ariane.community.plugin.docker.gears.cache.localhost", "gearName": "docker@localhost", "gearDescription": "Ariane remote injector for localhost", "gearAdminQueue": "ariane.community.plugin.docker.gears.cache.localhost", "running": "false"}'
+    ,'CACHE_ID': registry_cache_id
+})
+
+
+cache_mgr_name = 'ARIANE_PLUGIN_DOCKER_COMPONENTS_CACHE_MGR'
+registry_name = 'Ariane Docker plugin components registry'
+registry_cache_id = 'ariane.community.plugin.docker.components.cache'
+registry_cache_name = 'Ariane Docker plugin components cache'
+requestor = Requestor(connection, 'remote.injector.cachefactory')
+requestor.start()
+
+result = requestor.call({'OPERATION': 'MAKE_COMPONENTS_REGISTRY'
+    ,'ariane.community.injector.components.registry.name': registry_name
+    ,'ariane.community.injector.components.registry.cache.id': registry_cache_id
+    ,'ariane.community.injector.components.registry.cache.name': registry_cache_name
+    ,'ariane.community.injector.cache.mgr.name': cache_mgr_name
+})
 requestor = Requestor(connection, 'remote.injector.tree')
 requestor.start()
 
-result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITIES'})
-
 result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITY_I', 'TREE_MENU_ENTITY_ID': 'mappingDir'})
 idMap = json.loads(result['body'].decode("UTF-8"))['id']
-
-result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITY_V', 'TREE_MENU_ENTITY_VALUE': 'Mapping'})
-
-result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITY_C', 'TREE_MENU_ENTITY_CONTEXT_ADDRESS': ''})
-
-result = requestor.call({'OPERATION': 'GET_TREE_MENU_ENTITY_C', 'TREE_MENU_ENTITY_CONTEXT_ADDRESS': '/ariane/views/injectors/tibcorv.jsf'})
-
 result = requestor.call({'OPERATION': 'REGISTER', 'TREE_MENU_ENTITY': '{"id": "systemDir", "value": "System", "type": 2, "contextAddress": "", '
-                                                             '"description": "", "icon": "cog", "displayRoles": ["sysadmin"], '
-                                                             '"displayPermissions": ["injMapSysDocker:display"]}'})
+                                                                      '"description": "", "icon": "cog", "displayRoles": ["sysadmin"], '
+                                                                      '"displayPermissions": ["injMapSysDocker:display"]}'})
 
 result = requestor.call({'OPERATION': 'SET_PARENT', 'TREE_MENU_ENTITY_ID': 'systemDir', 'TREE_MENU_ENTITY_PARENT_ID': idMap})
 
@@ -99,12 +126,8 @@ result = requestor.call({'OPERATION': 'REGISTER', 'TREE_MENU_ENTITY': '{"id": "d
 result = requestor.call({'OPERATION': 'SET_PARENT', 'TREE_MENU_ENTITY_ID': 'docker', 'TREE_MENU_ENTITY_PARENT_ID': 'systemDir'})
 
 result = requestor.call({'OPERATION': 'UPDATE', 'TREE_MENU_ENTITY': '{"id": "docker", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?id=docker", '
-                                                                      '"description": "Docker injector", "icon": "icon-cog", "displayRoles": ["sysadmin", "sysreviewer"], '
-                                                                      '"displayPermissions": ["injMapSysDocker:display"],'
-                                                                      '"remoteInjectorTreeEntityGearsCacheId": "ariane.community.plugin.docker.gears.cache", '
-                                                                      '"remoteInjectorTreeEntityComponentsCacheId":"ariane.community.plugin.docker.components.cache"}'})
-
-result = requestor.call({'OPERATION': 'UPDATE', 'TREE_MENU_ENTITY': '{"id": "docker", "value": "Docker", "type": 1, "contextAddress": "/ariane/views/injectors/external.jsf?id=docker", '
                                                                     '"description": "Docker injector", "icon": "icon-cog", "displayRoles": ["sysadmin", "sysreviewer"], '
-                                                                    '"displayPermissions": ["injMapSysDocker:display"], "otherActionsRoles": {"action": ["sysadmin"]},'
-                                                                    '"otherActionsPerms": {"action": ["injMapSysDocker:action"]}}'})
+                                                                    '"displayPermissions": ["injMapSysDocker:display"],'
+                                                                    '"otherActionsRoles": {"action": ["sysadmin"]}, "otherActionsPerms": {"action": ["injMapSysDocker:action"]},'
+                                                                    '"remoteInjectorTreeEntityGearsCacheId": "ariane.community.plugin.docker.gears.cache", '
+                                                                    '"remoteInjectorTreeEntityComponentsCacheId":"ariane.community.plugin.docker.components.cache"}'})

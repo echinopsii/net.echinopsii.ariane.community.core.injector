@@ -68,6 +68,8 @@
                         <Import-Package>
                             net.echinopsii.ariane.community.core.portal.base.model;version="[${version.net.echinopsii.ariane.core.portal.min},${version.net.echinopsii.ariane.core.portal.max})",
                             net.echinopsii.ariane.community.core.portal.base.plugin;version="[${version.net.echinopsii.ariane.core.portal.min},${version.net.echinopsii.ariane.core.portal.max})",
+                            net.echinopsii.ariane.community.core.injector.base.model;version="${project.version}}",
+                            net.echinopsii.ariane.community.core.injector.base.registry;version="${project.version}}",
                             javax.annotation;version="${version.javax.annotations.jsr250-api}",
                             javax.el;version="${version.javax.el}",
                             javax.servlet;version="[${version.osgimin.javax.servlet-api},${version.osgimax.javax.servlet-api})",
