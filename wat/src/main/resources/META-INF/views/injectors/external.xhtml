@@ -113,7 +113,7 @@
                                                      update="@form" actionListener="#{injectorExternalCacheComponents.refreshEntity(entity)}" styleClass="ui-priority-primary icon-large"/>
                                 </p:column>
                                 <f:facet name="footer" rendered="#{arianeidm:canActionOnTreeMenuEntity(injectorExternalTreeMenuEntity.treeMenuEntity,'action')}">
-                                    <p:commandButton value="Refresh external injector components cache" icon="icon-refresh icon-large" update="@form" actionListener="#{injectorExternalCacheComponents.refreshCache()}"
+                                    <p:commandButton value="Refresh #{injectorExternalCacheComponents.treeMenuEntityID} components cache" icon="icon-refresh icon-large" update="@form" actionListener="#{injectorExternalCacheComponents.refreshCache()}"
                                                      styleClass="ui-priority-primary icon-large"/>
                                 </f:facet>
                             </p:dataTable>

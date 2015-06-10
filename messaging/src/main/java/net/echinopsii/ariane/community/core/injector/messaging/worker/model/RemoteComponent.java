@@ -19,12 +19,18 @@
 package net.echinopsii.ariane.community.core.injector.messaging.worker.model;
 
 import net.echinopsii.ariane.community.core.injector.base.model.Component;
+import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteComponentService;
+import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
+import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteWorkerCommon;
+import net.echinopsii.ariane.community.messaging.api.MomClient;
 
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RemoteComponent implements Component, Serializable {
 
@@ -145,11 +151,16 @@ public class RemoteComponent implements Component, Serializable {
 
     @Override
     public void refresh() {
-
+        MomClient client = RemoteComponentService.getClient();
+        if (client!=null && componentAdminQueue!=null) {
+            Map<String, Object> message = new HashMap<String, Object>();
+            message.put(RemoteWorkerCommon.OPERATION_FDN, "REFRESH");
+            client.createRequestExecutor().fireAndForget(message, componentAdminQueue);
+        }
     }
 
     @Override
     public void refreshAndMap() {
-
+        refresh();
     }
 }

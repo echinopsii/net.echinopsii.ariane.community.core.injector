@@ -176,4 +176,12 @@ public class InjectorMessagingBootstrap {
             conf = properties;
         }
     }
+
+    public static Dictionary getConf() {
+        return conf;
+    }
+
+    public static void setConf(Dictionary conf) {
+        InjectorMessagingBootstrap.conf = conf;
+    }
 }

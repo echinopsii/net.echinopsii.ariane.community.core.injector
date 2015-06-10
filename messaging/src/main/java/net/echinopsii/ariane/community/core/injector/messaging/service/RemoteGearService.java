@@ -31,7 +31,7 @@ import java.util.Dictionary;
 public class RemoteGearService {
     private static final Logger log = LoggerFactory.getLogger(RemoteGearService.class);
 
-    private        MomClient client = null;
+    private static MomClient client = null;
     private static String    rigQueue = "remote.injector.gear";
 
     public void start(Dictionary properties) {
@@ -64,5 +64,9 @@ public class RemoteGearService {
         log.info("Stop Injector Remote Gear Messaging Service ...");
         if (client!=null)
             client.close();
+    }
+
+    public static MomClient getClient() {
+        return client;
     }
 }

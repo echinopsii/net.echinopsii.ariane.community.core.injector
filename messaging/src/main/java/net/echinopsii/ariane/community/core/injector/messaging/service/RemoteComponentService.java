@@ -31,7 +31,7 @@ import java.util.Dictionary;
 public class RemoteComponentService {
     private static final Logger log = LoggerFactory.getLogger(RemoteComponentService.class);
 
-    private        MomClient client   = null;
+    private static MomClient client   = null;
     private static String    ricQueue = "remote.injector.comp";
 
     public void start(Dictionary properties) {
@@ -66,5 +66,9 @@ public class RemoteComponentService {
         log.info("Stop Injector Remote Component Messaging Service ...");
         if (client!=null)
             client.close();
+    }
+
+    public static MomClient getClient() {
+        return client;
     }
 }

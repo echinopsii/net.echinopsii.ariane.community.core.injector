@@ -19,8 +19,16 @@
 package net.echinopsii.ariane.community.core.injector.messaging.worker.model;
 
 import net.echinopsii.ariane.community.core.injector.base.model.Gear;
+import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
+import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
+import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteWorkerCommon;
+import net.echinopsii.ariane.community.messaging.api.MomClient;
+import net.echinopsii.ariane.community.messaging.api.MomClientFactory;
 
 import java.io.Serializable;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RemoteGear implements Gear, Serializable {
 
@@ -33,6 +41,8 @@ public class RemoteGear implements Gear, Serializable {
     private boolean running = false;
 
     private String gearAdminQueue;
+
+    private MomClient client = null;
 
     @Override
     public String getGearId() {
@@ -84,12 +94,22 @@ public class RemoteGear implements Gear, Serializable {
 
     @Override
     public void start() {
-
+        MomClient client = RemoteGearService.getClient();
+        if (client!=null && gearAdminQueue!=null) {
+            Map<String, Object> message = new HashMap<String, Object>();
+            message.put(RemoteWorkerCommon.OPERATION_FDN, "START");
+            client.createRequestExecutor().fireAndForget(message, gearAdminQueue);
+        }
     }
 
     @Override
     public void stop() {
-
+        MomClient client = RemoteGearService.getClient();
+        if (client!=null && gearAdminQueue!=null) {
+            Map<String, Object> message = new HashMap<String, Object>();
+            message.put(RemoteWorkerCommon.OPERATION_FDN, "STOP");
+            client.createRequestExecutor().fireAndForget(message, gearAdminQueue);
+        }
     }
 
     @Override
