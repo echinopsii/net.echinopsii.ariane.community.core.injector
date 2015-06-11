@@ -24,8 +24,7 @@
             <f:viewParam name="id" value="#{injectorExternalCacheGears.treeMenuEntityID}"/>
             <f:event type="preRenderView" listener="#{injectorExternalCacheGears.init}" />
         </f:metadata>
-        <!--<h:outputText value="external tree menu entity id : #{injectorExternalTreeMenuEntity.treeMenuEntityID}" /><br/>-->
-        <ui:fragment rendered="#{arianeidm:canDisplayTreeMenuEntity(injectorExternalTreeMenuEntity.treeMenuEntity)}">
+        <ui:fragment rendered="#{!empty injectorExternalTreeMenuEntity.treeMenuEntity and arianeidm:canDisplayTreeMenuEntity(injectorExternalTreeMenuEntity.treeMenuEntity)}">
             <div>
                 <div style="width:49%; float:left;">
                     <p:fieldset id="cacheGearConfpnl" legend="Gears cache configuration" collapsed="true" toggleable="true" toggleSpeed="500">

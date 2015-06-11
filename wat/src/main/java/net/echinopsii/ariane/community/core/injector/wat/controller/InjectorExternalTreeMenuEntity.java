@@ -22,6 +22,10 @@ package net.echinopsii.ariane.community.core.injector.wat.controller;
 import net.echinopsii.ariane.community.core.injector.wat.InjectorWatBootstrap;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
+
 public class InjectorExternalTreeMenuEntity {
 
     private static String TID_NOT_DEFINED = "not defined";
@@ -29,9 +33,13 @@ public class InjectorExternalTreeMenuEntity {
     private String treeMenuEntityID = TID_NOT_DEFINED;
     private TreeMenuEntity treeMenuEntity;
 
-    public void init() {
+    public void init() throws IOException {
         if (treeMenuEntity == null && treeMenuEntityID != null && !treeMenuEntityID.equals(TID_NOT_DEFINED))
             treeMenuEntity = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromID(treeMenuEntityID);
+        if (treeMenuEntity == null) {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect("/ariane/views/injectors/main.jsf");
+        }
     }
 
     public String getTreeMenuEntityID() {
