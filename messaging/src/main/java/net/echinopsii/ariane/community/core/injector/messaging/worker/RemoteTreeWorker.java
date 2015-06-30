@@ -100,6 +100,7 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
                         reply.put(RemoteWorkerCommon.REPLY_MSG, "Invalid request : no tree menu entity submitted...");
                     }
                     break;
+
                 case OPERATION_VAL_SET_PARENT_ENTITY:
                     oParam = message.get(TREE_MENU_ENTITY_ID);
                     if (oParam != null) {
@@ -190,6 +191,7 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
                         reply.put(RemoteWorkerCommon.REPLY_MSG, "Invalid request : no tree menu entity submitted...");
                     }
                     break;
+
                 case OPERATION_VAL_UNREGISTER:
                     oParam = message.get(TREE_MENU_ENTITY_ID);
                     if (oParam != null) {
@@ -212,6 +214,7 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
                     }
 
                     break;
+
                 case OPERATION_VAL_GETTREEMRES:
                     try {
                         ret = TreeMenuEntityJSON.manyTreeMenuEntity2JSON(this.getTreeMenuRootsEntities());
@@ -223,14 +226,21 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
                         reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                     }
                     break;
+
                 case OPERATION_VAL_GETTREEMREV:
                     oParam = message.get(TREE_MENU_ENTITY_VALUE);
                     try {
                         if (oParam != null) {
                             param1 = oParam.toString();
-                            ret = TreeMenuEntityJSON.treeMenuEntity2JSON(this.getTreeMenuEntityFromValue(param1));
-                            reply.put(RemoteWorkerCommon.REPLY_RC, 0);
-                            reply.put(MomMsgTranslator.MSG_BODY, ret);
+                            TreeMenuEntity entity = this.getTreeMenuEntityFromValue(param1);
+                            if (entity!=null) {
+                                ret = TreeMenuEntityJSON.treeMenuEntity2JSON(entity);
+                                reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                                reply.put(MomMsgTranslator.MSG_BODY, ret);
+                            } else {
+                                reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                reply.put(RemoteWorkerCommon.REPLY_MSG, "TreeMenuEntity not found ( value: " + param1 + " ) !");
+                            }
                         } else {
                             reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                             reply.put(RemoteWorkerCommon.REPLY_MSG, "Invalid request : no tree menu entity value submitted...");
@@ -242,14 +252,21 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
                         reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                     }
                     break;
+
                 case OPERATION_VAL_GETTREEMREI:
                     oParam = message.get(TREE_MENU_ENTITY_ID);
                     if (oParam != null) {
                         param1 = oParam.toString();
                         try {
-                            ret = TreeMenuEntityJSON.treeMenuEntity2JSON(this.getTreeMenuEntityFromID(param1));
-                            reply.put(RemoteWorkerCommon.REPLY_RC, 0);
-                            reply.put(MomMsgTranslator.MSG_BODY, ret);
+                            TreeMenuEntity entity = this.getTreeMenuEntityFromID(param1);
+                            if (entity!=null) {
+                                ret = TreeMenuEntityJSON.treeMenuEntity2JSON(entity);
+                                reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                                reply.put(MomMsgTranslator.MSG_BODY, ret);
+                            } else {
+                                reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                reply.put(RemoteWorkerCommon.REPLY_MSG, "TreeMenuEntity not found ( id: " + param1 +" ) !");
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                             reply.put(RemoteWorkerCommon.REPLY_RC, 1);
@@ -268,9 +285,15 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
                         param1 = oParam.toString();
                         if (!param1.equals("")) {
                             try {
-                                ret = TreeMenuEntityJSON.treeMenuEntity2JSON(this.getTreeMenuEntityFromContextAddress(param1));
-                                reply.put(RemoteWorkerCommon.REPLY_RC, 0);
-                                reply.put(MomMsgTranslator.MSG_BODY, ret);
+                                TreeMenuEntity entity = this.getTreeMenuEntityFromContextAddress(param1);
+                                if (entity!=null) {
+                                    ret = TreeMenuEntityJSON.treeMenuEntity2JSON(entity);
+                                    reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                                    reply.put(MomMsgTranslator.MSG_BODY, ret);
+                                } else {
+                                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                                    reply.put(RemoteWorkerCommon.REPLY_MSG, "TreeMenuEntity not found ( context address: " + param1 +" ) !");
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 reply.put(RemoteWorkerCommon.REPLY_RC, 1);

@@ -9,7 +9,7 @@ class Requestor(object):
 
     def __init__(self, connection_, requestQ_):
         self.connection = connection_
-        self.channel = connection.channel()
+        self.channel = self.connection.channel()
         self.requestQ = requestQ_
         self.channel.queue_declare(queue=requestQ_)
         self.result = self.channel.queue_declare(exclusive=True)
@@ -59,7 +59,7 @@ class Requestor(object):
 class Service(object):
     def __init__(self, connection_, serviceQ_, cb_):
         self.connection = connection_
-        self.channel = connection.channel()
+        self.channel = self.connection.channel()
         self.channel.queue_declare(queue=serviceQ_)
         self.serviceQ = serviceQ_
         self.cb = cb_
