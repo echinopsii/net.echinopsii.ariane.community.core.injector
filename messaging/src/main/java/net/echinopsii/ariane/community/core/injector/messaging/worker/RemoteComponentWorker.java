@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,6 +81,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                         if (remoteComponent.getLastRefreshDuration()!=null) registeredComponent.setLastRefreshDuration(remoteComponent.getLastRefreshDuration());
                                         if (remoteComponent.getNextAction()!=0) registeredComponent.setNextAction(remoteComponent.getNextAction());
                                         if (remoteComponent.getComponentAdminQueue()!=null) registeredComponent.setComponentAdminQueue(remoteComponent.getComponentAdminQueue());
+                                        registeredComponent.setComponentBlob(new String((byte[]) message.get(MomMsgTranslator.MSG_BODY), StandardCharsets.UTF_8));
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 0);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully updated on registry " + oCacheID.toString());
                                     } else {
@@ -166,7 +168,8 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                     if (registeredComponent!=null) {
                                         ret = RemoteComponentJSON.remoteComponent2JSON(registeredComponent);
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 0);
-                                        reply.put(MomMsgTranslator.MSG_BODY, ret);
+                                        reply.put(RemoteWorkerCommon.PROPERTIES, ret);
+                                        reply.put(MomMsgTranslator.MSG_BODY, registeredComponent.getComponentBlob());
                                     } else {
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                                         reply.put(RemoteWorkerCommon.REPLY_MSG, "Remote Component "+ remoteComponent.getComponentId() +" doesn't exists on cache " + oCacheID.toString() + "  ! ");

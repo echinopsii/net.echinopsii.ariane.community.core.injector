@@ -113,7 +113,8 @@ result = requestor.call({'OPERATION': 'PUSH_COMPONENT_IN_CACHE'
                          '"componentName": "docker@localhost", '
                          '"componentAdminQueue": "ariane.community.plugin.docker.components.cache.localhost", "refreshing": "false", '
                          '"nextAction": 0, "jsonLastRefresh": "2013-03-11 01:38:18.309", '
-                         '"attachedGearId": "ariane.community.plugin.docker.gears.cache.localhost"}'
+                         '"attachedGearId": "ariane.community.plugin.docker.gears.cache.localhost",'
+                         '"componentJSONBlob": "{\"a_field\":\"a_value\"}\"}'
     ,'CACHE_ID': registry_cache_id
 })
 #RC = 0 - successfull
@@ -128,6 +129,7 @@ result = requestor.call({'OPERATION': 'DEL_COMPONENT_FROM_CACHE'
                          '"componentName": "docker@localhost", '
                          '"componentAdminQueue": "ariane.community.plugin.docker.components.cache.localhost", "refreshing": "false", '
                          '"nextAction": 0, "jsonLastRefresh": "2013-03-11 01:38:18.309", '
-                         '"attachedGearId": "ariane.community.plugin.docker.gears.cache.localhost"}'
+                         '"attachedGearId": "ariane.community.plugin.docker.gears.cache.localhost",'
+                         '"componentJSONBlob": "{\"a_field\":\"a_value\"}\"}'
     ,'CACHE_ID': registry_cache_id
 })

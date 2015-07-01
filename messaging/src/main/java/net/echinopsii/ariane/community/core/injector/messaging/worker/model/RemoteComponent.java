@@ -20,7 +20,6 @@ package net.echinopsii.ariane.community.core.injector.messaging.worker.model;
 
 import net.echinopsii.ariane.community.core.injector.base.model.Component;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteComponentService;
-import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
 import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteWorkerCommon;
 import net.echinopsii.ariane.community.messaging.api.MomClient;
 
@@ -47,6 +46,8 @@ public class RemoteComponent implements Component, Serializable {
     private String attachedGearId = null;
 
     private String componentAdminQueue = null;
+
+    private String componentBlob = null;
 
     private static Date parse( String input ) throws java.text.ParseException {
         if (input == null) return null;
@@ -108,6 +109,14 @@ public class RemoteComponent implements Component, Serializable {
     public void setJsonLastRefresh(String jsonLastRefresh) throws ParseException {
         this.jsonLastRefresh = jsonLastRefresh;
         this.lastRefresh = parse(this.jsonLastRefresh);
+    }
+
+    public String getComponentBlob() {
+        return componentBlob;
+    }
+
+    public void setComponentBlob(String componentBlob) {
+        this.componentBlob = componentBlob;
     }
 
     @Override
