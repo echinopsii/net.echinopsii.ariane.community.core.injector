@@ -98,6 +98,7 @@ connection = pika.BlockingConnection(parameters)
 requestorComp = Requestor(connection, 'remote.injector.comp')
 requestorComp.start()
 
+
 def localhost_component_service(channel, props, body):
     cache_mgr_name = 'ARIANE_PLUGIN_DOCKER_COMPONENTS_CACHE_MGR'
     registry_name = 'Ariane Docker plugin components registry'
@@ -106,8 +107,6 @@ def localhost_component_service(channel, props, body):
     operation = props.headers['OPERATION']
     print(operation)
     if operation == "REFRESH":
-        pass
-    elif operation == "REFRESH_MAP":
         pass
     else:
         print("Unsupported operation " + str(operation))

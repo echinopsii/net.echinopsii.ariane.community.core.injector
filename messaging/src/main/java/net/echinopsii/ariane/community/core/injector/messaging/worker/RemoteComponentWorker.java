@@ -85,6 +85,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 0);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully updated on registry " + oCacheID.toString());
                                     } else {
+                                        remoteComponent.setComponentBlob(new String((byte[]) message.get(MomMsgTranslator.MSG_BODY), StandardCharsets.UTF_8));
                                         componentsRegistry.putEntityToCache(remoteComponent);
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 0);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully pushed to registry " + oCacheID.toString());
