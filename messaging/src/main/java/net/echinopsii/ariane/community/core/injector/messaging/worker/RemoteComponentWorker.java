@@ -77,7 +77,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                         if (remoteComponent.getComponentName()!=null) registeredComponent.setComponentName(remoteComponent.getComponentName());
                                         if (remoteComponent.getComponentType()!=null) registeredComponent.setComponentType(remoteComponent.getComponentType());
                                         registeredComponent.setRefreshing(remoteComponent.isRefreshing());
-                                        if (remoteComponent.getLastRefresh()!=null) registeredComponent.setLastRefresh(remoteComponent.getLastRefresh());
+                                        if (remoteComponent.getJsonLastRefresh()!=null) registeredComponent.setJsonLastRefresh(remoteComponent.getJsonLastRefresh());
                                         if (remoteComponent.getLastRefreshDuration()!=null) registeredComponent.setLastRefreshDuration(remoteComponent.getLastRefreshDuration());
                                         if (remoteComponent.getNextAction()!=0) registeredComponent.setNextAction(remoteComponent.getNextAction());
                                         if (remoteComponent.getComponentAdminQueue()!=null) registeredComponent.setComponentAdminQueue(remoteComponent.getComponentAdminQueue());
@@ -90,7 +90,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                         reply.put(RemoteWorkerCommon.REPLY_RC, 0);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully pushed to registry " + oCacheID.toString());
                                     }
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                     reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                                     reply.put(RemoteWorkerCommon.REPLY_MSG, "Remote Component serialization problem... Have a look to Ariane server logs ! ");
