@@ -16,6 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os
 from components.injector.cuInjectorMessagingManagedServiceProcessor import injectorMessagingManagedServiceSyringe
+from components.injector.cuInjectorRegistryFactoryProcessor import cuInjectorRegistryFactoryProcessor, \
+    cpInjectorComponentsRemoteCacheDirPath, cpInjectorGearsRemoteCacheDirPath
 from components.injector.dbIDMMySQLPopulator import dbIDMMySQLPopulator
 from components.injector.cuInjectorComponentsRegistryProcessor import cpInjectorComponentsCacheConfFilePath, cuInjectorComponentsRegistryProcessor
 from components.injector.cuInjectorComponentsCacheProcessor import cpInjectorSharedComponentsCacheDir, cuInjectorComponentsCacheProcessor
@@ -38,6 +40,12 @@ class injectorProcessor:
         self.injectorCachesDirPath = self.homeDirPath + "/ariane/cache/core/injector/"
         if not os.path.exists(self.injectorCachesDirPath):
             os.makedirs(self.injectorCachesDirPath, 0o755)
+        self.injectorComponentsRemoteCacheDirPath = self.injectorCachesDirPath + "remote/components"
+        if not os.path.exists(self.injectorComponentsRemoteCacheDirPath):
+            os.makedirs(self.injectorComponentsRemoteCacheDirPath, 0o755)
+        self.injectorGearsRemoteCacheDirPath = self.injectorCachesDirPath + "remote/gears"
+        if not os.path.exists(self.injectorGearsRemoteCacheDirPath):
+            os.makedirs(self.injectorGearsRemoteCacheDirPath, 0o755)
 
         self.injectorMessagingSyringe = injectorMessagingManagedServiceSyringe(self.kernelRepositoryDirPath, silent)
         self.injectorMessagingSyringe.shootBuilder()
@@ -47,6 +55,8 @@ class injectorProcessor:
 
         self.injectorGearsCacheCUProcessor = cuInjectorGearsCacheProcessor(self.injectorCachesDirPath)
         self.injectorGearsRegistryCUProcessor = cuInjectorGearsRegistryProcessor(self.kernelRepositoryDirPath)
+
+        self.injectorRegistryFactoryCUProcessor = cuInjectorRegistryFactoryProcessor(self.kernelRepositoryDirPath)
 
         self.injectorIDMSQLPopulator = dbIDMMySQLPopulator(idmDBConfig)
 
@@ -64,6 +74,10 @@ class injectorProcessor:
 
         self.injectorGearsRegistryCUProcessor.setKeyParamValue(cpInjectorGearsCacheConfFilePath.name, self.injectorCachesDirPath + "/infinispan.injector.gears.cache.xml")
         self.injectorGearsRegistryCUProcessor.process()
+
+        self.injectorRegistryFactoryCUProcessor.setKeyParamValue(cpInjectorComponentsRemoteCacheDirPath.name, self.injectorComponentsRemoteCacheDirPath)
+        self.injectorRegistryFactoryCUProcessor.setKeyParamValue(cpInjectorGearsRemoteCacheDirPath.name, self.injectorGearsRemoteCacheDirPath)
+        self.injectorRegistryFactoryCUProcessor.process()
 
         self.injectorIDMSQLPopulator.process()
         return self

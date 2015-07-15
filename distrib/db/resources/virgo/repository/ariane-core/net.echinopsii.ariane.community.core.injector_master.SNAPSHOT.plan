@@ -6,6 +6,7 @@
 				        http://www.eclipse.org/virgo/schema/plan/eclipse-virgo-plan.xsd">
        	<artifact type="configuration" name="net.echinopsii.ariane.community.core.InjectorComponentsRegistry"/>
        	<artifact type="configuration" name="net.echinopsii.ariane.community.core.InjectorGearsRegistry"/>
+        <artifact type="configuration" name="net.echinopsii.ariane.community.core.InjectorRegistryFactory"/>
        	<artifact type="configuration" name="net.echinopsii.ariane.community.core.InjectorMessagingManagedService"/>
         <artifact type="bundle" name="net.echinopsii.ariane.community.core.injector.base" version="[0.6.0,0.7.0)"/>
         <artifact type="bundle" name="net.echinopsii.ariane.community.core.injector.messaging" version="[0.6.0,0.7.0)"/>
