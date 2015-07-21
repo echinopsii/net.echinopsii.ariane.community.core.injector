@@ -39,6 +39,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
     public final static String OPERATION_PUSH_COMPONENT_IN_CACHE = "PUSH_COMPONENT_IN_CACHE";
     public final static String OPERATION_DEL_COMPONENT_FROM_CACHE = "DEL_COMPONENT_FROM_CACHE";
     public final static String OPERATION_PULL_COMPONENT_FROM_CACHE = "PULL_COMPONENT_FROM_CACHE";
+    public final static String OPERATION_COUNT_COMPONENTS_FROM_CACHE = "COUNT_COMPONENTS_CACHE";
 
     public final static String REMOTE_COMPONENT = "REMOTE_COMPONENT";
 
@@ -189,6 +190,23 @@ public class RemoteComponentWorker implements AppMsgWorker {
                             reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                             reply.put(RemoteWorkerCommon.REPLY_MSG, "Registry from cache ID " + oCacheID.toString() + " is not started ! ");
                         }
+                    } else {
+                        reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                        reply.put(RemoteWorkerCommon.REPLY_MSG, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
+                    }
+                } else {
+                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Cache ID is not defined ! ");
+                }
+                break;
+            case OPERATION_COUNT_COMPONENTS_FROM_CACHE:
+                oCacheID = message.get(RemoteWorkerCommon.CACHE_ID);
+                if (oCacheID!=null) {
+                    InjectorComponentsRegistry componentsRegistry =  InjectorMessagingBootstrap.getInjectorRegistryFactory().getComponentsRegistry(oCacheID.toString());
+                    if (componentsRegistry!=null) {
+                        reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                        reply.put(MomMsgTranslator.MSG_BODY, String.valueOf(componentsRegistry.size()));
+
                     } else {
                         reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                         reply.put(RemoteWorkerCommon.REPLY_MSG, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");

@@ -36,6 +36,7 @@ public class RemoteGearWorker implements AppMsgWorker {
 
     public final static String OPERATION_PUSH_GEAR_IN_CACHE = "PUSH_GEAR_IN_CACHE";
     public final static String OPERATION_DEL_GEAR_FROM_CACHE = "DEL_GEAR_FROM_CACHE";
+    public final static String OPERATION_COUNT_GEARS_CACHE = "COUNT_GEARS_CACHE";
 
     public final static String REMOTE_GEAR = "REMOTE_GEAR";
 
@@ -140,6 +141,22 @@ public class RemoteGearWorker implements AppMsgWorker {
                             reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                             reply.put(RemoteWorkerCommon.REPLY_MSG, "Registry from cache ID " + oCacheID.toString() + " is not started ! ");
                         }
+                    } else {
+                        reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                        reply.put(RemoteWorkerCommon.REPLY_MSG, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
+                    }
+                } else {
+                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
+                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Cache ID is not defined ! ");
+                }
+                break;
+            case OPERATION_COUNT_GEARS_CACHE:
+                oCacheID = message.get(RemoteWorkerCommon.CACHE_ID);
+                if (oCacheID!=null) {
+                    InjectorGearsRegistry gearsRegistry =  InjectorMessagingBootstrap.getInjectorRegistryFactory().getGearsRegistry(oCacheID.toString());
+                    if (gearsRegistry!=null) {
+                        reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                        reply.put(MomMsgTranslator.MSG_BODY, String.valueOf(gearsRegistry.size()));
                     } else {
                         reply.put(RemoteWorkerCommon.REPLY_RC, 1);
                         reply.put(RemoteWorkerCommon.REPLY_MSG, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
