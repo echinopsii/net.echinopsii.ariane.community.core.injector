@@ -40,6 +40,7 @@ public class InjectorExternalCacheComponents implements Serializable, Runnable {
 
     private String treeMenuEntityID = TID_NOT_DEFINED;
     private TreeMenuEntity treeMenuEntity;
+    private String treeMenuEntityValue;
     private InjectorComponentsRegistry componentsRegistry;
 
     private boolean running = false;
@@ -53,6 +54,8 @@ public class InjectorExternalCacheComponents implements Serializable, Runnable {
             treeMenuEntity = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromID(treeMenuEntityID);
         if (treeMenuEntity != null && componentsRegistry == null)
             componentsRegistry = InjectorWatBootstrap.getInjectorRegistryFactory().getComponentsRegistry(treeMenuEntity.getRemoteInjectorTreeEntityComponentsCacheId());
+        if (treeMenuEntity != null && treeMenuEntityValue == null)
+            treeMenuEntityValue = treeMenuEntity.getValue();
 
         cachedEntityList = new ArrayList<>();
         if (componentsRegistry!=null) {
@@ -137,6 +140,14 @@ public class InjectorExternalCacheComponents implements Serializable, Runnable {
 
     public String getEntityType(Component entity) {
         return entity.getComponentType();
+    }
+
+    public String getTreeMenuEntityValue() {
+        return treeMenuEntityValue;
+    }
+
+    public void setTreeMenuEntityValue(String treeMenuEntityValue) {
+        this.treeMenuEntityValue = treeMenuEntityValue;
     }
 
     public String getEntityLastRefresh(Component entity) {

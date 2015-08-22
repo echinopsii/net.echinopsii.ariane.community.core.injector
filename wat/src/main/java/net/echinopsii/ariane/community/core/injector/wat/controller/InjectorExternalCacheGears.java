@@ -42,6 +42,7 @@ public class InjectorExternalCacheGears implements Serializable, Runnable{
 
     private String treeMenuEntityID = TID_NOT_DEFINED;
     private TreeMenuEntity treeMenuEntity;
+    private String treeMenuEntityValue;
     private InjectorGearsRegistry gearsRegistry;
 
     private boolean running = false;
@@ -55,6 +56,8 @@ public class InjectorExternalCacheGears implements Serializable, Runnable{
     public void init() {
         if (treeMenuEntity == null && treeMenuEntityID != null && !treeMenuEntityID.equals(TID_NOT_DEFINED))
             treeMenuEntity = InjectorWatBootstrap.getTreeMenuRootsRegistry().getTreeMenuEntityFromID(treeMenuEntityID);
+        if (treeMenuEntity != null && treeMenuEntityValue == null)
+            treeMenuEntityValue = treeMenuEntity.getValue();
         if (treeMenuEntity != null && gearsRegistry == null)
             gearsRegistry = InjectorWatBootstrap.getInjectorRegistryFactory().getGearsRegistry(treeMenuEntity.getRemoteInjectorTreeEntityGearsCacheId());
 
@@ -131,6 +134,14 @@ public class InjectorExternalCacheGears implements Serializable, Runnable{
 
     public void setTreeMenuEntityID(String treeMenuEntityID) {
         this.treeMenuEntityID = treeMenuEntityID;
+    }
+
+    public String getTreeMenuEntityValue() {
+        return treeMenuEntityValue;
+    }
+
+    public void setTreeMenuEntityValue(String treeMenuEntityValue) {
+        this.treeMenuEntityValue = treeMenuEntityValue;
     }
 
     @Override
