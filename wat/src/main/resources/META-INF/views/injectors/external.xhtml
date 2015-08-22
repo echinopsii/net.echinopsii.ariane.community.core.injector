@@ -60,7 +60,7 @@
                                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                                          rowsPerPageTemplate="5,10,15,20,25" rows="10" paginator="true">
                                 <f:facet name="header">
-                                    #{injectorExternalCacheGears.treeMenuEntityID} Injector Gears
+                                    #{injectorExternalCacheGears.treeMenuEntityValue} Injector Gears
                                 </f:facet>
 
                                 <p:column headerText="Name" sortBy="#{gear.gearName}" filterBy="#{gear.gearName}" filterMatchMode="contains">
@@ -93,7 +93,7 @@
                                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                                          rowsPerPageTemplate="5,10,15,20,25" rows="20" paginator="true">
                                 <f:facet name="header">
-                                    #{injectorExternalCacheComponents.treeMenuEntityID} Injector Components
+                                    #{injectorExternalCacheComponents.treeMenuEntityValue} Injector Components
                                 </f:facet>
 
                                 <p:column headerText="Name" sortBy="#{injectorExternalCacheComponents.getEntityName(entity)}" filterBy="#{injectorExternalCacheComponents.getEntityName(entity)}" filterMatchMode="contains">
@@ -112,7 +112,7 @@
                                                      update="@form" actionListener="#{injectorExternalCacheComponents.refreshEntity(entity)}" styleClass="ui-priority-primary icon-large"/>
                                 </p:column>
                                 <f:facet name="footer" rendered="#{arianeidm:canActionOnTreeMenuEntity(injectorExternalTreeMenuEntity.treeMenuEntity,'action')}">
-                                    <p:commandButton value="Refresh #{injectorExternalCacheComponents.treeMenuEntityID} components cache" icon="icon-refresh icon-large" update="@form" actionListener="#{injectorExternalCacheComponents.refreshCache()}"
+                                    <p:commandButton value="Refresh #{injectorExternalCacheComponents.treeMenuEntityValue} components cache" icon="icon-refresh icon-large" update="@form" actionListener="#{injectorExternalCacheComponents.refreshCache()}"
                                                      styleClass="ui-priority-primary icon-large"/>
                                 </f:facet>
                             </p:dataTable>
