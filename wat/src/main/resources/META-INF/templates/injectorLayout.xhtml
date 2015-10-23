@@ -24,26 +24,6 @@
                 </p:layoutUnit>
             </p:layout>
         </div>
-        <script type="application/javascript">
-            var readyStateCheckIntervalDir = setInterval(function(){
-                if (document.readyState === "complete") {
-                    clearInterval(readyStateCheckIntervalDir);
-                    var bg = $("#injectorBg").css("background");
-                    if (bg.indexOf("bg-ariane-injector.jpg") > -1)
-                        $("#injectorBg").css({height: $(document).height() - 43});
-                    else
-                        $("#injectorBg").css({height: $(document).height() - 48});
-                }
-            }, 100);
-
-            window.onresize = function(event) {
-                var bg = $("#injectorBg").css("background");
-                if (bg.indexOf("bg-ariane-injector.jpg") > -1)
-                    $("#injectorBg").css({height: $(document).height() - 43});
-                else
-                    $("#injectorBg").css({height: $(document).height() - 48});
-            };
-        </script>
     </ui:define>
 </ui:composition>
 </html>
