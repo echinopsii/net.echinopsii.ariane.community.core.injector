@@ -29,11 +29,14 @@ __author__ = 'mffrench'
 
 class injectorProcessor:
 
-    def __init__(self, homeDirPath, idmDBConfig, silent):
+    def __init__(self, home_dir_path, directory_db_conf, idm_db_conf, silent):
         print("\n%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--%--\n")
         print("%-- Injector configuration : \n")
         self.silent = silent
-        self.homeDirPath = homeDirPath
+        self.homeDirPath = home_dir_path
+        self.idmDBConfig = idm_db_conf
+        self.directoryDBConfig = directory_db_conf
+
         self.kernelRepositoryDirPath = self.homeDirPath + "/repository/ariane-core/"
         if not os.path.exists(self.kernelRepositoryDirPath):
             os.makedirs(self.kernelRepositoryDirPath, 0o755)
@@ -58,7 +61,7 @@ class injectorProcessor:
 
         self.injectorRegistryFactoryCUProcessor = cuInjectorRegistryFactoryProcessor(self.kernelRepositoryDirPath)
 
-        self.injectorIDMSQLPopulator = dbIDMMySQLPopulator(idmDBConfig)
+        self.injectorIDMSQLPopulator = dbIDMMySQLPopulator(idm_db_conf)
 
     def process(self):
         self.injectorMessagingSyringe.inject()
