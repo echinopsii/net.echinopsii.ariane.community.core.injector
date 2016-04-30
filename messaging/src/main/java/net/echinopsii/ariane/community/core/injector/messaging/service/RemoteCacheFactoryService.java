@@ -18,13 +18,10 @@
  */
 package net.echinopsii.ariane.community.core.injector.messaging.service;
 
-import net.echinopsii.ariane.community.core.injector.base.registry.InjectorComponentsRegistry;
-import net.echinopsii.ariane.community.core.injector.base.registry.InjectorGearsRegistry;
-import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
 import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteCacheFactoryWorker;
 import net.echinopsii.ariane.community.messaging.api.MomClient;
-import net.echinopsii.ariane.community.messaging.api.MomClientFactory;
+import net.echinopsii.ariane.community.messaging.common.MomClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
