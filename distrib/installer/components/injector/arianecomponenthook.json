@@ -2,7 +2,7 @@
     "order": 4,
     "hook": {
         "package": "components.injector",
-        "module": "injectorProcessor",
-        "class": "injectorProcessor"
+        "module": "InjectorProcessor",
+        "class": "InjectorProcessor"
     }
 }

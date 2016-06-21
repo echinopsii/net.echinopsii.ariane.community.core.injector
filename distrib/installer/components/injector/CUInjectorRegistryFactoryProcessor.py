@@ -21,7 +21,7 @@ from tools.AConfUnit import AConfUnit
 __author__ = 'mffrench'
 
 
-class cpInjectorComponentsRemoteCacheDirPath(AConfParamNotNone):
+class CPInjectorComponentsRemoteCacheDirPath(AConfParamNotNone):
 
     name = "##injectorComponentsRemoteCacheDirPath"
     description = "Injector components remote cache directory path"
@@ -30,18 +30,19 @@ class cpInjectorComponentsRemoteCacheDirPath(AConfParamNotNone):
     def __init__(self):
         self.value = None
 
-    def isValid(self):
-        if not super().isValid:
+    def is_valid(self):
+        if not super().is_valid:
             return False
         else:
             if os.path.exists(self.value) and os.path.isdir(self.value):
                 return True
             else:
-                print(self.description + " (" + self.value + ") is not valid. Check if it exists and it has good rights.")
+                print(self.description + " (" + str(self.value) +
+                      ") is not valid. Check if it exists and it has good rights.")
                 return False
 
 
-class cpInjectorGearsRemoteCacheDirPath(AConfParamNotNone):
+class CPInjectorGearsRemoteCacheDirPath(AConfParamNotNone):
 
     name = "##injectorGearsRemoteCacheDirPath"
     description = "Injector gears remote cache directory path"
@@ -50,28 +51,41 @@ class cpInjectorGearsRemoteCacheDirPath(AConfParamNotNone):
     def __init__(self):
         self.value = None
 
-    def isValid(self):
-        if not super().isValid:
+    def is_valid(self):
+        if not super().is_valid:
             return False
         else:
             if os.path.exists(self.value) and os.path.isdir(self.value):
                 return True
             else:
-                print(self.description + " (" + self.value + ") is not valid. Check if it exists and it has good rights.")
+                print(self.description + " (" + str(self.value) +
+                      ") is not valid. Check if it exists and it has good rights.")
                 return False
 
 
-class cuInjectorRegistryFactoryProcessor(AConfUnit):
+class CUInjectorRegistryFactoryProcessor(AConfUnit):
 
-    def __init__(self, targetConfDir):
+    def __init__(self, target_conf_dir):
         self.confUnitName = "Injector Registry Factory"
         self.confTemplatePath = os.path.abspath(
             "resources/templates/components/net.echinopsii.ariane.community.core.InjectorRegistryFactory.properties.tpl"
         )
-        self.confFinalPath = targetConfDir + "net.echinopsii.ariane.community.core.InjectorRegistryFactory.properties"
-        injectorComponentsRemoteCacheDirPath = cpInjectorComponentsRemoteCacheDirPath()
-        injectorGearsRemoteCacheDirPath = cpInjectorGearsRemoteCacheDirPath()
+        self.confFinalPath = target_conf_dir + "net.echinopsii.ariane.community.core.InjectorRegistryFactory.properties"
+        components_remote_cache_dir_path = CPInjectorComponentsRemoteCacheDirPath()
+        gears_remote_cache_dir_path = CPInjectorGearsRemoteCacheDirPath()
         self.paramsDictionary = {
-            injectorComponentsRemoteCacheDirPath.name: injectorComponentsRemoteCacheDirPath,
-            injectorGearsRemoteCacheDirPath.name: injectorGearsRemoteCacheDirPath
+            components_remote_cache_dir_path.name: components_remote_cache_dir_path,
+            gears_remote_cache_dir_path.name: gears_remote_cache_dir_path
         }
+
+    def set_key_param_value(self, key, value):
+        return super(CUInjectorRegistryFactoryProcessor, self).set_key_param_value(key, value)
+
+    def get_params_keys_list(self):
+        return super(CUInjectorRegistryFactoryProcessor, self).get_params_keys_list()
+
+    def process(self):
+        return super(CUInjectorRegistryFactoryProcessor, self).process()
+
+    def get_param_from_key(self, key):
+        return super(CUInjectorRegistryFactoryProcessor, self).get_param_from_key(key)

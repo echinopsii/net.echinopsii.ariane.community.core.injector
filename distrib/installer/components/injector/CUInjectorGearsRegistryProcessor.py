@@ -21,7 +21,7 @@ from tools.AConfUnit import AConfUnit
 __author__ = 'mffrench'
 
 
-class cpInjectorGearsCacheConfFilePath(AConfParamNotNone):
+class CPInjectorGearsCacheConfFilePath(AConfParamNotNone):
 
     name = "##injectorGearsCacheConfFilePath"
     description = "Injector gears shared cache configuration file path"
@@ -30,24 +30,39 @@ class cpInjectorGearsCacheConfFilePath(AConfParamNotNone):
     def __init__(self):
         self.value = None
 
-    def isValid(self):
-        if not super().isValid:
+    def is_valid(self):
+        if not super().is_valid:
             return False
         else:
             if os.path.exists(self.value) and os.path.isfile(self.value):
                 return True
             else:
-                print(self.description + " (" + self.value + ") is not valid. Check if it exists and it has good rights.")
+                print(self.description + " (" + str(self.value) +
+                      ") is not valid. Check if it exists and it has good rights.")
                 return False
 
 
-class cuInjectorGearsRegistryProcessor(AConfUnit):
+class CUInjectorGearsRegistryProcessor(AConfUnit):
 
-    def __init__(self, targetConfDir):
+    def __init__(self, target_conf_dir):
         self.confUnitName = "Injector Gears Registry"
-        self.confTemplatePath = os.path.abspath("resources/templates/components/net.echinopsii.ariane.community.core.InjectorGearsRegistry.properties.tpl")
-        self.confFinalPath = targetConfDir + "net.echinopsii.ariane.community.core.InjectorGearsRegistry.properties"
-        injectorGearsCacheConfFilePath = cpInjectorGearsCacheConfFilePath()
+        self.confTemplatePath = os.path.abspath(
+            "resources/templates/components/net.echinopsii.ariane.community.core.InjectorGearsRegistry.properties.tpl"
+        )
+        self.confFinalPath = target_conf_dir + "net.echinopsii.ariane.community.core.InjectorGearsRegistry.properties"
+        gears_cache_conf_file_path = CPInjectorGearsCacheConfFilePath()
         self.paramsDictionary = {
-            injectorGearsCacheConfFilePath.name: injectorGearsCacheConfFilePath
+            gears_cache_conf_file_path.name: gears_cache_conf_file_path
         }
+
+    def set_key_param_value(self, key, value):
+        return super(CUInjectorGearsRegistryProcessor, self).set_key_param_value(key, value)
+
+    def get_params_keys_list(self):
+        return super(CUInjectorGearsRegistryProcessor, self).get_params_keys_list()
+
+    def process(self):
+        return super(CUInjectorGearsRegistryProcessor, self).process()
+
+    def get_param_from_key(self, key):
+        return super(CUInjectorGearsRegistryProcessor, self).get_param_from_key(key)
