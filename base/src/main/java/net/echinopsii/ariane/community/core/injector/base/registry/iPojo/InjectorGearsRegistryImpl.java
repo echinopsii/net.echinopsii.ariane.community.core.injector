@@ -46,7 +46,7 @@ public class InjectorGearsRegistryImpl extends AbstractCacheGear implements Inje
     private static final String INJECTOR_GEARS_REGISTRY_CACHE_ID    = "ariane.community.core.injector.shared.gears.cache";
     private static final String INJECTOR_GEARS_REGISTRY_CACHE_NAME  = "Ariane Injector Shared Gears Cache";
 
-    private String registryName;
+    private String registryName = INJECTOR_GEARS_SHARED_REGISTRY_NAME;
     private Dictionary config = null;
     private File infConfFile  = null;
     private CacheManager cacheManager = null;

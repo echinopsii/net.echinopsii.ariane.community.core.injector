@@ -149,21 +149,16 @@ public class InjectorMessagingBootstrap {
             log.error("MoM client implementation not supported yet : {}", new Object[]{properties.get(MomClient.MOM_CLI)});
         } else if (ret) {
             if (properties.get(MomClient.RBQ_VERSION_KEY)==null || properties.get(MomClient.RBQ_VERSION_KEY).equals("")) {
-                ret = false;
-                log.error(MomClient.RBQ_VERSION_KEY + " is not defined.");
+                String version = InjectorMessagingBootstrap.class.getPackage().getImplementationVersion();
+                if (version!=null) properties.put(MomClient.RBQ_VERSION_KEY, version);
+                else {
+                    ret = false;
+                    log.error(MomClient.RBQ_VERSION_KEY + " is not defined.");
+                }
             }
-            if (properties.get(MomClient.RBQ_PRODUCT_KEY)==null || properties.get(MomClient.RBQ_PRODUCT_KEY).equals("")) {
-                ret = false;
-                log.error(MomClient.RBQ_PRODUCT_KEY + " is not defined.");
-            }
-            if (properties.get(MomClient.RBQ_INFORMATION_KEY)==null || properties.get(MomClient.RBQ_INFORMATION_KEY).equals("")) {
-                ret = false;
-                log.error(MomClient.RBQ_INFORMATION_KEY + " is not defined.");
-            }
-            if (properties.get(MomClient.RBQ_COPYRIGHT_KEY)==null || properties.get(MomClient.RBQ_COPYRIGHT_KEY).equals("")) {
-                ret = false;
-                log.error(MomClient.RBQ_COPYRIGHT_KEY + " is not defined.");
-            }
+            if (properties.get(MomClient.RBQ_PRODUCT_KEY)==null || properties.get(MomClient.RBQ_PRODUCT_KEY).equals("")) properties.put(MomClient.RBQ_PRODUCT_KEY, "Ariane");
+            if (properties.get(MomClient.RBQ_INFORMATION_KEY)==null || properties.get(MomClient.RBQ_INFORMATION_KEY).equals(""))  properties.put(MomClient.RBQ_INFORMATION_KEY, "Ariane Remote Injector Messaging Service");
+            if (properties.get(MomClient.RBQ_COPYRIGHT_KEY)==null || properties.get(MomClient.RBQ_COPYRIGHT_KEY).equals("")) properties.put(MomClient.RBQ_COPYRIGHT_KEY, "AGPLv3 / Free2Biz");
         }
 
         return ret;

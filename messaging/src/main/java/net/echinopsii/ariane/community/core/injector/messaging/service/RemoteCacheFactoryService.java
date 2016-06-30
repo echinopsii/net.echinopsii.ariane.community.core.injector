@@ -32,7 +32,7 @@ public class RemoteCacheFactoryService {
     private static final Logger log = LoggerFactory.getLogger(RemoteCacheFactoryService.class);
 
     private MomClient client = null;
-    private static String ricfQueue = "remote.injector.cachefactory";
+    private static String ricfQueue = "ARIANE_INJECTOR_REMOTE_CACHEFACTORY_Q";
 
     public void start(Dictionary properties) {
         try {
@@ -44,6 +44,15 @@ public class RemoteCacheFactoryService {
         }
 
         try {
+            String hostname =  java.net.InetAddress.getLocalHost().getHostName();
+            if (properties.get(MomClient.ARIANE_PGURL_KEY)==null) properties.put(MomClient.ARIANE_PGURL_KEY, "http://"+hostname+":6969/ariane");
+            if (properties.get(MomClient.ARIANE_OSI_KEY)==null) properties.put(MomClient.ARIANE_OSI_KEY, hostname);
+            if (properties.get(MomClient.ARIANE_APP_KEY)==null) properties.put(MomClient.ARIANE_APP_KEY, "Ariane");
+            if (properties.get(MomClient.ARIANE_OTM_KEY)==null) properties.put(MomClient.ARIANE_OTM_KEY, MomClient.ARIANE_OTM_NOT_DEFINED);
+            if (properties.get(MomClient.ARIANE_CMP_KEY)==null) properties.put(MomClient.ARIANE_CMP_KEY, "echinopsii");
+
+            String pid = java.lang.management.ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
+            properties.put(MomClient.ARIANE_PID_KEY, pid);
             client.init(properties);
         } catch (Exception e) {
             log.error("Error while initializing MoM client : " + e.getMessage());
