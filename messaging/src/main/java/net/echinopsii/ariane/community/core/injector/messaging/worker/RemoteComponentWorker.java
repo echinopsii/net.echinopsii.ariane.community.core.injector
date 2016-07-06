@@ -171,7 +171,7 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                     if (registeredComponent!=null) {
                                         ret = RemoteComponentJSON.remoteComponent2JSON(registeredComponent);
                                         reply.put(MomMsgTranslator.MSG_RC, 0);
-                                        reply.put(RemoteWorkerCommon.PROPERTIES, ret);
+                                        reply.put(MomMsgTranslator.MSG_PROPERTIES, ret);
                                         reply.put(MomMsgTranslator.MSG_BODY, registeredComponent.getComponentBlob());
                                     } else {
                                         reply.put(MomMsgTranslator.MSG_RC, 1);

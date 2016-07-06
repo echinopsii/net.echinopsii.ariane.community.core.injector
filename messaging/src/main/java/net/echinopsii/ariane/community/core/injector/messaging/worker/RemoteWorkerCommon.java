@@ -20,5 +20,4 @@ package net.echinopsii.ariane.community.core.injector.messaging.worker;
 
 public class RemoteWorkerCommon {
     public final static String CACHE_ID = "CACHE_ID";
-    public final static String PROPERTIES = "PROPERTIES";
 }
