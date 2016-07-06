@@ -22,6 +22,7 @@ import net.echinopsii.ariane.community.core.injector.base.model.Component;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteComponentService;
 import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteWorkerCommon;
 import net.echinopsii.ariane.community.messaging.api.MomClient;
+import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -163,7 +164,7 @@ public class RemoteComponent implements Component, Serializable {
         MomClient client = RemoteComponentService.getClient();
         if (client!=null && componentAdminQueue!=null) {
             Map<String, Object> message = new HashMap<String, Object>();
-            message.put(RemoteWorkerCommon.OPERATION_FDN, "REFRESH");
+            message.put(MomMsgTranslator.OPERATION_FDN, "REFRESH");
             client.createRequestExecutor().fireAndForget(message, componentAdminQueue);
         }
     }

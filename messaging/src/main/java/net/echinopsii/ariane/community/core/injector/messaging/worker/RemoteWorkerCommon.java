@@ -19,10 +19,6 @@
 package net.echinopsii.ariane.community.core.injector.messaging.worker;
 
 public class RemoteWorkerCommon {
-    public final static String OPERATION_FDN = "OPERATION";
-    public final static String OPERATION_NOT_DEFINED = "NOT_DEFINED";
-    public final static String REPLY_RC = "RC";
-    public final static String REPLY_MSG = "SERVER_ERROR_MESSAGE";
     public final static String CACHE_ID = "CACHE_ID";
     public final static String PROPERTIES = "PROPERTIES";
 }

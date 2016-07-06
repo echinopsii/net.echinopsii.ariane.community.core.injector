@@ -22,6 +22,7 @@ import net.echinopsii.ariane.community.core.injector.base.model.Gear;
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
 import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteWorkerCommon;
 import net.echinopsii.ariane.community.messaging.api.MomClient;
+import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -94,7 +95,7 @@ public class RemoteGear implements Gear, Serializable {
         MomClient client = RemoteGearService.getClient();
         if (client!=null && gearAdminQueue!=null) {
             Map<String, Object> message = new HashMap<String, Object>();
-            message.put(RemoteWorkerCommon.OPERATION_FDN, "START");
+            message.put(MomMsgTranslator.OPERATION_FDN, "START");
             client.createRequestExecutor().fireAndForget(message, gearAdminQueue);
         }
     }
@@ -104,7 +105,7 @@ public class RemoteGear implements Gear, Serializable {
         MomClient client = RemoteGearService.getClient();
         if (client!=null && gearAdminQueue!=null) {
             Map<String, Object> message = new HashMap<String, Object>();
-            message.put(RemoteWorkerCommon.OPERATION_FDN, "STOP");
+            message.put(MomMsgTranslator.OPERATION_FDN, "STOP");
             client.createRequestExecutor().fireAndForget(message, gearAdminQueue);
         }
     }

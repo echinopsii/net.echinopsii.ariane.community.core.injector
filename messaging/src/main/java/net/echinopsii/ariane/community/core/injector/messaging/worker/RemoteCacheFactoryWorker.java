@@ -49,13 +49,13 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
         InjectorGearsRegistry      gearsRegistry      = null;
         InjectorComponentsRegistry componentsRegistry = null;
 
-        Object oOperation = message.get(RemoteWorkerCommon.OPERATION_FDN);
+        Object oOperation = message.get(MomMsgTranslator.OPERATION_FDN);
         String operation = null;
         Dictionary properties = null;
         boolean isValid = true;
 
         if (oOperation==null)
-            operation = RemoteWorkerCommon.OPERATION_NOT_DEFINED;
+            operation = MomMsgTranslator.OPERATION_NOT_DEFINED;
         else
             operation = oOperation.toString();
 
@@ -65,14 +65,14 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
 
                 if (message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME)==null) {
                     isValid = false;
-                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME + " is not defined !");
+                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME + " is not defined !");
                 } else properties.put(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME, message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_NAME).toString());
 
                 if (isValid && message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID)==null) {
                     isValid = false;
-                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID + " is not defined !");
+                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID + " is not defined !");
                 } else {
                     // default cache name = registry cache id
                     properties.put(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID, message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_ID).toString());
@@ -81,14 +81,14 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
 
                 if (isValid && message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME)==null){
                     isValid = false;
-                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME + " is not defined !");
+                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME + " is not defined !");
                 } else properties.put(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME, message.get(InjectorRegistryFactory.INJECTOR_GEARS_REGISTRY_CACHE_NAME).toString());
 
                 if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME)==null) {
                     isValid=false;
-                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... " + CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME + " is not defined !");
+                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... " + CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME + " is not defined !");
                 } else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME).toString());
 
                 if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME)!=null)
@@ -127,10 +127,10 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
                         gearsRegistry = this.makeGearsRegistry(properties);
 
                         if (gearsRegistry==null) {
-                            reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                            reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... Have a look at Ariane server logs !");
+                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... Have a look at Ariane server logs !");
                         } else {
-                            reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                            reply.put(MomMsgTranslator.MSG_RC, 0);
                             if (!gearsRegistry.isStarted()) {
                                 gearsRegistry.startRegistry();
                                 reply.put(MomMsgTranslator.MSG_BODY, "Gear registry " + ((AbstractCacheGear)gearsRegistry).getCacheID() + " successfully started.");
@@ -138,8 +138,8 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                        reply.put(RemoteWorkerCommon.REPLY_MSG, "Exception while creating gears registry... Have a look to message body and Ariane server logs ! ");
+                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_ERR, "Exception while creating gears registry... Have a look to message body and Ariane server logs ! ");
                         reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                     }
                 }
@@ -150,14 +150,14 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
 
                 if (message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME)==null) {
                     isValid = false;
-                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME + " is not defined !");
+                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME + " is not defined !");
                 } else properties.put(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME, message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_NAME).toString());
 
                 if (isValid && message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID)==null) {
                     isValid = false;
-                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID + " is not defined !");
+                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID + " is not defined !");
                 } else {
                     // default cache name = registry cache id
                     properties.put(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID, message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_ID).toString());
@@ -166,14 +166,14 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
 
                 if (isValid && message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME)==null){
                     isValid = false;
-                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME + " is not defined !");
+                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... " + InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME + " is not defined !");
                 } else properties.put(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME, message.get(InjectorRegistryFactory.INJECTOR_COMPONENTS_REGISTRY_CACHE_NAME).toString());
 
                 if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME)==null) {
                     isValid=false;
-                    reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                    reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... " + CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME + " is not defined !");
+                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... " + CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME + " is not defined !");
                 } else properties.put(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME, message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_MGR_NAME).toString());
 
                 if (isValid && message.get(CacheManagerEmbeddedInfinispanImpl.INJECTOR_CACHE_NAME)!=null)
@@ -199,10 +199,10 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
                     try {
                         componentsRegistry = this.makeComponentsRegistry(properties);
                         if (componentsRegistry==null) {
-                            reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                            reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation parameters are not valid... Have a look at Ariane server logs !");
+                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_ERR, "Operation parameters are not valid... Have a look at Ariane server logs !");
                         } else {
-                            reply.put(RemoteWorkerCommon.REPLY_RC, 0);
+                            reply.put(MomMsgTranslator.MSG_RC, 0);
                             if (!componentsRegistry.isStarted()) {
                                 componentsRegistry.startRegistry();
                                 reply.put(MomMsgTranslator.MSG_BODY, "Component registry " + ((AbstractCacheComponent) componentsRegistry).getCacheID() + " successfully started.");
@@ -210,19 +210,19 @@ public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryF
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                        reply.put(RemoteWorkerCommon.REPLY_MSG, "Exception while creating components registry... Have a look to message body and Ariane server logs ! ");
+                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_ERR, "Exception while creating components registry... Have a look to message body and Ariane server logs ! ");
                         reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                     }
                 }
                 break;
-            case RemoteWorkerCommon.OPERATION_NOT_DEFINED:
-                reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                reply.put(RemoteWorkerCommon.REPLY_MSG, "Operation not defined ! ");
+            case MomMsgTranslator.OPERATION_NOT_DEFINED:
+                reply.put(MomMsgTranslator.MSG_RC, 1);
+                reply.put(MomMsgTranslator.MSG_ERR, "Operation not defined ! ");
                 break;
             default:
-                reply.put(RemoteWorkerCommon.REPLY_RC, 1);
-                reply.put(RemoteWorkerCommon.REPLY_MSG, "Unknown operation (" + operation + ") ! ");
+                reply.put(MomMsgTranslator.MSG_RC, 1);
+                reply.put(MomMsgTranslator.MSG_ERR, "Unknown operation (" + operation + ") ! ");
                 break;
         }
 
