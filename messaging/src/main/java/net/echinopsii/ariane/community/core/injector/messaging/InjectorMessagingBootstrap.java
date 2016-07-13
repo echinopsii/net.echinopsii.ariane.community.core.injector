@@ -26,10 +26,12 @@ import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGea
 import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteTreeService;
 import net.echinopsii.ariane.community.core.portal.base.plugin.TreeMenuRootsRegistry;
 import net.echinopsii.ariane.community.messaging.api.MomClient;
+import net.echinopsii.ariane.community.messaging.common.MomClientFactory;
 import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.UnknownHostException;
 import java.util.Dictionary;
 
 @Component(managedservice="net.echinopsii.ariane.community.core.InjectorMessagingManagedService")
@@ -45,6 +47,8 @@ public class InjectorMessagingBootstrap {
 
     private static Dictionary conf = null;
     private boolean isStarted = false;
+
+    public static MomClient sharedMoMConnection = null;
 
     private RemoteCacheFactoryService remoteCacheFactoryService = new RemoteCacheFactoryService();
     private RemoteComponentService remoteComponentService = new RemoteComponentService();
@@ -101,14 +105,31 @@ public class InjectorMessagingBootstrap {
             while (conf==null)
                 Thread.sleep(100);
 
-            isStarted=true;
+            try {
+                sharedMoMConnection = MomClientFactory.make((String) conf.get(MomClient.MOM_CLI));
+            } catch (Exception e) {
+                log.error("Error while loading MoM client : " + e.getMessage());
+                log.error("Provided MoM client : " + conf.get(MomClient.MOM_CLI));
+            }
 
-            remoteCacheFactoryService.start(conf);
-            remoteTreeService.start(conf);
-            remoteComponentService.start(conf);
-            remoteGearService.start(conf);
+            try {
+                if (sharedMoMConnection!=null)
+                    sharedMoMConnection.init(conf);
+            } catch (Exception e) {
+                System.err.println("Error while initializing MoM client : " + e.getMessage());
+                System.err.println("Provided MoM host : " + conf.get(MomClient.MOM_HOST));
+                System.err.println("Provided MoM port : " + conf.get(MomClient.MOM_PORT));
+                sharedMoMConnection = null;
+            }
 
-            log.info("{} is started", new Object[]{INJECTOR_COMPONENT});
+            if (sharedMoMConnection!=null) {
+                isStarted = true;
+                remoteCacheFactoryService.start(conf);
+                remoteTreeService.start(conf);
+                remoteComponentService.start(conf);
+                remoteGearService.start(conf);
+                log.info("{} is started", new Object[]{INJECTOR_COMPONENT});
+            }
         }
     }
 
@@ -118,11 +139,15 @@ public class InjectorMessagingBootstrap {
         remoteGearService.stop();
         remoteTreeService.stop();
         remoteCacheFactoryService.stop();
+        if (InjectorMessagingBootstrap.sharedMoMConnection.isConnected())
+            InjectorMessagingBootstrap.sharedMoMConnection.close();
+        isStarted = false;
         log.info("{} is stopped", new Object[]{INJECTOR_COMPONENT});
     }
 
     private static boolean isValid(Dictionary properties) {
         boolean ret = true;
+
         if (properties.get(MomClient.MOM_CLI)==null || properties.get(MomClient.MOM_CLI).equals("")) {
             log.error(MomClient.MOM_CLI + " is not defined.");
             ret = false;
@@ -144,10 +169,11 @@ public class InjectorMessagingBootstrap {
             log.error(MomClient.MOM_PSWD + " is not defined.");
         }
 
-        if (ret && !properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.rabbitmq.Client")) {
+        if (ret && !(properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.rabbitmq.Client") ||
+                properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.nats.Client"))) {
             ret = false;
             log.error("MoM client implementation not supported yet : {}", new Object[]{properties.get(MomClient.MOM_CLI)});
-        } else if (ret) {
+        } else if (ret && properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.rabbitmq.Client")) {
             if (properties.get(MomClient.RBQ_VERSION_KEY)==null || properties.get(MomClient.RBQ_VERSION_KEY).equals("")) {
                 String version = InjectorMessagingBootstrap.class.getPackage().getImplementationVersion();
                 if (version!=null) properties.put(MomClient.RBQ_VERSION_KEY, version);
@@ -159,7 +185,24 @@ public class InjectorMessagingBootstrap {
             if (properties.get(MomClient.RBQ_PRODUCT_KEY)==null || properties.get(MomClient.RBQ_PRODUCT_KEY).equals("")) properties.put(MomClient.RBQ_PRODUCT_KEY, "Ariane");
             if (properties.get(MomClient.RBQ_INFORMATION_KEY)==null || properties.get(MomClient.RBQ_INFORMATION_KEY).equals(""))  properties.put(MomClient.RBQ_INFORMATION_KEY, "Ariane Remote Injector Messaging Service");
             if (properties.get(MomClient.RBQ_COPYRIGHT_KEY)==null || properties.get(MomClient.RBQ_COPYRIGHT_KEY).equals("")) properties.put(MomClient.RBQ_COPYRIGHT_KEY, "AGPLv3 / Free2Biz");
+        } else if (ret && properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.nats.Client")) {
+            if (properties.get(MomClient.NATS_CONNECTION_NAME) == null || properties.get(MomClient.NATS_CONNECTION_NAME).equals("")) properties.put(MomClient.NATS_CONNECTION_NAME, "Ariane Injector Service");
         }
+
+        String hostname = null;
+        try {
+            hostname = java.net.InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        if (properties.get(MomClient.ARIANE_PGURL_KEY)==null) properties.put(MomClient.ARIANE_PGURL_KEY, "http://"+hostname+":6969/ariane");
+        if (properties.get(MomClient.ARIANE_OSI_KEY)==null) properties.put(MomClient.ARIANE_OSI_KEY, hostname);
+        if (properties.get(MomClient.ARIANE_APP_KEY)==null) properties.put(MomClient.ARIANE_APP_KEY, "Ariane");
+        if (properties.get(MomClient.ARIANE_OTM_KEY)==null) properties.put(MomClient.ARIANE_OTM_KEY, MomClient.ARIANE_OTM_NOT_DEFINED);
+        if (properties.get(MomClient.ARIANE_CMP_KEY)==null) properties.put(MomClient.ARIANE_CMP_KEY, "echinopsii");
+
+        String pid = java.lang.management.ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
+        properties.put(MomClient.ARIANE_PID_KEY, pid);
 
         return ret;
     }
