@@ -31,6 +31,7 @@ import org.apache.felix.ipojo.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Dictionary;
 
@@ -169,6 +170,24 @@ public class InjectorMessagingBootstrap {
             log.error(MomClient.MOM_PSWD + " is not defined.");
         }
 
+        String hostname = null;
+        String connectionName;
+        try {
+            hostname = java.net.InetAddress.getLocalHost().getHostName();
+            connectionName = "Ariane Injector Service @ " + hostname;
+        } catch (UnknownHostException e) {
+            log.warn("Problem while getting hostname : " + e.getCause());
+            connectionName = "Ariane Injector Service";
+        }
+        if (properties.get(MomClient.ARIANE_PGURL_KEY)==null) properties.put(MomClient.ARIANE_PGURL_KEY, "http://"+hostname+":6969/ariane");
+        if (properties.get(MomClient.ARIANE_OSI_KEY)==null) properties.put(MomClient.ARIANE_OSI_KEY, hostname);
+        if (properties.get(MomClient.ARIANE_APP_KEY)==null) properties.put(MomClient.ARIANE_APP_KEY, "Ariane");
+        if (properties.get(MomClient.ARIANE_OTM_KEY)==null) properties.put(MomClient.ARIANE_OTM_KEY, MomClient.ARIANE_OTM_NOT_DEFINED);
+        if (properties.get(MomClient.ARIANE_CMP_KEY)==null) properties.put(MomClient.ARIANE_CMP_KEY, "echinopsii");
+
+        String pid = java.lang.management.ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
+        properties.put(MomClient.ARIANE_PID_KEY, pid);
+
         if (ret && !(properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.rabbitmq.Client") ||
                 properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.nats.Client"))) {
             ret = false;
@@ -183,26 +202,11 @@ public class InjectorMessagingBootstrap {
                 }
             }
             if (properties.get(MomClient.RBQ_PRODUCT_KEY)==null || properties.get(MomClient.RBQ_PRODUCT_KEY).equals("")) properties.put(MomClient.RBQ_PRODUCT_KEY, "Ariane");
-            if (properties.get(MomClient.RBQ_INFORMATION_KEY)==null || properties.get(MomClient.RBQ_INFORMATION_KEY).equals(""))  properties.put(MomClient.RBQ_INFORMATION_KEY, "Ariane Remote Injector Messaging Service");
+            if (properties.get(MomClient.RBQ_INFORMATION_KEY)==null || properties.get(MomClient.RBQ_INFORMATION_KEY).equals(""))  properties.put(MomClient.RBQ_INFORMATION_KEY, connectionName);
             if (properties.get(MomClient.RBQ_COPYRIGHT_KEY)==null || properties.get(MomClient.RBQ_COPYRIGHT_KEY).equals("")) properties.put(MomClient.RBQ_COPYRIGHT_KEY, "AGPLv3 / Free2Biz");
         } else if (ret && properties.get(MomClient.MOM_CLI).equals("net.echinopsii.ariane.community.messaging.nats.Client")) {
-            if (properties.get(MomClient.NATS_CONNECTION_NAME) == null || properties.get(MomClient.NATS_CONNECTION_NAME).equals("")) properties.put(MomClient.NATS_CONNECTION_NAME, "Ariane Injector Service");
+            if (properties.get(MomClient.NATS_CONNECTION_NAME) == null || properties.get(MomClient.NATS_CONNECTION_NAME).equals("")) properties.put(MomClient.NATS_CONNECTION_NAME, connectionName);
         }
-
-        String hostname = null;
-        try {
-            hostname = java.net.InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        if (properties.get(MomClient.ARIANE_PGURL_KEY)==null) properties.put(MomClient.ARIANE_PGURL_KEY, "http://"+hostname+":6969/ariane");
-        if (properties.get(MomClient.ARIANE_OSI_KEY)==null) properties.put(MomClient.ARIANE_OSI_KEY, hostname);
-        if (properties.get(MomClient.ARIANE_APP_KEY)==null) properties.put(MomClient.ARIANE_APP_KEY, "Ariane");
-        if (properties.get(MomClient.ARIANE_OTM_KEY)==null) properties.put(MomClient.ARIANE_OTM_KEY, MomClient.ARIANE_OTM_NOT_DEFINED);
-        if (properties.get(MomClient.ARIANE_CMP_KEY)==null) properties.put(MomClient.ARIANE_CMP_KEY, "echinopsii");
-
-        String pid = java.lang.management.ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
-        properties.put(MomClient.ARIANE_PID_KEY, pid);
 
         return ret;
     }
