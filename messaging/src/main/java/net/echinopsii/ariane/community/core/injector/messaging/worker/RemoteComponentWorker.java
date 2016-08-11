@@ -84,34 +84,34 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                         if (remoteComponent.getComponentAdminQueue()!=null) registeredComponent.setComponentAdminQueue(remoteComponent.getComponentAdminQueue());
                                         registeredComponent.setComponentBlob(new String((byte[]) message.get(MomMsgTranslator.MSG_BODY), StandardCharsets.UTF_8));
                                         componentsRegistry.putEntityToCache(registeredComponent);
-                                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully updated on registry " + oCacheID.toString());
                                     } else {
                                         remoteComponent.setComponentBlob(new String((byte[]) message.get(MomMsgTranslator.MSG_BODY), StandardCharsets.UTF_8));
                                         componentsRegistry.putEntityToCache(remoteComponent);
-                                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully pushed to registry " + oCacheID.toString());
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                     reply.put(MomMsgTranslator.MSG_ERR, "Remote Component serialization problem... Have a look to Ariane server logs ! ");
                                     reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                                 }
                             } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                 reply.put(MomMsgTranslator.MSG_ERR, "Component to push is not defined ! ");
                             }
                         } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
                             reply.put(MomMsgTranslator.MSG_ERR, "Registry from cache ID " + oCacheID.toString() + " is not started ! ");
                         }
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                         reply.put(MomMsgTranslator.MSG_ERR, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
                     }
                 } else {
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                     reply.put(MomMsgTranslator.MSG_ERR, "Cache ID is not defined ! ");
                 }
                 break;
@@ -128,32 +128,32 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                     RemoteComponent registeredComponent = (RemoteComponent)componentsRegistry.getEntityFromCache(remoteComponent.getComponentId());
                                     if (registeredComponent!=null) {
                                         componentsRegistry.removeEntityFromCache(registeredComponent);
-                                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Component " + remoteComponent.getComponentName() + " successfully deleted from registry " + oCacheID.toString());
                                     } else {
-                                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                                         reply.put(MomMsgTranslator.MSG_ERR, "Remote Component "+ remoteComponent.getComponentId() +" doesn't exists on cache " + oCacheID.toString() + "  ! ");
                                     }
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                     reply.put(MomMsgTranslator.MSG_ERR, "Remote Component serialization problem... Have a look to message body and Ariane server logs ! ");
                                     reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                                 }
                             } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                 reply.put(MomMsgTranslator.MSG_ERR, "Component to delete is not defined ! ");
                             }
                         } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
                             reply.put(MomMsgTranslator.MSG_ERR, "Registry from cache ID " + oCacheID.toString() + " is not started ! ");
                         }
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                         reply.put(MomMsgTranslator.MSG_ERR, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
                     }
                 } else {
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                     reply.put(MomMsgTranslator.MSG_ERR, "Cache ID is not defined ! ");
                 }
                 break;
@@ -170,33 +170,33 @@ public class RemoteComponentWorker implements AppMsgWorker {
                                     RemoteComponent registeredComponent = (RemoteComponent)componentsRegistry.getEntityFromCache(remoteComponent.getComponentId());
                                     if (registeredComponent!=null) {
                                         ret = RemoteComponentJSON.remoteComponent2JSON(registeredComponent);
-                                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                                         reply.put(MomMsgTranslator.MSG_PROPERTIES, ret);
                                         reply.put(MomMsgTranslator.MSG_BODY, registeredComponent.getComponentBlob());
                                     } else {
-                                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                                         reply.put(MomMsgTranslator.MSG_ERR, "Remote Component "+ remoteComponent.getComponentId() +" doesn't exists on cache " + oCacheID.toString() + "  ! ");
                                     }
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                     reply.put(MomMsgTranslator.MSG_ERR, "Remote Component serialization problem... Have a look to message body and Ariane server logs ! ");
                                     reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                                 }
                             } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                 reply.put(MomMsgTranslator.MSG_ERR, "Component to delete is not defined ! ");
                             }
                         } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
                             reply.put(MomMsgTranslator.MSG_ERR, "Registry from cache ID " + oCacheID.toString() + " is not started ! ");
                         }
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                         reply.put(MomMsgTranslator.MSG_ERR, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
                     }
                 } else {
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                     reply.put(MomMsgTranslator.MSG_ERR, "Cache ID is not defined ! ");
                 }
                 break;
@@ -205,24 +205,24 @@ public class RemoteComponentWorker implements AppMsgWorker {
                 if (oCacheID!=null) {
                     InjectorComponentsRegistry componentsRegistry =  InjectorMessagingBootstrap.getInjectorRegistryFactory().getComponentsRegistry(oCacheID.toString());
                     if (componentsRegistry!=null) {
-                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                         reply.put(MomMsgTranslator.MSG_BODY, String.valueOf(componentsRegistry.size()));
 
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                         reply.put(MomMsgTranslator.MSG_ERR, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
                     }
                 } else {
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                     reply.put(MomMsgTranslator.MSG_ERR, "Cache ID is not defined ! ");
                 }
                 break;
             case MomMsgTranslator.OPERATION_NOT_DEFINED:
-                reply.put(MomMsgTranslator.MSG_RC, 1);
+                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                 reply.put(MomMsgTranslator.MSG_ERR, "Operation is not defined ! ");
                 break;
             default:
-                reply.put(MomMsgTranslator.MSG_RC, 1);
+                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                 reply.put(MomMsgTranslator.MSG_ERR, "Unknown operation (" + operation + ") ! ");
                 break;
         }

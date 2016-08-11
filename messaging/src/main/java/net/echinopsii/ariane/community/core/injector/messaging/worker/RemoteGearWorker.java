@@ -79,33 +79,33 @@ public class RemoteGearWorker implements AppMsgWorker {
                                         if (remoteGear.getSleepingPeriod()<=0) registeredGear.setSleepingPeriod(remoteGear.getSleepingPeriod());
                                         registeredGear.setRunning(remoteGear.isRunning());
                                         gearsRegistry.putEntityToCache(registeredGear);
-                                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Gear " + remoteGear.getGearName() + " successfully updated on registry " + oCacheID.toString());
                                     } else {
                                         gearsRegistry.putEntityToCache(remoteGear);
-                                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Gear " + remoteGear.getGearName() + " successfully pushed to registry " + oCacheID.toString());
                                     }
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                     reply.put(MomMsgTranslator.MSG_ERR, "Remote Gear serialization problem... Have a look to this message body and Ariane server logs ! ");
                                     reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                                 }
                             } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                 reply.put(MomMsgTranslator.MSG_ERR, "Gear to push is not defined ! ");
                             }
                         } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
                             reply.put(MomMsgTranslator.MSG_ERR, "Registry from cache ID " + oCacheID.toString() + " is not started ! ");
                         }
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                         reply.put(MomMsgTranslator.MSG_ERR, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
                     }
                 } else {
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                     reply.put(MomMsgTranslator.MSG_ERR, "Cache ID is not defined ! ");
                 }
                 break;
@@ -121,33 +121,33 @@ public class RemoteGearWorker implements AppMsgWorker {
                                     RemoteGear remoteGear = RemoteGearJSON.JSON2RemoteGear(oGearJSON.toString());
                                     if (gearsRegistry.getEntityFromCache(remoteGear.getGearId())!=null) {
                                         gearsRegistry.removeEntityFromCache(remoteGear);
-                                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                                         reply.put(MomMsgTranslator.MSG_BODY, "Remote Gear "+ remoteGear.getGearName() +" successfully deleted from registry " + oCacheID.toString());
                                     }
                                     else {
-                                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                                         reply.put(MomMsgTranslator.MSG_ERR, "Remote Gear "+ remoteGear.getGearName() +" doesn't exists on cache " + oCacheID.toString() + "  ! ");
                                     }
                                 } catch (IOException e) {
                                     e.printStackTrace();
-                                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                     reply.put(MomMsgTranslator.MSG_ERR, "Remote Gear serialization problem... Have a look to this message body and Ariane server logs ! ");
                                     reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                                 }
                             } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                                 reply.put(MomMsgTranslator.MSG_ERR, "Gear to delete is not defined ! ");
                             }
                         } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
                             reply.put(MomMsgTranslator.MSG_ERR, "Registry from cache ID " + oCacheID.toString() + " is not started ! ");
                         }
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                         reply.put(MomMsgTranslator.MSG_ERR, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
                     }
                 } else {
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                     reply.put(MomMsgTranslator.MSG_ERR, "Cache ID is not defined ! ");
                 }
                 break;
@@ -156,23 +156,23 @@ public class RemoteGearWorker implements AppMsgWorker {
                 if (oCacheID!=null) {
                     InjectorGearsRegistry gearsRegistry =  InjectorMessagingBootstrap.getInjectorRegistryFactory().getGearsRegistry(oCacheID.toString());
                     if (gearsRegistry!=null) {
-                        reply.put(MomMsgTranslator.MSG_RC, 0);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                         reply.put(MomMsgTranslator.MSG_BODY, String.valueOf(gearsRegistry.size()));
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                         reply.put(MomMsgTranslator.MSG_ERR, "Unable to retrieve registry from cache ID " + oCacheID.toString() + " ! ");
                     }
                 } else {
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                     reply.put(MomMsgTranslator.MSG_ERR, "Cache ID is not defined ! ");
                 }
                 break;
             case MomMsgTranslator.OPERATION_NOT_DEFINED:
-                reply.put(MomMsgTranslator.MSG_RC, 1);
+                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                 reply.put(MomMsgTranslator.MSG_ERR, "Operation is not defined ! ");
                 break;
             default:
-                reply.put(MomMsgTranslator.MSG_RC, 1);
+                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                 reply.put(MomMsgTranslator.MSG_ERR, "Unknown operation "+operation+" ! ");
                 break;
         }

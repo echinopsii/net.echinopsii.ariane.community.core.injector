@@ -73,255 +73,249 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
         else
             operation = oOperation.toString();
 
-        try {
-            switch (operation) {
-                case OPERATION_VAL_REGISTER:
-                    oParam = message.get(TREE_MENU_ENTITY);
-                    if (oParam != null) {
-                        param1 = oParam.toString();
-                        try {
-                            TreeMenuEntity entity = TreeMenuEntityJSON.JSON2TreeMenuEntity(param1);
-                            if (this.getTreeMenuEntityFromID(entity.getId()) == null) {
-                                this.registerTreeMenuRootEntity(entity);
-                                reply.put(MomMsgTranslator.MSG_RC, 0);
-                                reply.put(MomMsgTranslator.MSG_BODY, "Tree Menu Entity Registered successfully...");
-                            } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
-                                reply.put(MomMsgTranslator.MSG_ERR, "This entity " + entity.getId() + " is already registered !");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
-                            reply.put(MomMsgTranslator.MSG_ERR, "Tree Menu Entity serialization problem... Have a look to this message body and Ariane server logs !");
-                            reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
-                        }
-                    } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
-                        reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity submitted...");
-                    }
-                    break;
-
-                case OPERATION_VAL_SET_PARENT_ENTITY:
-                    oParam = message.get(TREE_MENU_ENTITY_ID);
-                    if (oParam != null) {
-                        param1 = oParam.toString();
-                        oParam = message.get(TREE_MENU_ENTITY_PARENT_ID);
-                        if (oParam != null) {
-                            param2 = oParam.toString();
-                            TreeMenuEntity entity = this.getTreeMenuEntityFromID(param1);
-                            if (entity != null) {
-                                TreeMenuEntity parentEntity = this.getTreeMenuEntityFromID(param2);
-                                if (parentEntity != null) {
-                                    if (entity.getParentTreeMenuEntity() != null)
-                                        entity.getParentTreeMenuEntity().removeChildTreeMenuEntity(entity);
-                                    else this.unregisterTreeMenuRootEntity(entity);
-                                    entity.setParentTreeMenuEntity(parentEntity);
-                                    parentEntity.addChildTreeMenuEntity(entity);
-                                    reply.put(MomMsgTranslator.MSG_RC, 0);
-                                    reply.put(MomMsgTranslator.MSG_BODY, "Set parent " + param2 + " successfully to tree menu entity " + param1);
-                                } else {
-                                    reply.put(MomMsgTranslator.MSG_RC, 1);
-                                    reply.put(MomMsgTranslator.MSG_ERR, "Parent tree menu entity " + param1 + " not found !");
-                                }
-                            } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
-                                reply.put(MomMsgTranslator.MSG_ERR, "Tree menu entity " + param1 + " not found !");
-                            }
+        switch (operation) {
+            case OPERATION_VAL_REGISTER:
+                oParam = message.get(TREE_MENU_ENTITY);
+                if (oParam != null) {
+                    param1 = oParam.toString();
+                    try {
+                        TreeMenuEntity entity = TreeMenuEntityJSON.JSON2TreeMenuEntity(param1);
+                        if (this.getTreeMenuEntityFromID(entity.getId()) == null) {
+                            this.registerTreeMenuRootEntity(entity);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
+                            reply.put(MomMsgTranslator.MSG_BODY, "Tree Menu Entity Registered successfully...");
                         } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
-                            reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no parent tree menu entity id submitted...");
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                            reply.put(MomMsgTranslator.MSG_ERR, "This entity " + entity.getId() + " is already registered !");
                         }
-                    } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
-                        reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity id submitted...");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                        reply.put(MomMsgTranslator.MSG_ERR, "Tree Menu Entity serialization problem... Have a look to this message body and Ariane server logs !");
+                        reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                     }
-                    break;
-                case OPERATION_VAL_UPDATE_ENTITY:
-                    oParam = message.get(TREE_MENU_ENTITY);
-                    if (oParam != null) {
-                        param1 = oParam.toString();
-                        try {
-                            TreeMenuEntity entity = TreeMenuEntityJSON.JSON2TreeMenuEntity(param1);
-                            TreeMenuEntity entityToUpdate = this.getTreeMenuEntityFromID(entity.getId());
-                            if (entityToUpdate == null) {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
-                                reply.put(MomMsgTranslator.MSG_ERR, "This entity " + entity.getId() + " is already registered !");
-                            } else {
-                                if (entity.getType()!=0) entityToUpdate.setType(entity.getType());
-                                if (entity.getValue()!=null) entityToUpdate.setValue(entity.getValue());
-                                if (entity.getContextAddress()!=null) entityToUpdate.setContextAddress(entity.getContextAddress());
-                                if (entity.getDescription()!=null) entityToUpdate.setDescription(entity.getDescription());
-                                if (entity.getIcon()!=null) entityToUpdate.setIcon(entity.getIcon());
-                                if (entity.getDisplayRoles()!=null) {
-                                    entityToUpdate.getDisplayRoles().clear();
-                                    entityToUpdate.getDisplayRoles().addAll(entity.getDisplayRoles());
-                                }
-                                if (entity.getDisplayPermissions()!=null) {
-                                    entityToUpdate.getDisplayPermissions().clear();
-                                    entityToUpdate.getDisplayPermissions().addAll(entity.getDisplayPermissions());
-                                }
-                                if (entity.getOtherActionsRoles()!=null) {
-                                    entityToUpdate.getOtherActionsRoles().clear();
-                                    entityToUpdate.getOtherActionsRoles().putAll(entity.getOtherActionsRoles());
-                                }
-                                if (entity.getOtherActionsPerms()!=null) {
-                                    entityToUpdate.getOtherActionsPerms().clear();
-                                    entityToUpdate.getOtherActionsPerms().putAll(entity.getOtherActionsPerms());
-                                }
-                                if (entity.getRemoteInjectorTreeEntityComponentsCacheId()!=null)
-                                    entityToUpdate.setRemoteInjectorTreeEntityComponentsCacheId(entity.getRemoteInjectorTreeEntityComponentsCacheId());
-                                if (entity.getRemoteInjectorTreeEntityGearsCacheId()!=null)
-                                    entityToUpdate.setRemoteInjectorTreeEntityGearsCacheId(entity.getRemoteInjectorTreeEntityGearsCacheId());
-                                reply.put(MomMsgTranslator.MSG_RC, 0);
-                                reply.put(MomMsgTranslator.MSG_BODY, "Tree Menu Entity Registered successfully...");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
-                            reply.put(MomMsgTranslator.MSG_ERR, "Tree Menu Entity serialization problem... Have a look to this message body and Ariane server logs !");
-                            reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
-                            reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
-                            reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
-                        }
-                    } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
-                        reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity submitted...");
-                    }
-                    break;
+                } else {
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity submitted...");
+                }
+                break;
 
-                case OPERATION_VAL_UNREGISTER:
-                    oParam = message.get(TREE_MENU_ENTITY_ID);
+            case OPERATION_VAL_SET_PARENT_ENTITY:
+                oParam = message.get(TREE_MENU_ENTITY_ID);
+                if (oParam != null) {
+                    param1 = oParam.toString();
+                    oParam = message.get(TREE_MENU_ENTITY_PARENT_ID);
                     if (oParam != null) {
-                        param1 = oParam.toString();
+                        param2 = oParam.toString();
                         TreeMenuEntity entity = this.getTreeMenuEntityFromID(param1);
                         if (entity != null) {
-                            if (entity.getParentTreeMenuEntity() != null) {
-                                entity.getParentTreeMenuEntity().removeChildTreeMenuEntity(entity);
-                                entity.setParentTreeMenuEntity(null);
-                            } else this.unregisterTreeMenuRootEntity(entity);
-                            reply.put(MomMsgTranslator.MSG_RC, 0);
-                            reply.put(MomMsgTranslator.MSG_BODY, "Tree Menu Entity Unregistered successfully...");
+                            TreeMenuEntity parentEntity = this.getTreeMenuEntityFromID(param2);
+                            if (parentEntity != null) {
+                                if (entity.getParentTreeMenuEntity() != null)
+                                    entity.getParentTreeMenuEntity().removeChildTreeMenuEntity(entity);
+                                else this.unregisterTreeMenuRootEntity(entity);
+                                entity.setParentTreeMenuEntity(parentEntity);
+                                parentEntity.addChildTreeMenuEntity(entity);
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
+                                reply.put(MomMsgTranslator.MSG_BODY, "Set parent " + param2 + " successfully to tree menu entity " + param1);
+                            } else {
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
+                                reply.put(MomMsgTranslator.MSG_ERR, "Parent tree menu entity " + param1 + " not found !");
+                            }
                         } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
                             reply.put(MomMsgTranslator.MSG_ERR, "Tree menu entity " + param1 + " not found !");
                         }
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
-                        reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity id submitted...");
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                        reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no parent tree menu entity id submitted...");
                     }
-
-                    break;
-
-                case OPERATION_VAL_GETTREEMRES:
+                } else {
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity id submitted...");
+                }
+                break;
+            case OPERATION_VAL_UPDATE_ENTITY:
+                oParam = message.get(TREE_MENU_ENTITY);
+                if (oParam != null) {
+                    param1 = oParam.toString();
                     try {
-                        ret = TreeMenuEntityJSON.manyTreeMenuEntity2JSON(this.getTreeMenuRootsEntities());
-                        reply.put(MomMsgTranslator.MSG_RC, 0);
-                        reply.put(MomMsgTranslator.MSG_BODY, ret);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
-                        reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
-                    }
-                    break;
-
-                case OPERATION_VAL_GETTREEMREV:
-                    oParam = message.get(TREE_MENU_ENTITY_VALUE);
-                    try {
-                        if (oParam != null) {
-                            param1 = oParam.toString();
-                            TreeMenuEntity entity = this.getTreeMenuEntityFromValue(param1);
-                            if (entity!=null) {
-                                ret = TreeMenuEntityJSON.treeMenuEntity2JSON(entity);
-                                reply.put(MomMsgTranslator.MSG_RC, 0);
-                                reply.put(MomMsgTranslator.MSG_BODY, ret);
-                            } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
-                                reply.put(MomMsgTranslator.MSG_ERR, "TreeMenuEntity not found ( value: " + param1 + " ) !");
-                            }
+                        TreeMenuEntity entity = TreeMenuEntityJSON.JSON2TreeMenuEntity(param1);
+                        TreeMenuEntity entityToUpdate = this.getTreeMenuEntityFromID(entity.getId());
+                        if (entityToUpdate == null) {
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                            reply.put(MomMsgTranslator.MSG_ERR, "This entity " + entity.getId() + " is already registered !");
                         } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
-                            reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity value submitted...");
+                            if (entity.getType()!=0) entityToUpdate.setType(entity.getType());
+                            if (entity.getValue()!=null) entityToUpdate.setValue(entity.getValue());
+                            if (entity.getContextAddress()!=null) entityToUpdate.setContextAddress(entity.getContextAddress());
+                            if (entity.getDescription()!=null) entityToUpdate.setDescription(entity.getDescription());
+                            if (entity.getIcon()!=null) entityToUpdate.setIcon(entity.getIcon());
+                            if (entity.getDisplayRoles()!=null) {
+                                entityToUpdate.getDisplayRoles().clear();
+                                entityToUpdate.getDisplayRoles().addAll(entity.getDisplayRoles());
+                            }
+                            if (entity.getDisplayPermissions()!=null) {
+                                entityToUpdate.getDisplayPermissions().clear();
+                                entityToUpdate.getDisplayPermissions().addAll(entity.getDisplayPermissions());
+                            }
+                            if (entity.getOtherActionsRoles()!=null) {
+                                entityToUpdate.getOtherActionsRoles().clear();
+                                entityToUpdate.getOtherActionsRoles().putAll(entity.getOtherActionsRoles());
+                            }
+                            if (entity.getOtherActionsPerms()!=null) {
+                                entityToUpdate.getOtherActionsPerms().clear();
+                                entityToUpdate.getOtherActionsPerms().putAll(entity.getOtherActionsPerms());
+                            }
+                            if (entity.getRemoteInjectorTreeEntityComponentsCacheId()!=null)
+                                entityToUpdate.setRemoteInjectorTreeEntityComponentsCacheId(entity.getRemoteInjectorTreeEntityComponentsCacheId());
+                            if (entity.getRemoteInjectorTreeEntityGearsCacheId()!=null)
+                                entityToUpdate.setRemoteInjectorTreeEntityGearsCacheId(entity.getRemoteInjectorTreeEntityGearsCacheId());
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
+                            reply.put(MomMsgTranslator.MSG_BODY, "Tree Menu Entity Registered successfully...");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                        reply.put(MomMsgTranslator.MSG_ERR, "Tree Menu Entity serialization problem... Have a look to this message body and Ariane server logs !");
+                        reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
                         reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
                         reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                     }
-                    break;
+                } else {
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity submitted...");
+                }
+                break;
 
-                case OPERATION_VAL_GETTREEMREI:
-                    oParam = message.get(TREE_MENU_ENTITY_ID);
+            case OPERATION_VAL_UNREGISTER:
+                oParam = message.get(TREE_MENU_ENTITY_ID);
+                if (oParam != null) {
+                    param1 = oParam.toString();
+                    TreeMenuEntity entity = this.getTreeMenuEntityFromID(param1);
+                    if (entity != null) {
+                        if (entity.getParentTreeMenuEntity() != null) {
+                            entity.getParentTreeMenuEntity().removeChildTreeMenuEntity(entity);
+                            entity.setParentTreeMenuEntity(null);
+                        } else this.unregisterTreeMenuRootEntity(entity);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
+                        reply.put(MomMsgTranslator.MSG_BODY, "Tree Menu Entity Unregistered successfully...");
+                    } else {
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
+                        reply.put(MomMsgTranslator.MSG_ERR, "Tree menu entity " + param1 + " not found !");
+                    }
+                } else {
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity id submitted...");
+                }
+
+                break;
+
+            case OPERATION_VAL_GETTREEMRES:
+                try {
+                    ret = TreeMenuEntityJSON.manyTreeMenuEntity2JSON(this.getTreeMenuRootsEntities());
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
+                    reply.put(MomMsgTranslator.MSG_BODY, ret);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
+                    reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
+                }
+                break;
+
+            case OPERATION_VAL_GETTREEMREV:
+                oParam = message.get(TREE_MENU_ENTITY_VALUE);
+                try {
                     if (oParam != null) {
                         param1 = oParam.toString();
+                        TreeMenuEntity entity = this.getTreeMenuEntityFromValue(param1);
+                        if (entity!=null) {
+                            ret = TreeMenuEntityJSON.treeMenuEntity2JSON(entity);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
+                            reply.put(MomMsgTranslator.MSG_BODY, ret);
+                        } else {
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
+                            reply.put(MomMsgTranslator.MSG_ERR, "TreeMenuEntity not found ( value: " + param1 + " ) !");
+                        }
+                    } else {
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                        reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity value submitted...");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
+                    reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
+                }
+                break;
+
+            case OPERATION_VAL_GETTREEMREI:
+                oParam = message.get(TREE_MENU_ENTITY_ID);
+                if (oParam != null) {
+                    param1 = oParam.toString();
+                    try {
+                        TreeMenuEntity entity = this.getTreeMenuEntityFromID(param1);
+                        if (entity!=null) {
+                            ret = TreeMenuEntityJSON.treeMenuEntity2JSON(entity);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
+                            reply.put(MomMsgTranslator.MSG_BODY, ret);
+                        } else {
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
+                            reply.put(MomMsgTranslator.MSG_ERR, "TreeMenuEntity not found ( id: " + param1 +" ) !");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
+                        reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
+                        reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
+                    }
+                } else {
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity id submitted...");
+                }
+
+                break;
+            case OPERATION_VAL_GETTREEMREC:
+                oParam = message.get(TREE_MENU_ENTITY_CA);
+                if (oParam != null) {
+                    param1 = oParam.toString();
+                    if (!param1.equals("")) {
                         try {
-                            TreeMenuEntity entity = this.getTreeMenuEntityFromID(param1);
+                            TreeMenuEntity entity = this.getTreeMenuEntityFromContextAddress(param1);
                             if (entity!=null) {
                                 ret = TreeMenuEntityJSON.treeMenuEntity2JSON(entity);
-                                reply.put(MomMsgTranslator.MSG_RC, 0);
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SUCCESS);
                                 reply.put(MomMsgTranslator.MSG_BODY, ret);
                             } else {
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
-                                reply.put(MomMsgTranslator.MSG_ERR, "TreeMenuEntity not found ( id: " + param1 +" ) !");
+                                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_NOT_FOUND);
+                                reply.put(MomMsgTranslator.MSG_ERR, "TreeMenuEntity not found ( context address: " + param1 +" ) !");
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
+                            reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_SERVER_ERR);
                             reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
                             reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
                         }
                     } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
-                        reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity id submitted...");
-                    }
-
-                    break;
-                case OPERATION_VAL_GETTREEMREC:
-                    oParam = message.get(TREE_MENU_ENTITY_CA);
-                    if (oParam != null) {
-                        param1 = oParam.toString();
-                        if (!param1.equals("")) {
-                            try {
-                                TreeMenuEntity entity = this.getTreeMenuEntityFromContextAddress(param1);
-                                if (entity!=null) {
-                                    ret = TreeMenuEntityJSON.treeMenuEntity2JSON(entity);
-                                    reply.put(MomMsgTranslator.MSG_RC, 0);
-                                    reply.put(MomMsgTranslator.MSG_BODY, ret);
-                                } else {
-                                    reply.put(MomMsgTranslator.MSG_RC, 1);
-                                    reply.put(MomMsgTranslator.MSG_ERR, "TreeMenuEntity not found ( context address: " + param1 +" ) !");
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                reply.put(MomMsgTranslator.MSG_RC, 1);
-                                reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
-                                reply.put(MomMsgTranslator.MSG_BODY, e.getMessage());
-                            }
-                        } else {
-                            reply.put(MomMsgTranslator.MSG_RC, 1);
-                            reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity context address submitted...");
-                        }
-                    } else {
-                        reply.put(MomMsgTranslator.MSG_RC, 1);
+                        reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
                         reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity context address submitted...");
                     }
-                    break;
-                case MomMsgTranslator.OPERATION_NOT_DEFINED:
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
-                    reply.put(MomMsgTranslator.MSG_ERR, "Operation not defined ! ");
-                    break;
-                default:
-                    reply.put(MomMsgTranslator.MSG_RC, 1);
-                    reply.put(MomMsgTranslator.MSG_ERR, "Unknow operation (" + operation + ") !");
-            }
-        } catch (Throwable t) {
-            t.printStackTrace();
-            reply.put(MomMsgTranslator.MSG_RC, 1);
-            reply.put(MomMsgTranslator.MSG_ERR, "Unexpected exception... Have a look to this message body and Ariane server logs !");
-            reply.put(MomMsgTranslator.MSG_BODY, t.getMessage());
+                } else {
+                    reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                    reply.put(MomMsgTranslator.MSG_ERR, "Invalid request : no tree menu entity context address submitted...");
+                }
+                break;
+            case MomMsgTranslator.OPERATION_NOT_DEFINED:
+                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                reply.put(MomMsgTranslator.MSG_ERR, "Operation not defined ! ");
+                break;
+            default:
+                reply.put(MomMsgTranslator.MSG_RC, MomMsgTranslator.MSG_RET_BAD_REQ);
+                reply.put(MomMsgTranslator.MSG_ERR, "Unknow operation (" + operation + ") !");
         }
         return reply;
     }
