@@ -19,6 +19,7 @@
 
 package net.echinopsii.ariane.community.core.injector.base.model;
 
+import org.infinispan.persistence.spi.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,8 +110,30 @@ public abstract class AbstractCacheComponent implements Cache<Component, String>
     }
 
     @Override
-    public void putEntityToCache(Component component) {
-        if (cache!=null) cache.put(component.getComponentId(), component);
+    public void putEntityToCache(final Component component) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (cache != null) cache.put(component.getComponentId(), component);
+                } catch (PersistenceException ex) {
+                    if (ex.getMessage().contains("InterruptedException")) {
+                        // RETRY
+                        log.debug("Retrying put component into cache");
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    if (cache != null) cache.put(component.getComponentId(), component);
+                                } catch (Exception ex) {
+                                    log.error(ex.getMessage());
+                                }
+                            }
+                        }).start();
+                    } else log.error(ex.getMessage());
+                }
+            }
+        }).start();
     }
 
     @Override
