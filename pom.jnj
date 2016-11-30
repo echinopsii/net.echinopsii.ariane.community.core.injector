@@ -89,7 +89,7 @@
         {%- endblock %}
         <!-- Dependencies versions-->
         <version.com.fasterxml.jackson>2.1.2</version.com.fasterxml.jackson>
-        <version.com.typesafe.akka>2.3.4</version.com.typesafe.akka>
+        <version.com.typesafe.akka>2.3.15</version.com.typesafe.akka>
         <version.commons.fileupload>1.3</version.commons.fileupload>
         <version.commons.io>2.4</version.commons.io>
         <version.com.lowagie.itext>2.1.7</version.com.lowagie.itext>
