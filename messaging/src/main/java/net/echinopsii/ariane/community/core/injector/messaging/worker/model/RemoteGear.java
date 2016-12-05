@@ -20,8 +20,6 @@ package net.echinopsii.ariane.community.core.injector.messaging.worker.model;
 
 import net.echinopsii.ariane.community.core.injector.base.model.Gear;
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
-import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteGearService;
-import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteWorkerCommon;
 import net.echinopsii.ariane.community.messaging.api.MomClient;
 import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
 
@@ -96,7 +94,7 @@ public class RemoteGear implements Gear, Serializable {
         if (InjectorMessagingBootstrap.sharedMoMConnection!=null && gearAdminQueue!=null) {
             Map<String, Object> message = new HashMap<String, Object>();
             message.put(MomMsgTranslator.OPERATION_FDN, "START");
-            InjectorMessagingBootstrap.sharedMoMConnection.createRequestExecutor().fireAndForget(message, gearAdminQueue);
+            InjectorMessagingBootstrap.sharedMoMConnection.createRequestExecutor().FAF(message, gearAdminQueue);
         }
     }
 
@@ -105,7 +103,7 @@ public class RemoteGear implements Gear, Serializable {
         if (InjectorMessagingBootstrap.sharedMoMConnection!=null && gearAdminQueue!=null) {
             Map<String, Object> message = new HashMap<String, Object>();
             message.put(MomMsgTranslator.OPERATION_FDN, "STOP");
-            InjectorMessagingBootstrap.sharedMoMConnection.createRequestExecutor().fireAndForget(message, gearAdminQueue);
+            InjectorMessagingBootstrap.sharedMoMConnection.createRequestExecutor().FAF(message, gearAdminQueue);
         }
     }
 

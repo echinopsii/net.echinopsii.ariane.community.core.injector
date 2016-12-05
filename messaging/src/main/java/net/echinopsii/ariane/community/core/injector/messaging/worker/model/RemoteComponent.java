@@ -20,9 +20,6 @@ package net.echinopsii.ariane.community.core.injector.messaging.worker.model;
 
 import net.echinopsii.ariane.community.core.injector.base.model.Component;
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
-import net.echinopsii.ariane.community.core.injector.messaging.service.RemoteComponentService;
-import net.echinopsii.ariane.community.core.injector.messaging.worker.RemoteWorkerCommon;
-import net.echinopsii.ariane.community.messaging.api.MomClient;
 import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
 
 import java.io.Serializable;
@@ -165,7 +162,7 @@ public class RemoteComponent implements Component, Serializable {
         if (InjectorMessagingBootstrap.sharedMoMConnection!=null && componentAdminQueue!=null) {
             Map<String, Object> message = new HashMap<String, Object>();
             message.put(MomMsgTranslator.OPERATION_FDN, "REFRESH");
-            InjectorMessagingBootstrap.sharedMoMConnection.createRequestExecutor().fireAndForget(
+            InjectorMessagingBootstrap.sharedMoMConnection.createRequestExecutor().FAF(
                     message, componentAdminQueue
             );
         }
