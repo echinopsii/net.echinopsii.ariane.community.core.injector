@@ -25,6 +25,8 @@ import net.echinopsii.ariane.community.core.injector.messaging.worker.json.Remot
 import net.echinopsii.ariane.community.core.injector.messaging.worker.model.RemoteComponent;
 import net.echinopsii.ariane.community.messaging.api.AppMsgWorker;
 import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
+import net.echinopsii.ariane.community.messaging.api.MomServiceFactory;
+import net.echinopsii.ariane.community.messaging.common.MomAkkaAbsAppHPMsgSrvWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +35,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RemoteComponentWorker implements AppMsgWorker {
+public class RemoteComponentWorker extends MomAkkaAbsAppHPMsgSrvWorker {
     private static final Logger log = LoggerFactory.getLogger(RemoteComponentWorker.class);
 
     public final static String OPERATION_PUSH_COMPONENT_IN_CACHE = "PUSH_COMPONENT_IN_CACHE";
@@ -43,10 +45,16 @@ public class RemoteComponentWorker implements AppMsgWorker {
 
     public final static String REMOTE_COMPONENT = "REMOTE_COMPONENT";
 
+    public RemoteComponentWorker(MomServiceFactory serviceFactory) {
+        super(serviceFactory);
+    }
+
     @Override
     public Map<String, Object> apply(Map<String, Object> message) {
         log.debug("Remote Injector Component Worker on  : {" + message.toString() +  " }...");
-        Map<String, Object> reply = new HashMap<String, Object>();
+        Map<String, Object> reply = super.apply(message);
+        if (reply!=null) return reply;
+        else reply = new HashMap<>();
         Object oOperation = message.get(MomMsgTranslator.OPERATION_FDN);
         String operation = null;
 

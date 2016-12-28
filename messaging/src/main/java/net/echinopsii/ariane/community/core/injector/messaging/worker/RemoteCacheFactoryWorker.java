@@ -25,8 +25,9 @@ import net.echinopsii.ariane.community.core.injector.base.registry.InjectorCompo
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorGearsRegistry;
 import net.echinopsii.ariane.community.core.injector.base.registry.InjectorRegistryFactory;
 import net.echinopsii.ariane.community.core.injector.messaging.InjectorMessagingBootstrap;
-import net.echinopsii.ariane.community.messaging.api.AppMsgWorker;
 import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
+import net.echinopsii.ariane.community.messaging.api.MomServiceFactory;
+import net.echinopsii.ariane.community.messaging.common.MomAkkaAbsAppHPMsgSrvWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,17 +36,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class RemoteCacheFactoryWorker implements AppMsgWorker, InjectorRegistryFactory {
+public class RemoteCacheFactoryWorker extends MomAkkaAbsAppHPMsgSrvWorker implements InjectorRegistryFactory {
     private static final Logger log = LoggerFactory.getLogger(RemoteCacheFactoryWorker.class);
 
     public final static String OPERATION_MAKE_GEAR_REGISTRY      = "MAKE_GEARS_REGISTRY";
     public final static String OPERATION_MAKE_COMPONENT_REGISTRY = "MAKE_COMPONENTS_REGISTRY";
 
+    public RemoteCacheFactoryWorker(MomServiceFactory serviceFactory) {
+        super(serviceFactory);
+    }
+
     @Override
     public Map<String, Object> apply(Map<String, Object> message) {
         log.debug("Remote Injector Cache Factory Worker on  : { " + message.toString() +  " }...");
-
-        Map<String, Object>        reply              = new HashMap<>();
+        Map<String, Object> reply = super.apply(message);
+        if (reply!=null) return reply;
+        else reply = new HashMap<>();
         InjectorGearsRegistry      gearsRegistry      = null;
         InjectorComponentsRegistry componentsRegistry = null;
 

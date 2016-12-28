@@ -25,13 +25,15 @@ import net.echinopsii.ariane.community.core.injector.messaging.worker.json.Remot
 import net.echinopsii.ariane.community.core.injector.messaging.worker.model.RemoteGear;
 import net.echinopsii.ariane.community.messaging.api.AppMsgWorker;
 import net.echinopsii.ariane.community.messaging.api.MomMsgTranslator;
+import net.echinopsii.ariane.community.messaging.api.MomServiceFactory;
+import net.echinopsii.ariane.community.messaging.common.MomAkkaAbsAppHPMsgSrvWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
 
-public class RemoteGearWorker implements AppMsgWorker {
+public class RemoteGearWorker extends MomAkkaAbsAppHPMsgSrvWorker {
     private static final Logger log = LoggerFactory.getLogger(RemoteGearWorker.class);
 
     public final static String OPERATION_PUSH_GEAR_IN_CACHE = "PUSH_GEAR_IN_CACHE";
@@ -40,11 +42,16 @@ public class RemoteGearWorker implements AppMsgWorker {
 
     public final static String REMOTE_GEAR = "REMOTE_GEAR";
 
+    public RemoteGearWorker(MomServiceFactory serviceFactory) {
+        super(serviceFactory);
+    }
 
     @Override
     public Map<String, Object> apply(Map<String, Object> message) {
         log.debug("Remote Injector Gear Worker on  : {" + message.toString() +  " }...");
-        Map<String, Object> reply = new HashMap<String, Object>();
+        Map<String, Object> reply = super.apply(message);
+        if (reply!=null) return reply;
+        else reply = new HashMap<>();
 
         Object oOperation = message.get(MomMsgTranslator.OPERATION_FDN);
         String operation = null;

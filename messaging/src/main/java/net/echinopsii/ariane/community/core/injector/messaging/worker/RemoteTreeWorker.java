@@ -26,6 +26,8 @@ import net.echinopsii.ariane.community.core.portal.base.json.TreeMenuEntityJSON;
 import net.echinopsii.ariane.community.core.portal.base.model.MainMenuEntity;
 import net.echinopsii.ariane.community.core.portal.base.model.TreeMenuEntity;
 import net.echinopsii.ariane.community.core.portal.base.plugin.TreeMenuRootsRegistry;
+import net.echinopsii.ariane.community.messaging.api.MomServiceFactory;
+import net.echinopsii.ariane.community.messaging.common.MomAkkaAbsAppHPMsgSrvWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
 
-public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
+public class RemoteTreeWorker extends MomAkkaAbsAppHPMsgSrvWorker implements TreeMenuRootsRegistry {
     private static final Logger log = LoggerFactory.getLogger(RemoteTreeWorker.class);
 
     public final static String OPERATION_VAL_REGISTER = "REGISTER";
@@ -52,12 +54,16 @@ public class RemoteTreeWorker implements AppMsgWorker, TreeMenuRootsRegistry {
     public final static String TREE_MENU_ENTITY_PARENT_ID = "TREE_MENU_ENTITY_PARENT_ID";
     public final static String TREE_MENU_ENTITY_CA = "TREE_MENU_ENTITY_CONTEXT_ADDRESS";
 
+    public RemoteTreeWorker (MomServiceFactory serviceFactory) {
+        super(serviceFactory);
+    }
 
     @Override
     public Map<String, Object> apply(Map<String, Object> message) {
         log.debug("Injector Remote Tree Worker on  : { " + message.toString() + " }...");
-
-        Map<String, Object> reply = new HashMap<>();
+        Map<String, Object> reply = super.apply(message);
+        if (reply!=null) return reply;
+        else reply = new HashMap<>();
 
         Object oOperation = message.get(MomMsgTranslator.OPERATION_FDN);
         String operation = null;
