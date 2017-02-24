@@ -37,7 +37,7 @@ public class RemoteCacheFactoryService {
         if (properties.get(InjectorMessagingBootstrap.PROPS_FIELD_TREE_QUEUE)!=null)
             ricfQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_TREE_QUEUE);
 
-        InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory().requestService(
+        InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory().msgGroupRequestService(
                 ricfQueue, new RemoteCacheFactoryWorker(InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory())
         );
         log.info("Ariane Injector Remote Cache Factory Messaging Service is waiting message on  " + ricfQueue + "...");

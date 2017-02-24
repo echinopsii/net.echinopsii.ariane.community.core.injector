@@ -37,7 +37,7 @@ public class RemoteComponentService {
         if (properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE)!=null)
             ricQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_COMP_QUEUE);
 
-        InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory().requestService(
+        InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory().msgGroupRequestService(
                 ricQueue, new RemoteComponentWorker(InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory())
         );
         log.info("Ariane Injector Remote Component Messaging Service is waiting message on  " + ricQueue + "...");

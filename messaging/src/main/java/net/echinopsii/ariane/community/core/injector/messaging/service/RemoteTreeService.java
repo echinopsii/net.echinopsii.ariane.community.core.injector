@@ -37,7 +37,7 @@ public class RemoteTreeService {
         if (properties.get(InjectorMessagingBootstrap.PROPS_FIELD_TREE_QUEUE)!=null)
             ritQueue = (String) properties.get(InjectorMessagingBootstrap.PROPS_FIELD_TREE_QUEUE);
 
-        InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory().requestService(
+        InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory().msgGroupRequestService(
                 ritQueue, new RemoteTreeWorker(InjectorMessagingBootstrap.sharedMoMConnection.getServiceFactory())
         );
         log.info("Ariane Injector Remote Tree Messaging Service is waiting message on  " + ritQueue + "...");
